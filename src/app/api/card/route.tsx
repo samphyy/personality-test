@@ -47,7 +47,7 @@ export async function GET(request: Request) {
               flexDirection: 'column',
               justifyContent: 'space-between',
               backgroundColor: '#090d16',
-              backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(26, 188, 156, 0.3) 0%, rgba(9, 13, 22, 0) 50%), radial-gradient(circle at 20% 80%, rgba(2, 132, 199, 0.25) 0%, rgba(9, 13, 22, 0) 50%)',
+              backgroundImage: 'linear-gradient(to bottom right, #090d16, #0f172a, #042f2e)',
               padding: '80px 72px',
               fontFamily: 'sans-serif',
               color: '#ffffff',
@@ -70,13 +70,12 @@ export async function GET(request: Request) {
                     fontWeight: 900,
                     fontFamily: 'serif',
                     marginRight: '20px',
-                    boxShadow: '0 10px 24px rgba(26, 188, 156, 0.4)',
                   }}
                 >
                   y
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.5px' }}>
+                  <span style={{ fontSize: '28px', fontWeight: 900, letterSpacing: '-0.5px', color: '#ffffff' }}>
                     OCEAN<span style={{ color: '#1abc9c' }}>Insight</span>
                   </span>
                   <span style={{ fontSize: '14px', color: '#94a3b8', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>
@@ -85,7 +84,7 @@ export async function GET(request: Request) {
                 </div>
               </div>
 
-              <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: '10px 24px', borderRadius: '999px', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
+              <div style={{ display: 'flex', backgroundColor: 'rgba(255, 255, 255, 0.1)', padding: '10px 24px', borderRadius: '999px', border: '1px solid rgba(255, 255, 255, 0.15)' }}>
                 <span style={{ fontSize: '18px', color: '#5eead4', fontWeight: 800 }}>
                   Big Five Blueprint
                 </span>
@@ -101,26 +100,25 @@ export async function GET(request: Request) {
                 border: '2px solid rgba(20, 184, 166, 0.35)',
                 borderRadius: '40px',
                 padding: '56px 48px',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4)',
               }}
             >
-              <span
-                style={{
-                  alignSelf: 'flex-start',
-                  backgroundColor: 'rgba(20, 184, 166, 0.25)',
-                  color: '#5eead4',
-                  border: '1px solid rgba(20, 184, 166, 0.5)',
-                  padding: '8px 20px',
-                  borderRadius: '999px',
-                  fontSize: '16px',
-                  fontWeight: 900,
-                  textTransform: 'uppercase',
-                  letterSpacing: '1.5px',
-                  marginBottom: '20px',
-                }}
-              >
-                Primary Archetype
-              </span>
+              <div style={{ display: 'flex', marginBottom: '20px' }}>
+                <span
+                  style={{
+                    backgroundColor: 'rgba(20, 184, 166, 0.25)',
+                    color: '#5eead4',
+                    border: '1px solid rgba(20, 184, 166, 0.5)',
+                    padding: '8px 20px',
+                    borderRadius: '999px',
+                    fontSize: '16px',
+                    fontWeight: 900,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1.5px',
+                  }}
+                >
+                  Primary Archetype
+                </span>
+              </div>
 
               <h1
                 style={{
@@ -129,9 +127,7 @@ export async function GET(request: Request) {
                   letterSpacing: '-2px',
                   lineHeight: 1.05,
                   margin: '0 0 16px 0',
-                  backgroundImage: 'linear-gradient(to right, #ffffff, #f1f5f9, #5eead4)',
-                  backgroundClip: 'text',
-                  color: 'transparent',
+                  color: '#ffffff',
                 }}
               >
                 {archetype.name}
@@ -233,7 +229,7 @@ export async function GET(request: Request) {
             flexDirection: 'column',
             justifyContent: 'space-between',
             backgroundColor: '#090d16',
-            backgroundImage: 'radial-gradient(circle at 80% 20%, rgba(26, 188, 156, 0.3) 0%, rgba(9, 13, 22, 0) 55%), radial-gradient(circle at 20% 80%, rgba(2, 132, 199, 0.25) 0%, rgba(9, 13, 22, 0) 50%)',
+            backgroundImage: 'linear-gradient(to bottom right, #090d16, #0f172a, #042f2e)',
             padding: '64px',
             fontFamily: 'sans-serif',
             color: '#ffffff',
@@ -256,13 +252,12 @@ export async function GET(request: Request) {
                   fontWeight: 900,
                   fontFamily: 'serif',
                   marginRight: '16px',
-                  boxShadow: '0 8px 20px rgba(26, 188, 156, 0.4)',
                 }}
               >
                 y
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '24px', fontWeight: 900, letterSpacing: '-0.5px' }}>
+                <span style={{ fontSize: '24px', fontWeight: 900, letterSpacing: '-0.5px', color: '#ffffff' }}>
                   OCEAN<span style={{ color: '#1abc9c' }}>Insight</span>
                 </span>
                 <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 800, letterSpacing: '1.5px', textTransform: 'uppercase' }}>
@@ -271,7 +266,7 @@ export async function GET(request: Request) {
               </div>
             </div>
 
-            <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)', padding: '8px 20px', borderRadius: '999px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+            <div style={{ display: 'flex', backgroundColor: 'rgba(255, 255, 255, 0.08)', padding: '8px 20px', borderRadius: '999px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
               <span style={{ fontSize: '15px', color: '#5eead4', fontWeight: 800 }}>
                 Big Five Assessment
               </span>
@@ -289,23 +284,23 @@ export async function GET(request: Request) {
               padding: '48px 40px',
             }}
           >
-            <span
-              style={{
-                alignSelf: 'flex-start',
-                backgroundColor: 'rgba(20, 184, 166, 0.25)',
-                color: '#5eead4',
-                border: '1px solid rgba(20, 184, 166, 0.5)',
-                padding: '6px 16px',
-                borderRadius: '999px',
-                fontSize: '13px',
-                fontWeight: 900,
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                marginBottom: '16px',
-              }}
-            >
-              Primary Archetype
-            </span>
+            <div style={{ display: 'flex', marginBottom: '16px' }}>
+              <span
+                style={{
+                  backgroundColor: 'rgba(20, 184, 166, 0.25)',
+                  color: '#5eead4',
+                  border: '1px solid rgba(20, 184, 166, 0.5)',
+                  padding: '6px 16px',
+                  borderRadius: '999px',
+                  fontSize: '13px',
+                  fontWeight: 900,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}
+              >
+                Primary Archetype
+              </span>
+            </div>
 
             <h1
               style={{
@@ -314,9 +309,7 @@ export async function GET(request: Request) {
                 letterSpacing: '-1.5px',
                 lineHeight: 1.1,
                 margin: '0 0 14px 0',
-                backgroundImage: 'linear-gradient(to right, #ffffff, #f1f5f9, #5eead4)',
-                backgroundClip: 'text',
-                color: 'transparent',
+                color: '#ffffff',
               }}
             >
               {archetype.name}
@@ -327,7 +320,7 @@ export async function GET(request: Request) {
             </p>
 
             {/* Score Badges Row */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'rgba(0, 0, 0, 0.3)', padding: '16px 20px', borderRadius: '18px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: 'rgba(0, 0, 0, 0.3)', padding: '16px 20px', borderRadius: '18px', width: '100%' }}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <span style={{ fontSize: '12px', color: '#c084fc', fontWeight: 800 }}>Openness</span>
                 <span style={{ fontSize: '24px', fontWeight: 900, color: '#ffffff' }}>{o}%</span>
