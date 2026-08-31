@@ -95,44 +95,58 @@ export async function POST(req: Request) {
       }
       subscriptionData = kitData.subscription;
 
-      // Step 3: Explicitly create & apply tags via ConvertKit Tag API
-      const tagsToApply = [
-        'OCEAN_Assessment_Lead',
-        `Archetype: ${archetypeName}`,
-      ];
+      // Step 3: Fetch existing tags to find IDs or create missing ones
+      try {
+        const existingTagsRes = await fetch(`https://api.convertkit.com/v3/tags?api_key=${apiKey}`);
+        let existingTags: Array<{ id: number; name: string }> = [];
+        if (existingTagsRes.ok) {
+          const tagsJson = await existingTagsRes.json();
+          existingTags = tagsJson.tags || [];
+        }
 
-      for (const tagName of tagsToApply) {
-        try {
-          // 1. Create or fetch tag ID
-          const tagRes = await fetch('https://api.convertkit.com/v3/tags', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ api_key: apiKey, tag: { name: tagName } }),
-          });
+        const tagsToApply = [
+          'OCEAN_Assessment_Lead',
+          `Archetype: ${archetypeName}`,
+        ];
 
-          if (tagRes.ok) {
-            const tagData = await tagRes.json();
-            const tagId = tagData.id || tagData.tag?.id;
+        for (const tagName of tagsToApply) {
+          let tagId = existingTags.find((t) => t.name.toLowerCase() === tagName.toLowerCase())?.id;
 
-            if (tagId) {
-              // 2. Tag the subscriber
-              await fetch(`https://api.convertkit.com/v3/tags/${tagId}/subscribe`, {
+          // If tag does not exist yet, create it
+          if (!tagId) {
+            try {
+              const createTagRes = await fetch('https://api.convertkit.com/v3/tags', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  api_key: apiKey,
-                  email: cleanEmail,
-                  first_name: cleanFirstName,
-                }),
+                body: JSON.stringify({ api_key: apiKey, tag: { name: tagName } }),
               });
+              if (createTagRes.ok) {
+                const createdData = await createTagRes.json();
+                tagId = createdData.id || createdData.tag?.id;
+              }
+            } catch (createErr) {
+              console.warn(`Could not create tag ${tagName}:`, createErr);
             }
           }
-        } catch (tagErr) {
-          console.warn(`Could not apply tag ${tagName}:`, tagErr);
+
+          // Apply tag to subscriber
+          if (tagId) {
+            await fetch(`https://api.convertkit.com/v3/tags/${tagId}/subscribe`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                api_key: apiKey,
+                email: cleanEmail,
+                first_name: cleanFirstName,
+              }),
+            });
+          }
         }
+      } catch (tagFlowErr) {
+        console.warn('Error in Kit tag synchronization flow:', tagFlowErr);
       }
 
-      // If subscriber exists, explicitly update their custom fields using api_secret or api_key
+      // Step 4: If subscriber exists, explicitly update their custom fields using api_secret or api_key
       const subId = subscriptionData?.id;
       if (subId && (apiSecret || apiKey)) {
         try {
@@ -151,7 +165,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Step 4 (Optional direct email delivery via Resend if configured)
+    // Step 5 (Optional direct email delivery via Resend if configured)
     if (resendApiKey) {
       try {
         await fetch('https://api.resend.com/emails', {
