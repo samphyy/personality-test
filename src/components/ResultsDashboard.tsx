@@ -18,6 +18,9 @@ import {
   Award,
   ChevronDown,
   ChevronUp,
+  Download,
+  Image as ImageIcon,
+  X,
 } from 'lucide-react';
 import { AssessmentResult, TraitKey } from '@/types';
 import { TRAIT_DEFINITIONS } from '@/data/questions';
@@ -33,6 +36,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'strengths' | 'careers' | 'relationships'>('overview');
   const [expandedTraits, setExpandedTraits] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
+  const [cardModalOpen, setCardModalOpen] = useState(false);
 
   // Trigger celebration confetti on mount
   useEffect(() => {
@@ -82,6 +86,16 @@ ${shareUrl}`;
 
   const traitKeys: TraitKey[] = ['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism'];
 
+  const o = result.scores.openness.percentage;
+  const c = result.scores.conscientiousness.percentage;
+  const e = result.scores.extraversion.percentage;
+  const a = result.scores.agreeableness.percentage;
+  const n = result.scores.neuroticism.percentage;
+  const archId = result.archetype.id;
+
+  const squareCardUrl = `/api/card?format=square&arch=${archId}&o=${o}&c=${c}&e=${e}&a=${a}&n=${n}`;
+  const storyCardUrl = `/api/card?format=story&arch=${archId}&o=${o}&c=${c}&e=${e}&a=${a}&n=${n}`;
+
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 print:py-0 print:px-0 print:space-y-6">
       {/* PRINT-ONLY EXECUTIVE HEADER */}
@@ -113,19 +127,28 @@ ${shareUrl}`;
           <span className="text-xs uppercase tracking-wider font-bold text-brand-600 dark:text-brand-400">
             Psychometric Assessment Report
           </span>
-          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1">
             Your Big Five Personality Blueprint
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
             Completed on {new Date(result.timestamp).toLocaleDateString(undefined, { dateStyle: 'long' })} • {result.mode === 'quick' ? '15-Question Quick Mode' : '30-Question Comprehensive Mode'}
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Download Social Card Button */}
+          <button
+            onClick={() => setCardModalOpen(true)}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900 border border-teal-200/80 dark:border-teal-800/80 transition-all shadow-sm"
+          >
+            <ImageIcon className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+            <span>Social Card (PNG)</span>
+          </button>
+
           <button
             onClick={handleCopySummary}
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm"
           >
             {copied ? (
               <>
@@ -135,28 +158,98 @@ ${shareUrl}`;
             ) : (
               <>
                 <Share2 className="w-4 h-4 text-slate-500" />
-                <span>Share Results</span>
+                <span>Share</span>
               </>
             )}
           </button>
 
           <button
             onClick={handlePrint}
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-brand-500 hover:bg-brand-600 text-white transition-colors shadow-md shadow-brand-500/25"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-brand-500 hover:bg-brand-600 text-white transition-colors shadow-md shadow-brand-500/25"
           >
             <Printer className="w-4 h-4" />
-            <span>Print / PDF Detailed Report</span>
+            <span>PDF Report</span>
           </button>
 
           <Link
             href="/test"
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             <span>Retake</span>
           </Link>
         </div>
       </div>
+
+      {/* =========================================================================
+          SOCIAL CARD DOWNLOAD MODAL
+         ========================================================================= */}
+      {cardModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 text-white shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div className="flex items-center space-x-2">
+                <ImageIcon className="w-5 h-5 text-teal-400" />
+                <h3 className="text-lg sm:text-xl font-bold">Download Your Social Card</h3>
+              </div>
+              <button
+                onClick={() => setCardModalOpen(false)}
+                className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <p className="text-xs sm:text-sm text-slate-300">
+              Download a high-resolution PNG image badge of your personality archetype to share on Instagram Stories, LinkedIn, X, or Threads.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+              {/* Option 1: 1:1 Square */}
+              <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-teal-400">Square Card (1:1)</span>
+                  <p className="text-xs text-slate-400">Best for LinkedIn, Instagram Posts, X (Twitter), & Profiles.</p>
+                  <div className="aspect-square rounded-xl overflow-hidden border border-slate-800 relative bg-slate-900">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={squareCardUrl} alt="Square Card Preview" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+
+                <a
+                  href={`${squareCardUrl}&download=1`}
+                  download={`personality-badge-square.png`}
+                  className="inline-flex items-center justify-center space-x-2 w-full py-2.5 rounded-xl bg-teal-500 hover:bg-teal-600 text-white text-xs font-bold transition-all shadow-md shadow-teal-500/25 active:scale-95"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Square (1:1 PNG)</span>
+                </a>
+              </div>
+
+              {/* Option 2: 9:16 Story */}
+              <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-teal-400">Story Card (9:16)</span>
+                  <p className="text-xs text-slate-400">Best for Instagram Stories, TikTok, Reels, & Phone Wallpapers.</p>
+                  <div className="aspect-[9/16] max-h-48 mx-auto rounded-xl overflow-hidden border border-slate-800 relative bg-slate-900">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={storyCardUrl} alt="Story Card Preview" className="w-full h-full object-cover" />
+                  </div>
+                </div>
+
+                <a
+                  href={`${storyCardUrl}&download=1`}
+                  download={`personality-badge-story.png`}
+                  className="inline-flex items-center justify-center space-x-2 w-full py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition-all shadow-md shadow-brand-500/25 active:scale-95"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Story (9:16 PNG)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* =========================================================================
           PAGE 1 (PRINT): EXECUTIVE SUMMARY & DIMENSIONAL RADAR MAP
