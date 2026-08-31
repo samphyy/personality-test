@@ -13,14 +13,15 @@ export async function POST(req: Request) {
     }
 
     const apiKey = process.env.KIT_API_KEY?.trim();
+    const apiSecret = process.env.KIT_API_SECRET?.trim();
     const formId = process.env.KIT_FORM_ID?.trim();
     const resendApiKey = process.env.RESEND_API_KEY?.trim();
 
-    // Determine clean base URL for personalized link
+    // Determine clean base URL without www on subdomains
     const rawOrigin = req.headers.get('origin') || req.headers.get('referer') || 'https://personality-test.ysamphy.com';
     let baseUrl = 'https://personality-test.ysamphy.com';
     try {
-      baseUrl = new URL(rawOrigin).origin;
+      baseUrl = new URL(rawOrigin).origin.replace('www.personality-test.', 'personality-test.');
     } catch (e) {
       baseUrl = rawOrigin.split('?')[0].replace(/\/$/, '');
     }
@@ -94,6 +95,24 @@ export async function POST(req: Request) {
         );
       }
       subscriptionData = kitData.subscription;
+
+      // If subscriber exists, explicitly update their custom fields using api_secret or api_key
+      const subId = subscriptionData?.id;
+      if (subId && (apiSecret || apiKey)) {
+        try {
+          const updateEndpoint = `https://api.convertkit.com/v3/subscribers/${subId}`;
+          await fetch(updateEndpoint, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              api_secret: apiSecret || apiKey,
+              fields: customFields,
+            }),
+          });
+        } catch (e) {
+          console.warn('Could not update subscriber fields:', e);
+        }
+      }
     }
 
     // Step 3 (Optional direct email delivery via Resend if configured)
