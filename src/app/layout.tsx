@@ -14,6 +14,10 @@ export const metadata: Metadata = {
   title: 'OCEANInsight - Big Five Personality Assessment',
   description: 'Understand your unique psychological blueprint using the scientifically validated Big Five (OCEAN) personality model. Free, instant, and private.',
   keywords: ['Big Five', 'OCEAN Personality', 'Psychology Test', 'Personality Assessment', 'IPIP-50', 'Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Neuroticism'],
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({

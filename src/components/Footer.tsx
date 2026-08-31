@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Sparkles, Shield, ExternalLink, ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
+import { Shield, ExternalLink, ArrowUpRight } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -8,9 +9,15 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 rounded-lg bg-brand-500 flex items-center justify-center text-white">
-                <Sparkles className="w-4 h-4" />
+            <div className="flex items-center space-x-3">
+              <div className="relative w-8 h-8 rounded-lg overflow-hidden shadow-sm flex items-center justify-center bg-brand-500">
+                <Image
+                  src="/logo.png"
+                  alt="YSAMPHY Logo"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="font-bold text-lg text-slate-900 dark:text-white">
                 OCEAN<span className="text-brand-500">Insight</span>

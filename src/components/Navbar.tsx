@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Sparkles, Compass, BookOpen, ArrowUpRight } from 'lucide-react';
+import { Compass, BookOpen, ArrowUpRight } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -14,8 +15,15 @@ export default function Navbar() {
           {/* Left: Brand / Logo */}
           <div className="flex items-center space-x-3">
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-5 h-5 text-white" />
+              <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform flex items-center justify-center bg-brand-500">
+                <Image
+                  src="/logo.png"
+                  alt="YSAMPHY Logo"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                  priority
+                />
               </div>
               <div>
                 <span className="text-xl font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 dark:from-white dark:to-slate-200 bg-clip-text text-transparent">
