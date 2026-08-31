@@ -71,7 +71,7 @@ export default function RadarChartComponent({ result }: RadarChartProps) {
   };
 
   return (
-    <div className="w-full h-80 sm:h-96 flex flex-col items-center justify-center relative">
+    <div className="w-full h-80 sm:h-96 print:h-64 flex flex-col items-center justify-center relative print-avoid-break">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart cx="50%" cy="50%" outerRadius="75%" data={data}>
           <PolarGrid stroke="#cbd5e1" strokeDasharray="3 3" />

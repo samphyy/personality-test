@@ -82,8 +82,20 @@ ${shareUrl}`;
   const traitKeys: TraitKey[] = ['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism'];
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      {/* Top Header & Export Action Bar */}
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 print:py-0 print:px-0 print:space-y-6">
+      {/* PRINT-ONLY EXECUTIVE HEADER */}
+      <div className="hidden print:flex items-center justify-between border-b-2 border-slate-900 pb-3 mb-4">
+        <div>
+          <span className="text-xs font-black uppercase tracking-widest text-teal-700">YSAMPHY LLC • PSYCHOMETRICS</span>
+          <h1 className="text-2xl font-black text-slate-900 leading-none mt-0.5">Big Five Personality Blueprint</h1>
+        </div>
+        <div className="text-right text-xs text-slate-600 font-medium">
+          <p>{new Date(result.timestamp).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
+          <p className="text-teal-700 font-bold">personality-test.ysamphy.com</p>
+        </div>
+      </div>
+
+      {/* WEB-ONLY HEADER & ACTION BUTTONS */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-6 print:hidden">
         <div>
           <span className="text-xs uppercase tracking-wider font-bold text-brand-600 dark:text-brand-400">
@@ -118,15 +130,15 @@ ${shareUrl}`;
 
           <button
             onClick={handlePrint}
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors shadow-sm"
+            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-brand-500 hover:bg-brand-600 text-white transition-colors shadow-md shadow-brand-500/25"
           >
-            <Printer className="w-4 h-4 text-slate-500" />
+            <Printer className="w-4 h-4" />
             <span>Print / PDF</span>
           </button>
 
           <Link
             href="/test"
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300 hover:bg-brand-100 dark:hover:bg-brand-900 transition-colors border border-brand-200/60 dark:border-brand-800/60"
+            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
             <span>Retake</span>
@@ -134,173 +146,155 @@ ${shareUrl}`;
         </div>
       </div>
 
-      {/* Archetype Hero Card */}
-      <div className={`relative rounded-3xl p-8 sm:p-12 text-white bg-gradient-to-r ${result.archetype.colorTheme} shadow-2xl shadow-brand-500/15 overflow-hidden`}>
-        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-        
-        <div className="relative z-10 max-w-3xl space-y-4">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider">
-            <Award className="w-3.5 h-3.5" />
-            <span>Primary Archetype</span>
-          </div>
+      {/* PAGE 1 CONTENT BLOCK (ARCHETYPE + RADAR CHART + TRAIT SNAPSHOT) */}
+      <div className="space-y-6">
+        {/* Archetype Hero Card */}
+        <div className={`print-avoid-break relative rounded-3xl p-6 sm:p-10 text-white bg-gradient-to-r ${result.archetype.colorTheme} shadow-xl shadow-brand-500/15 overflow-hidden print:shadow-none print:rounded-2xl print:p-6`}>
+          <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none print:hidden" />
+          
+          <div className="relative z-10 max-w-3xl space-y-3 print:space-y-2">
+            <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider print:bg-white/30">
+              <Award className="w-3.5 h-3.5" />
+              <span>Primary Archetype</span>
+            </div>
 
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">
-            {result.archetype.name}
-          </h2>
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+              {result.archetype.name}
+            </h2>
 
-          <p className="text-lg sm:text-xl font-medium text-white/90 italic">
-            &ldquo;{result.archetype.tagline}&rdquo;
-          </p>
+            <p className="text-base sm:text-lg font-medium text-white/95 italic">
+              &ldquo;{result.archetype.tagline}&rdquo;
+            </p>
 
-          <p className="text-sm sm:text-base text-white/85 leading-relaxed pt-2">
-            {result.archetype.description}
-          </p>
+            <p className="text-xs sm:text-sm text-white/90 leading-relaxed pt-1">
+              {result.archetype.description}
+            </p>
 
-          {/* Growth Advice Callout */}
-          <div className="mt-6 pt-4 border-t border-white/20 flex items-start space-x-3 bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-            <Sparkles className="w-5 h-5 text-amber-300 shrink-0 mt-0.5" />
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-200">
-                Core Growth Advice
-              </h4>
-              <p className="text-xs sm:text-sm text-white/90 mt-1">
-                {result.archetype.growthAdvice}
-              </p>
+            {/* Growth Advice Callout */}
+            <div className="mt-3 pt-3 border-t border-white/20 flex items-start space-x-2.5 bg-white/10 backdrop-blur-sm rounded-xl p-3 print:bg-white/15">
+              <Sparkles className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-amber-200">
+                  Core Growth Advice
+                </h4>
+                <p className="text-xs text-white/95 mt-0.5 leading-snug">
+                  {result.archetype.growthAdvice}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* KIT (CONVERTKIT) EMAIL CAPTURE SECTION */}
-      <div className="print:hidden">
-        <KitSubscribeForm result={result} />
-      </div>
+        {/* KIT (CONVERTKIT) EMAIL CAPTURE SECTION (Hidden on print) */}
+        <div className="print:hidden">
+          <KitSubscribeForm result={result} />
+        </div>
 
-      {/* Radar Chart & Trait Snapshot Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Radar Chart Visual */}
-        <div className="lg:col-span-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-lg text-slate-900 dark:text-white">
-              Dimensional Map
-            </h3>
-            <span className="text-xs text-slate-500">5 Factor Polygon</span>
+        {/* Radar Chart & Trait Snapshot Grid */}
+        <div className="print-avoid-break grid grid-cols-1 lg:grid-cols-12 gap-6 items-start print:grid-cols-12 print:gap-4">
+          {/* Radar Chart Visual */}
+          <div className="print-avoid-break lg:col-span-5 print:col-span-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm print:rounded-2xl print:border-slate-300 print:shadow-none">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-bold text-base text-slate-900 dark:text-white print:text-slate-900">
+                Dimensional Map
+              </h3>
+              <span className="text-[11px] text-slate-500 font-medium">5 Factor Polygon</span>
+            </div>
+            <RadarChartComponent result={result} />
+            <p className="text-[10px] text-center text-slate-400 dark:text-slate-500 mt-1 print:text-slate-500">
+              Higher values indicate greater expression of that trait.
+            </p>
           </div>
-          <RadarChartComponent result={result} />
-          <p className="text-xs text-center text-slate-400 dark:text-slate-500 mt-2">
-            Higher values indicate greater expression of that trait relative to average benchmarks.
-          </p>
-        </div>
 
-        {/* 5 Trait Summary Bars */}
-        <div className="lg:col-span-7 space-y-4">
-          <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2">
-            Trait Breakdown
-          </h3>
+          {/* 5 Trait Summary Bars */}
+          <div className="print-avoid-break lg:col-span-7 print:col-span-7 space-y-2.5">
+            <h3 className="font-bold text-base text-slate-900 dark:text-white mb-1.5 print:text-slate-900">
+              Trait Breakdown
+            </h3>
 
-          {traitKeys.map((key) => {
-            const scoreObj = result.scores[key];
-            const info = TRAIT_DEFINITIONS[key];
-            const isExpanded = expandedTraits[key];
+            {traitKeys.map((key) => {
+              const scoreObj = result.scores[key];
+              const info = TRAIT_DEFINITIONS[key];
+              const isExpanded = expandedTraits[key];
 
-            return (
-              <div
-                key={key}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 transition-all shadow-sm"
-              >
-                <div className="flex items-center justify-between gap-4 mb-2.5">
-                  <div className="flex items-center space-x-3">
-                    <div
-                      className="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm"
-                      style={{
-                        backgroundColor: `${info.color}20`,
-                        color: info.color,
-                      }}
+              return (
+                <div
+                  key={key}
+                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 transition-all shadow-sm print:rounded-xl print:p-2.5 print:border-slate-300"
+                >
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <div className="flex items-center space-x-2.5">
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs"
+                        style={{
+                          backgroundColor: `${info.color}20`,
+                          color: info.color,
+                        }}
+                      >
+                        {key.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-900 dark:text-white text-sm leading-tight print:text-slate-900">
+                          {info.label}
+                        </h4>
+                        <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                          {scoreObj.tier} ({scoreObj.percentage}%)
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => toggleTraitExpand(key)}
+                      className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors print:hidden"
                     >
-                      {key.charAt(0).toUpperCase()}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-slate-900 dark:text-white text-base leading-none">
-                        {info.label}
-                      </h4>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">
-                        {scoreObj.tier} ({scoreObj.percentage}%)
-                      </span>
-                    </div>
+                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                    </button>
                   </div>
 
-                  <button
-                    onClick={() => toggleTraitExpand(key)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                  >
-                    {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  </button>
-                </div>
-
-                {/* Progress bar */}
-                <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden mb-2">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${scoreObj.percentage}%`,
-                      backgroundColor: info.color,
-                    }}
-                  />
-                </div>
-
-                <div className="flex justify-between text-[11px] text-slate-400 font-medium px-0.5">
-                  <span>{info.lowLabel}</span>
-                  <span>{info.highLabel}</span>
-                </div>
-
-                {/* Expandable Deep Details */}
-                {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-2">
-                    <p className="leading-relaxed font-medium">
-                      {scoreObj.description}
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                      <div className="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-3">
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400 flex items-center mb-1">
-                          <Check className="w-3.5 h-3.5 mr-1" /> Key Strengths
-                        </span>
-                        <ul className="list-disc list-inside space-y-0.5 text-slate-600 dark:text-slate-400">
-                          {scoreObj.strengths.slice(0, 2).map((s, idx) => (
-                            <li key={idx}>{s}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="bg-slate-50 dark:bg-slate-800/60 rounded-xl p-3">
-                        <span className="font-bold text-amber-600 dark:text-amber-400 flex items-center mb-1">
-                          <AlertCircle className="w-3.5 h-3.5 mr-1" /> Growth Opportunities
-                        </span>
-                        <ul className="list-disc list-inside space-y-0.5 text-slate-600 dark:text-slate-400">
-                          {scoreObj.growthAreas.slice(0, 2).map((g, idx) => (
-                            <li key={idx}>{g}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
+                  {/* Progress bar */}
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden mb-1 print:bg-slate-200">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${scoreObj.percentage}%`,
+                        backgroundColor: info.color,
+                      }}
+                    />
                   </div>
-                )}
-              </div>
-            );
-          })}
+
+                  <div className="flex justify-between text-[10px] text-slate-400 font-medium px-0.5 print:text-slate-500">
+                    <span>{info.lowLabel}</span>
+                    <span>{info.highLabel}</span>
+                  </div>
+
+                  {/* Expandable Details (On Web) / Concise summary on Print */}
+                  {isExpanded && (
+                    <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 space-y-1.5 print:hidden">
+                      <p className="leading-relaxed font-medium">
+                        {scoreObj.description}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Multi-Tab Comprehensive Insights Section */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+      {/* PAGE 2 CONTENT BLOCK (IN-DEPTH PERSONALITY ANALYSIS) */}
+      <div className="print-page-break-before bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8 print:p-0 print:border-none print:shadow-none print:space-y-6">
+        {/* SECTION HEADER */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4 print:border-slate-900 print:pb-2">
           <div className="flex items-center space-x-2">
             <Compass className="w-5 h-5 text-brand-500" />
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-              In-Depth Personality Analysis
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white print:text-slate-900">
+              In-Depth Personality Analysis & Action Plan
             </h3>
           </div>
 
-          {/* Navigation Tabs */}
-          <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto pb-1">
+          {/* Navigation Tabs (Web only) */}
+          <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto pb-1 print:hidden">
             {[
               { id: 'overview', label: 'Summary', icon: Compass },
               { id: 'strengths', label: 'Strengths & Growth', icon: TrendingUp },
@@ -327,8 +321,8 @@ ${shareUrl}`;
           </div>
         </div>
 
-        {/* Tab Content Views */}
-        <div>
+        {/* WEB ACTIVE TAB VIEW */}
+        <div className="print:hidden">
           {/* TAB 1: OVERVIEW */}
           {activeTab === 'overview' && (
             <div className="space-y-6">
@@ -386,7 +380,6 @@ ${shareUrl}`;
           {/* TAB 2: STRENGTHS & GROWTH */}
           {activeTab === 'strengths' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Strengths Col */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 font-bold text-base">
                   <Award className="w-5 h-5" />
@@ -396,17 +389,14 @@ ${shareUrl}`;
                   {traitKeys.map((key) => {
                     const s = result.scores[key];
                     const info = TRAIT_DEFINITIONS[key];
-
                     return (
                       <div
                         key={key}
                         className="p-4 rounded-2xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/30 space-y-2"
                       >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs text-emerald-800 dark:text-emerald-300">
-                            {info.label} ({s.tier})
-                          </span>
-                        </div>
+                        <span className="font-bold text-xs text-emerald-800 dark:text-emerald-300">
+                          {info.label} ({s.tier})
+                        </span>
                         <ul className="space-y-1">
                           {s.strengths.map((str, idx) => (
                             <li key={idx} className="flex items-start text-xs text-slate-700 dark:text-slate-300">
@@ -421,7 +411,6 @@ ${shareUrl}`;
                 </div>
               </div>
 
-              {/* Growth Areas Col */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-400 font-bold text-base">
                   <TrendingUp className="w-5 h-5" />
@@ -431,17 +420,14 @@ ${shareUrl}`;
                   {traitKeys.map((key) => {
                     const s = result.scores[key];
                     const info = TRAIT_DEFINITIONS[key];
-
                     return (
                       <div
                         key={key}
                         className="p-4 rounded-2xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30 space-y-2"
                       >
-                        <div className="flex items-center justify-between">
-                          <span className="font-bold text-xs text-amber-800 dark:text-amber-300">
-                            {info.label} ({s.tier})
-                          </span>
-                        </div>
+                        <span className="font-bold text-xs text-amber-800 dark:text-amber-300">
+                          {info.label} ({s.tier})
+                        </span>
                         <ul className="space-y-1">
                           {s.growthAreas.map((grw, idx) => (
                             <li key={idx} className="flex items-start text-xs text-slate-700 dark:text-slate-300">
@@ -458,10 +444,9 @@ ${shareUrl}`;
             </div>
           )}
 
-          {/* TAB 3: CAREER & WORK */}
+          {/* TAB 3: CAREER */}
           {activeTab === 'careers' && (
             <div className="space-y-8">
-              {/* Ideal Roles Banner */}
               <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950 text-white space-y-3 border border-teal-800/30">
                 <span className="text-xs uppercase tracking-wider text-brand-300 font-bold">
                   Recommended Career Matches
@@ -481,34 +466,24 @@ ${shareUrl}`;
                 </div>
               </div>
 
-              {/* Working Style Breakdown */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {traitKeys.map((key) => {
                   const s = result.scores[key];
                   const info = TRAIT_DEFINITIONS[key];
-
                   return (
-                    <div
-                      key={key}
-                      className="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3"
-                    >
+                    <div key={key} className="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
                       <div className="flex items-center space-x-2">
-                        <span
-                          className="w-2.5 h-2.5 rounded-full"
-                          style={{ backgroundColor: info.color }}
-                        />
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: info.color }} />
                         <h5 className="font-bold text-sm text-slate-900 dark:text-white">
                           {info.label} • Work Dynamics
                         </h5>
                       </div>
                       <div className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
                         <div>
-                          <strong className="text-slate-900 dark:text-slate-200">Ideal Workplace:</strong>{' '}
-                          {s.careerInsights.idealEnvironment}
+                          <strong className="text-slate-900 dark:text-slate-200">Ideal Workplace:</strong> {s.careerInsights.idealEnvironment}
                         </div>
                         <div>
-                          <strong className="text-slate-900 dark:text-slate-200">Working Style:</strong>{' '}
-                          {s.careerInsights.workStyle}
+                          <strong className="text-slate-900 dark:text-slate-200">Working Style:</strong> {s.careerInsights.workStyle}
                         </div>
                       </div>
                     </div>
@@ -518,45 +493,31 @@ ${shareUrl}`;
             </div>
           )}
 
-          {/* TAB 4: RELATIONSHIPS & COMMUNICATION */}
+          {/* TAB 4: RELATIONSHIPS */}
           {activeTab === 'relationships' && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {traitKeys.map((key) => {
                 const s = result.scores[key];
                 const info = TRAIT_DEFINITIONS[key];
-
                 return (
-                  <div
-                    key={key}
-                    className="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3"
-                  >
+                  <div key={key} className="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
                     <div className="flex items-center space-x-2">
-                      <span
-                        className="w-2.5 h-2.5 rounded-full"
-                        style={{ backgroundColor: info.color }}
-                      />
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: info.color }} />
                       <h5 className="font-bold text-sm text-slate-900 dark:text-white">
                         {info.label} • Interpersonal Style
                       </h5>
                     </div>
-
                     <div className="space-y-2.5 text-xs text-slate-600 dark:text-slate-400">
                       <div>
-                        <span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">
-                          🗣️ Communication Approach:
-                        </span>
+                        <span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">🗣️ Communication Approach:</span>
                         {s.relationshipInsights.communication}
                       </div>
                       <div>
-                        <span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">
-                          🤝 Team Collaboration:
-                        </span>
+                        <span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">🤝 Team Collaboration:</span>
                         {s.relationshipInsights.collaboration}
                       </div>
                       <div>
-                        <span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">
-                          ⚖️ Conflict Resolution:
-                        </span>
+                        <span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">⚖️ Conflict Resolution:</span>
                         {s.relationshipInsights.conflictStyle}
                       </div>
                     </div>
@@ -565,6 +526,69 @@ ${shareUrl}`;
               })}
             </div>
           )}
+        </div>
+
+        {/* PRINT-ONLY COMPREHENSIVE DOSSIER (Rendered cleanly on Page 2 & 3) */}
+        <div className="hidden print:block space-y-6">
+          {/* Career Fit Banner */}
+          <div className="print-avoid-break p-4 rounded-xl border border-slate-300 bg-slate-50 space-y-2">
+            <span className="text-[10px] uppercase font-bold text-teal-800">High-Fit Career Roles for {result.archetype.name}</span>
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {result.archetype.idealRoles.map((role, idx) => (
+                <span key={idx} className="px-2.5 py-1 rounded-md bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                  {role}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Strengths & Growth Grid */}
+          <div className="print-avoid-break grid grid-cols-2 gap-4">
+            <div className="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40 space-y-2">
+              <h4 className="font-bold text-xs text-emerald-900 flex items-center">
+                <Check className="w-3.5 h-3.5 mr-1 text-emerald-600" /> Core Superpowers
+              </h4>
+              <ul className="space-y-1 text-[11px] text-slate-800">
+                {traitKeys.slice(0, 3).map((k) => (
+                  <li key={k} className="flex items-start">
+                    <span className="font-bold mr-1">• {TRAIT_DEFINITIONS[k].label.split(' ')[0]}:</span> {result.scores[k].strengths[0]}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-amber-200 bg-amber-50/40 space-y-2">
+              <h4 className="font-bold text-xs text-amber-900 flex items-center">
+                <AlertCircle className="w-3.5 h-3.5 mr-1 text-amber-600" /> Key Growth Opportunities
+              </h4>
+              <ul className="space-y-1 text-[11px] text-slate-800">
+                {traitKeys.slice(0, 3).map((k) => (
+                  <li key={k} className="flex items-start">
+                    <span className="font-bold mr-1">• {TRAIT_DEFINITIONS[k].label.split(' ')[0]}:</span> {result.scores[k].growthAreas[0]}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Communication & Collaboration Summary */}
+          <div className="print-avoid-break p-4 rounded-xl border border-slate-300 bg-slate-50 space-y-2">
+            <h4 className="font-bold text-xs text-slate-900">Communication & Conflict Approach</h4>
+            <div className="grid grid-cols-2 gap-3 text-[11px] text-slate-700">
+              <div>
+                <strong className="text-slate-900 block">Dominant Interaction Style:</strong>
+                {result.scores[result.dominantTraits[0]].relationshipInsights.communication}
+              </div>
+              <div>
+                <strong className="text-slate-900 block">Conflict Handling:</strong>
+                {result.scores[result.dominantTraits[0]].relationshipInsights.conflictStyle}
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center pt-4 border-t border-slate-200 text-[10px] text-slate-500">
+            © 2026 YSAMPHY LLC • Generated online at personality-test.ysamphy.com • Based on the Five-Factor Model (Goldberg, 1992)
+          </div>
         </div>
       </div>
     </div>

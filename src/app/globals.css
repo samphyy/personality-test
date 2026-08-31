@@ -20,16 +20,57 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
-/* Print styles for clean PDF export */
+/* =========================================================
+   PROFESSIONAL PRINT & PDF STYLES
+   ========================================================= */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 1.2cm 1.2cm 1.2cm 1.2cm;
+  }
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   body {
-    background: white !important;
-    color: black !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
   }
-  header, footer, .no-print {
+
+  header, footer, nav, button, .no-print, .print\:hidden {
     display: none !important;
   }
-  .print\:hidden {
-    display: none !important;
+
+  /* Prevent awkward page cuts */
+  .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-page-break-before {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+
+  .print-page-break-after {
+    break-after: page !important;
+    page-break-after: always !important;
+  }
+
+  /* Compact spacing for print */
+  .print-compact {
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Ensure radar chart SVG renders cleanly */
+  .recharts-responsive-container {
+    width: 100% !important;
+    height: 320px !important;
+    max-height: 320px !important;
   }
 }
