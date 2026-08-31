@@ -7,7 +7,6 @@ export async function GET(request: Request) {
 
     const archId = searchParams.get('arch');
     const format = searchParams.get('format') === 'story' ? 'story' : 'square';
-    const isDownload = searchParams.get('download') === '1';
 
     const o = searchParams.get('o') || '50';
     const c = searchParams.get('c') || '50';
@@ -22,21 +21,8 @@ export async function GET(request: Request) {
       growthAdvice: 'Focus on strategic delegation and sustainable momentum.',
     };
 
-    const isStory = format === 'story';
-    const width = 1080;
-    const height = isStory ? 1920 : 1080;
-
-    const headers: Record<string, string> = {
-      'Content-Type': 'image/png',
-      'Cache-Control': 'public, max-age=31536000, immutable',
-    };
-
-    if (isDownload) {
-      headers['Content-Disposition'] = `attachment; filename="ocean-personality-${format}.png"`;
-    }
-
-    if (isStory) {
-      // 9:16 STORY LAYOUT (1080 x 1920)
+    if (format === 'story') {
+      // 9:16 STORY CARD (1080 x 1920)
       return new ImageResponse(
         (
           <div
@@ -47,7 +33,6 @@ export async function GET(request: Request) {
               flexDirection: 'column',
               justifyContent: 'space-between',
               backgroundColor: '#090d16',
-              backgroundImage: 'linear-gradient(to bottom right, #090d16, #0f172a, #042f2e)',
               padding: '80px 72px',
               fontFamily: 'sans-serif',
               color: '#ffffff',
@@ -214,11 +199,11 @@ export async function GET(request: Request) {
             </div>
           </div>
         ),
-        { width, height, headers }
+        { width: 1080, height: 1920 }
       );
     }
 
-    // 1:1 SQUARE BADGE LAYOUT (1080 x 1080)
+    // 1:1 SQUARE BADGE (1080 x 1080)
     return new ImageResponse(
       (
         <div
@@ -229,7 +214,6 @@ export async function GET(request: Request) {
             flexDirection: 'column',
             justifyContent: 'space-between',
             backgroundColor: '#090d16',
-            backgroundImage: 'linear-gradient(to bottom right, #090d16, #0f172a, #042f2e)',
             padding: '64px',
             fontFamily: 'sans-serif',
             color: '#ffffff',
@@ -359,7 +343,7 @@ export async function GET(request: Request) {
           </div>
         </div>
       ),
-      { width, height, headers }
+      { width: 1080, height: 1080 }
     );
   } catch (e: any) {
     console.error('Error generating card image:', e);
