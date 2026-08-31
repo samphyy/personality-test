@@ -35,30 +35,22 @@ export async function POST(req: Request) {
 
     const reportUrl = `${baseUrl}/results?o=${o}&c=${c}&e=${e}&a=${a}&n=${n}&arch=${archId}`;
 
-    // If Kit credentials are not configured yet, return demo status
-    if (!apiKey || !formId) {
-      return NextResponse.json({
-        success: true,
-        mode: 'demo',
-        reportUrl,
-        message: 'Configured in demo mode until Kit API keys are provided.',
-      });
-    }
-
-    // Step 1: Programmatically ensure custom fields exist in Kit (zero manual UI setup)
-    try {
-      await fetch('https://api.convertkit.com/v3/custom_fields', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ api_key: apiKey, name: 'report_url' }),
-      });
-      await fetch('https://api.convertkit.com/v3/custom_fields', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ api_key: apiKey, name: 'personality_archetype' }),
-      });
-    } catch (err) {
-      console.warn('Could not auto-create Kit custom field:', err);
+    // Step 1: Programmatically ensure custom fields exist in Kit
+    if (apiKey) {
+      try {
+        await fetch('https://api.convertkit.com/v3/custom_fields', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_key: apiKey, name: 'report_url' }),
+        });
+        await fetch('https://api.convertkit.com/v3/custom_fields', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ api_key: apiKey, name: 'personality_archetype' }),
+        });
+      } catch (err) {
+        console.warn('Could not auto-create Kit custom field:', err);
+      }
     }
 
     // Step 2: Push subscriber into Kit with all scores and custom fields
@@ -83,22 +75,25 @@ export async function POST(req: Request) {
       fields: customFields,
     };
 
-    const convertKitEndpoint = `https://api.convertkit.com/v3/forms/${formId}/subscribe`;
+    let subscriptionData = null;
 
-    const kitResponse = await fetch(convertKitEndpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(kitPayload),
-    });
+    if (apiKey && formId) {
+      const convertKitEndpoint = `https://api.convertkit.com/v3/forms/${formId}/subscribe`;
+      const kitResponse = await fetch(convertKitEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(kitPayload),
+      });
 
-    const kitData = await kitResponse.json();
-
-    if (!kitResponse.ok) {
-      console.error('Kit API Error:', kitData);
-      return NextResponse.json(
-        { error: kitData.message || 'Failed to register with Kit.' },
-        { status: kitResponse.status }
-      );
+      const kitData = await kitResponse.json();
+      if (!kitResponse.ok) {
+        console.error('Kit API Error:', kitData);
+        return NextResponse.json(
+          { error: kitData.message || 'Failed to register with Kit.' },
+          { status: kitResponse.status }
+        );
+      }
+      subscriptionData = kitData.subscription;
     }
 
     // Step 3 (Optional direct email delivery via Resend if configured)
@@ -143,17 +138,26 @@ export async function POST(req: Request) {
           }),
         });
       } catch (e) {
-        console.warn('Direct Resend email dispatch skipped or errored:', e);
+        console.warn('Direct Resend email dispatch skipped:', e);
       }
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
-      mode: 'live',
+      mode: apiKey && formId ? 'live' : 'demo',
       reportUrl,
-      subscription: kitData.subscription,
+      subscription: subscriptionData,
       message: 'Your report link has been generated and subscriber added to Kit!',
     });
+
+    // Set cookie with report URL so confirmation redirect on this device can find it instantly
+    response.cookies.set('latest_report_url', reportUrl, {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+      sameSite: 'lax',
+    });
+
+    return response;
   } catch (error: any) {
     console.error('Error subscribing to Kit:', error);
     return NextResponse.json(
