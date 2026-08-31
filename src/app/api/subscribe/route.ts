@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Step 2: Push subscriber into Kit with all scores and custom fields
+    // Step 2: Push subscriber into Kit Form with custom fields
     const customFields: Record<string, string> = {
       report_url: reportUrl,
       personality_archetype: archetypeName,
@@ -65,14 +65,13 @@ export async function POST(req: Request) {
       emotional_stability_score: `${n}%`,
     };
 
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanFirstName = name?.trim() || undefined;
+
     const kitPayload = {
       api_key: apiKey,
-      email: email.trim().toLowerCase(),
-      first_name: name?.trim() || undefined,
-      tags: [
-        'OCEAN_Assessment_Lead',
-        `Archetype: ${archetypeName}`,
-      ],
+      email: cleanEmail,
+      first_name: cleanFirstName,
       fields: customFields,
     };
 
@@ -96,6 +95,43 @@ export async function POST(req: Request) {
       }
       subscriptionData = kitData.subscription;
 
+      // Step 3: Explicitly create & apply tags via ConvertKit Tag API
+      const tagsToApply = [
+        'OCEAN_Assessment_Lead',
+        `Archetype: ${archetypeName}`,
+      ];
+
+      for (const tagName of tagsToApply) {
+        try {
+          // 1. Create or fetch tag ID
+          const tagRes = await fetch('https://api.convertkit.com/v3/tags', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ api_key: apiKey, tag: { name: tagName } }),
+          });
+
+          if (tagRes.ok) {
+            const tagData = await tagRes.json();
+            const tagId = tagData.id || tagData.tag?.id;
+
+            if (tagId) {
+              // 2. Tag the subscriber
+              await fetch(`https://api.convertkit.com/v3/tags/${tagId}/subscribe`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  api_key: apiKey,
+                  email: cleanEmail,
+                  first_name: cleanFirstName,
+                }),
+              });
+            }
+          }
+        } catch (tagErr) {
+          console.warn(`Could not apply tag ${tagName}:`, tagErr);
+        }
+      }
+
       // If subscriber exists, explicitly update their custom fields using api_secret or api_key
       const subId = subscriptionData?.id;
       if (subId && (apiSecret || apiKey)) {
@@ -115,7 +151,7 @@ export async function POST(req: Request) {
       }
     }
 
-    // Step 3 (Optional direct email delivery via Resend if configured)
+    // Step 4 (Optional direct email delivery via Resend if configured)
     if (resendApiKey) {
       try {
         await fetch('https://api.resend.com/emails', {
@@ -126,7 +162,7 @@ export async function POST(req: Request) {
           },
           body: JSON.stringify({
             from: 'YSAMPHY Personality Assessment <assessment@ysamphy.com>',
-            to: [email.trim().toLowerCase()],
+            to: [cleanEmail],
             subject: 'Your Big Five Personality Blueprint is ready 🧠',
             html: `
               <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #1e293b;">
@@ -166,7 +202,7 @@ export async function POST(req: Request) {
       mode: apiKey && formId ? 'live' : 'demo',
       reportUrl,
       subscription: subscriptionData,
-      message: 'Your report link has been generated and subscriber added to Kit!',
+      message: 'Your report link has been generated and subscriber tagged in Kit!',
     });
 
     // Set cookie with report URL so confirmation redirect on this device can find it instantly
