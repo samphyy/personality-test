@@ -1,21 +1,27 @@
 'use client';
 
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Compass, BookOpen, ArrowUpRight } from 'lucide-react';
+import { Compass, BookOpen, ArrowUpRight, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/95 dark:bg-slate-950/95 border-b border-slate-200 dark:border-slate-800 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Left: Brand / Logo */}
           <div className="flex items-center space-x-3">
-            <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform flex items-center justify-center bg-brand-500">
+            <Link
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center space-x-2.5 sm:space-x-3 group"
+            >
+              <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform flex items-center justify-center bg-brand-500 shrink-0">
                 <Image
                   src="/logo.png"
                   alt="YSAMPHY Logo"
@@ -25,19 +31,19 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              <div>
-                <span className="text-xl font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 dark:from-white dark:to-slate-200 bg-clip-text text-transparent">
+              <div className="flex items-center">
+                <span className="text-lg sm:text-xl font-bold bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 dark:from-white dark:to-slate-200 bg-clip-text text-transparent">
                   OCEAN<span className="text-brand-500">Insight</span>
                 </span>
-                <span className="hidden sm:inline-block ml-2 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/60 dark:border-brand-800/60">
+                <span className="hidden md:inline-block ml-2 text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 border border-brand-200/60 dark:border-brand-800/60">
                   Big Five Test
                 </span>
               </div>
             </Link>
           </div>
 
-          {/* Center/Right Navigation Links */}
-          <nav className="flex items-center space-x-1 sm:space-x-3">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden sm:flex items-center space-x-2 md:space-x-3">
             {/* Back to ysamphy.com */}
             <a
               href="https://ysamphy.com"
@@ -70,8 +76,7 @@ export default function Navbar() {
               }`}
             >
               <BookOpen className="w-4 h-4" />
-              <span className="hidden md:inline">Trait Library</span>
-              <span className="md:hidden">Library</span>
+              <span>Trait Library</span>
             </Link>
 
             <Link
@@ -82,8 +87,80 @@ export default function Navbar() {
               <span>Take Test</span>
             </Link>
           </nav>
+
+          {/* Mobile Right Controls */}
+          <div className="flex sm:hidden items-center space-x-2">
+            <Link
+              href="/test"
+              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-brand-500 text-white shadow-sm"
+            >
+              <Compass className="w-3.5 h-3.5" />
+              <span>Test</span>
+            </Link>
+
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-xl text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Slide-Down Menu Drawer */}
+      {mobileMenuOpen && (
+        <div className="sm:hidden border-b border-slate-200 dark:border-slate-800 bg-white/98 dark:bg-slate-950/98 px-4 py-4 space-y-2 shadow-lg animate-in slide-in-from-top-2">
+          <Link
+            href="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`block px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+              pathname === '/'
+                ? 'bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300'
+                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            Home
+          </Link>
+
+          <Link
+            href="/library"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+              pathname === '/library'
+                ? 'bg-brand-50 dark:bg-brand-950/50 text-brand-700 dark:text-brand-300'
+                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <BookOpen className="w-4 h-4" />
+            <span>Trait Library</span>
+          </Link>
+
+          <Link
+            href="/test"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold bg-brand-500 text-white shadow-sm"
+          >
+            <span className="flex items-center space-x-2">
+              <Compass className="w-4 h-4" />
+              <span>Take Assessment (Free)</span>
+            </span>
+            <span className="text-xs bg-white/20 px-2 py-0.5 rounded-md">3 min</span>
+          </Link>
+
+          <a
+            href="https://ysamphy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            <span>Visit YSamphy.com</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
+        </div>
+      )}
     </header>
   );
 }

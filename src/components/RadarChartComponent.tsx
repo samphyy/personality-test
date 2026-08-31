@@ -26,14 +26,12 @@ export default function RadarChartComponent({ result }: RadarChartProps) {
 
   if (!mounted) {
     return (
-      <div className="w-full h-80 flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl animate-pulse">
-        <span className="text-sm text-slate-400">Loading chart...</span>
+      <div className="w-full h-72 sm:h-80 flex items-center justify-center bg-slate-50 dark:bg-slate-900/50 rounded-2xl animate-pulse">
+        <span className="text-xs text-slate-400">Loading radar chart...</span>
       </div>
     );
   }
 
-  // Convert scores to radar chart dataset
-  // Note: For display, we can show "Emotional Stability" (100 - Neuroticism) or "Emotional Reactivity" (Neuroticism). Let's present clear labels.
   const traitOrder: TraitKey[] = [
     'openness',
     'conscientiousness',
@@ -45,7 +43,7 @@ export default function RadarChartComponent({ result }: RadarChartProps) {
   const data = traitOrder.map((key) => {
     const scoreObj = result.scores[key];
     const info = TRAIT_DEFINITIONS[key];
-    const displayName = key === 'neuroticism' ? 'Emotional Reactivity' : info.label.split(' ')[0];
+    const displayName = key === 'neuroticism' ? 'Reactivity' : info.label.split(' ')[0];
     return {
       traitKey: key,
       subject: displayName,
@@ -71,18 +69,18 @@ export default function RadarChartComponent({ result }: RadarChartProps) {
   };
 
   return (
-    <div className="w-full h-80 sm:h-96 print:h-64 flex flex-col items-center justify-center relative print-avoid-break">
+    <div className="w-full h-72 sm:h-80 md:h-96 print:h-64 flex flex-col items-center justify-center relative print-avoid-break">
       <ResponsiveContainer width="100%" height="100%">
-        <RadarChart cx="50%" cy="50%" outerRadius="75%" data={data}>
+        <RadarChart cx="50%" cy="50%" outerRadius="68%" data={data}>
           <PolarGrid stroke="#cbd5e1" strokeDasharray="3 3" />
           <PolarAngleAxis
             dataKey="subject"
-            tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }}
+            tick={{ fill: '#64748b', fontSize: 11, fontWeight: 700 }}
           />
           <PolarRadiusAxis
             angle={90}
             domain={[0, 100]}
-            tick={{ fill: '#94a3b8', fontSize: 10 }}
+            tick={{ fill: '#94a3b8', fontSize: 9 }}
             tickCount={5}
           />
           <Radar

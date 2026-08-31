@@ -20,11 +20,11 @@ interface AssessmentEngineProps {
 }
 
 const LIKERT_OPTIONS = [
-  { value: 1, label: 'Strongly Disagree', short: '1', color: 'border-rose-300 hover:border-rose-500 hover:bg-rose-50/70 text-rose-700 active:bg-rose-100' },
-  { value: 2, label: 'Disagree', short: '2', color: 'border-orange-300 hover:border-orange-500 hover:bg-orange-50/70 text-orange-700 active:bg-orange-100' },
-  { value: 3, label: 'Neutral', short: '3', color: 'border-slate-300 hover:border-slate-500 hover:bg-slate-50/70 text-slate-700 active:bg-slate-100' },
-  { value: 4, label: 'Agree', short: '4', color: 'border-teal-300 hover:border-teal-500 hover:bg-teal-50/70 text-teal-700 active:bg-teal-100' },
-  { value: 5, label: 'Strongly Agree', short: '5', color: 'border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50/70 text-emerald-700 active:bg-emerald-100' },
+  { value: 1, label: 'Strongly Disagree', short: '1', mobileLabel: 'Strongly Disagree', color: 'border-rose-300 hover:border-rose-500 hover:bg-rose-50/70 text-rose-700 active:bg-rose-100' },
+  { value: 2, label: 'Disagree', short: '2', mobileLabel: 'Disagree', color: 'border-orange-300 hover:border-orange-500 hover:bg-orange-50/70 text-orange-700 active:bg-orange-100' },
+  { value: 3, label: 'Neutral', short: '3', mobileLabel: 'Neutral', color: 'border-slate-300 hover:border-slate-500 hover:bg-slate-50/70 text-slate-700 active:bg-slate-100' },
+  { value: 4, label: 'Agree', short: '4', mobileLabel: 'Agree', color: 'border-teal-300 hover:border-teal-500 hover:bg-teal-50/70 text-teal-700 active:bg-teal-100' },
+  { value: 5, label: 'Strongly Agree', short: '5', mobileLabel: 'Strongly Agree', color: 'border-emerald-300 hover:border-emerald-500 hover:bg-emerald-50/70 text-emerald-700 active:bg-emerald-100' },
 ];
 
 export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEngineProps) {
@@ -166,40 +166,40 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
   // Slide Animation Variants
   const slideVariants: Variants = {
     enter: (dir: number) => ({
-      x: dir > 0 ? 40 : -40,
+      x: dir > 0 ? 30 : -30,
       opacity: 0,
-      scale: 0.98,
+      scale: 0.99,
     }),
     center: {
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: { duration: 0.25, ease: 'easeOut' },
+      transition: { duration: 0.2, ease: 'easeOut' },
     },
     exit: (dir: number) => ({
-      x: dir > 0 ? -40 : 40,
+      x: dir > 0 ? -30 : 30,
       opacity: 0,
-      scale: 0.98,
-      transition: { duration: 0.2, ease: 'easeIn' },
+      scale: 0.99,
+      transition: { duration: 0.15, ease: 'easeIn' },
     }),
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-8">
+    <div className="w-full max-w-3xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
       {/* Top Header Controls & Mode Switcher */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-        <div className="flex items-center space-x-2">
-          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-            Question {currentIndex + 1} of {activeQuestions.length}
+      <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
+        <div className="flex items-center space-x-1.5 sm:space-x-2">
+          <span className="text-[11px] sm:text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+            {currentIndex + 1} / {activeQuestions.length}
           </span>
-          <span className="text-xs text-slate-500 dark:text-slate-400">
-            ~{estMinutes} min remaining
+          <span className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium">
+            ~{estMinutes}m left
           </span>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1.5 sm:space-x-2">
           {/* Mode Pill */}
-          <div className="bg-slate-100 dark:bg-slate-800 p-1 rounded-xl flex items-center text-xs font-medium">
+          <div className="bg-slate-100 dark:bg-slate-800 p-0.5 sm:p-1 rounded-xl flex items-center text-[11px] sm:text-xs font-semibold">
             <button
               onClick={() => {
                 if (confirm('Switch to Full 30-item test? Current progress will be saved.')) {
@@ -207,7 +207,7 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
                   setCurrentIndex(0);
                 }
               }}
-              className={`px-3 py-1 rounded-lg transition-all ${
+              className={`px-2.5 sm:px-3 py-1 rounded-lg transition-all ${
                 mode === 'full'
                   ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-sm font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -222,7 +222,7 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
                   setCurrentIndex(0);
                 }
               }}
-              className={`px-3 py-1 rounded-lg transition-all ${
+              className={`px-2.5 sm:px-3 py-1 rounded-lg transition-all ${
                 mode === 'quick'
                   ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-300 shadow-sm font-bold'
                   : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -235,7 +235,7 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
           <button
             onClick={handleReset}
             title="Reset Assessment"
-            className="p-2 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-800 transition-colors"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -243,7 +243,7 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-slate-200 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden mb-8">
+      <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 sm:h-2.5 rounded-full overflow-hidden mb-5 sm:mb-8">
         <motion.div
           className="h-full bg-gradient-to-r from-brand-500 via-teal-500 to-emerald-500"
           initial={{ width: 0 }}
@@ -253,7 +253,7 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
       </div>
 
       {/* Question Card Frame */}
-      <div className="relative min-h-[380px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none p-6 sm:p-10 flex flex-col justify-between overflow-hidden">
+      <div className="relative min-h-[340px] sm:min-h-[380px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none p-5 sm:p-10 flex flex-col justify-between overflow-hidden">
         <AnimatePresence custom={direction} mode="wait">
           <motion.div
             key={currentQuestion.id}
@@ -266,61 +266,57 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
           >
             {/* Trait & Facet Tag */}
             <div>
-              <div className="flex items-center space-x-2 mb-3">
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
                 <span
-                  className="inline-flex items-center text-xs font-semibold px-2.5 py-1 rounded-md"
+                  className="inline-flex items-center text-[11px] sm:text-xs font-bold px-2.5 py-0.5 sm:py-1 rounded-lg"
                   style={{
                     backgroundColor: `${currentTrait.color}15`,
                     color: currentTrait.color,
                   }}
                 >
-                  <Sparkles className="w-3.5 h-3.5 mr-1" />
+                  <Sparkles className="w-3 h-3 mr-1" />
                   {currentTrait.label}
                 </span>
                 {currentQuestion.facet && (
-                  <span className="text-xs text-slate-400 dark:text-slate-500">
+                  <span className="text-[11px] sm:text-xs text-slate-400 dark:text-slate-500">
                     • {currentQuestion.facet}
                   </span>
                 )}
               </div>
 
               {/* Question Text */}
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-50 leading-snug tracking-tight mb-8">
+              <h2 className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-50 leading-snug tracking-tight my-4 sm:my-8">
                 &ldquo;{currentQuestion.text}&rdquo;
               </h2>
             </div>
 
             {/* Likert Scale Choices */}
-            <div className="my-6">
-              <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+            <div className="my-2 sm:my-6">
+              {/* DESKTOP & TABLET VIEW: 5 Card Grid */}
+              <div className="hidden sm:grid sm:grid-cols-5 gap-3">
                 {LIKERT_OPTIONS.map((opt) => {
                   const isSelected = currentAnswer === opt.value;
                   return (
                     <button
                       key={opt.value}
                       onClick={() => handleSelectAnswer(opt.value)}
-                      className={`relative flex sm:flex-col items-center justify-between sm:justify-center p-3.5 sm:p-4 rounded-2xl border-2 transition-all group ${
+                      className={`relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all group ${
                         isSelected
                           ? 'border-brand-500 bg-brand-50/90 dark:bg-brand-950/40 text-brand-950 dark:text-brand-200 shadow-md shadow-brand-500/15 scale-[1.02]'
                           : `bg-slate-50/60 dark:bg-slate-800/40 ${opt.color}`
                       }`}
                     >
-                      <div className="flex items-center space-x-2 sm:space-x-0 sm:mb-2">
-                        <span
-                          className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold transition-transform group-hover:scale-110 ${
-                            isSelected
-                              ? 'bg-brand-500 text-white'
-                              : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-sm'
-                          }`}
-                        >
-                          {opt.short}
-                        </span>
-                        <span className="sm:hidden font-medium text-sm text-slate-800 dark:text-slate-200">
-                          {opt.label}
-                        </span>
-                      </div>
+                      <span
+                        className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mb-2 transition-transform group-hover:scale-110 ${
+                          isSelected
+                            ? 'bg-brand-500 text-white'
+                            : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-300 shadow-sm'
+                        }`}
+                      >
+                        {opt.short}
+                      </span>
 
-                      <span className="hidden sm:inline-block text-xs font-semibold text-center leading-tight text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">
+                      <span className="text-xs font-semibold text-center leading-tight text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white">
                         {opt.label}
                       </span>
 
@@ -332,6 +328,35 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
                     </button>
                   );
                 })}
+              </div>
+
+              {/* MOBILE OPTIMIZED VIEW: Touch-Friendly 5-Button Spectrum with Labels */}
+              <div className="sm:hidden space-y-3">
+                <div className="grid grid-cols-5 gap-1.5">
+                  {LIKERT_OPTIONS.map((opt) => {
+                    const isSelected = currentAnswer === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => handleSelectAnswer(opt.value)}
+                        className={`h-14 rounded-2xl border-2 flex flex-col items-center justify-center transition-all active:scale-95 ${
+                          isSelected
+                            ? 'border-brand-500 bg-brand-500 text-white shadow-lg shadow-brand-500/30 scale-105 font-black'
+                            : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-bold'
+                        }`}
+                      >
+                        <span className="text-base leading-none font-black">{opt.short}</span>
+                        {isSelected && <span className="text-[9px] uppercase tracking-wider mt-0.5 opacity-90">✓</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="flex justify-between text-[11px] font-bold text-slate-500 px-1 pt-1">
+                  <span className="text-rose-600 dark:text-rose-400">← Disagree</span>
+                  <span className="text-slate-400">Neutral</span>
+                  <span className="text-emerald-600 dark:text-emerald-400">Agree →</span>
+                </div>
               </div>
 
               {/* Keyboard Helper Hint */}
@@ -346,17 +371,17 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
         </AnimatePresence>
 
         {/* Bottom Navigation Controls */}
-        <div className="pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between mt-4">
+        <div className="pt-4 sm:pt-6 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between mt-2 sm:mt-4">
           <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="flex items-center space-x-1 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Previous</span>
           </button>
 
-          {/* Question Dots */}
+          {/* Desktop Question Dots */}
           <div className="hidden md:flex items-center space-x-1">
             {activeQuestions.map((q, idx) => {
               const isAnswered = answers[q.id] !== undefined;
@@ -384,7 +409,7 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
           {currentIndex < activeQuestions.length - 1 ? (
             <button
               onClick={handleNext}
-              className="flex items-center space-x-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-slate-800 transition-all"
+              className="flex items-center space-x-1 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-slate-800 transition-all"
             >
               <span>Next</span>
               <ChevronRight className="w-4 h-4" />
@@ -393,7 +418,7 @@ export default function AssessmentEngine({ initialMode = 'full' }: AssessmentEng
             <button
               onClick={handleSubmit}
               disabled={!isCompleted || isSubmitting}
-              className="flex items-center space-x-2 px-6 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-brand-500 to-teal-600 text-white shadow-lg shadow-brand-500/25 hover:from-brand-600 hover:to-teal-700 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="flex items-center space-x-1.5 px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-brand-500 to-teal-600 text-white shadow-lg shadow-brand-500/25 hover:from-brand-600 hover:to-teal-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               <Zap className="w-4 h-4" />
               <span>{isSubmitting ? 'Generating...' : 'View Results'}</span>
