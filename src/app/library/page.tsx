@@ -15,6 +15,7 @@ import {
 import { TRAIT_DEFINITIONS } from '@/data/questions';
 import { TRAIT_TIER_DESCRIPTIONS } from '@/data/traitDescriptions';
 import { TraitKey } from '@/types';
+import JsonLd from '@/components/JsonLd';
 
 export default function LibraryPage() {
   const [selectedTrait, setSelectedTrait] = useState<TraitKey>('openness');
@@ -39,8 +40,29 @@ export default function LibraryPage() {
     }
   };
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: 'https://personality-test.ysamphy.com',
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'OCEAN Trait Library',
+        item: 'https://personality-test.ysamphy.com/library',
+      },
+    ],
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 sm:space-y-12">
+      <JsonLd data={breadcrumbSchema} />
+
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
         <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950/50 border border-brand-200/60 dark:border-brand-800/60 text-xs font-semibold text-brand-700 dark:text-brand-300">

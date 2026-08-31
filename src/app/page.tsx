@@ -13,12 +13,57 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 import { TRAIT_DEFINITIONS } from '@/data/questions';
+import { FAQS } from '@/data/faqs';
+import FaqSection from '@/components/FaqSection';
+import JsonLd from '@/components/JsonLd';
 
 export default function HomePage() {
   const traitEntries = Object.entries(TRAIT_DEFINITIONS);
 
+  // Structured Data: WebApplication + Organization
+  const webAppSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'OCEANInsight • Big Five Personality Assessment',
+    url: 'https://personality-test.ysamphy.com',
+    applicationCategory: 'HealthApplication, EducationalApplication',
+    operatingSystem: 'All',
+    browserRequirements: 'Requires JavaScript. Requires HTML5.',
+    description: 'Scientifically validated Big Five (OCEAN) personality assessment with instant interactive dimensional radar map, archetype decoding, and downloadable PDF reports.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'YSAMPHY LLC',
+      url: 'https://ysamphy.com',
+      logo: 'https://personality-test.ysamphy.com/logo.png',
+    },
+  };
+
+  // Structured Data: FAQPage Schema
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
     <div className="space-y-20 pb-20">
+      {/* Schema Rich Snippets */}
+      <JsonLd data={webAppSchema} />
+      <JsonLd data={faqSchema} />
+
       {/* HERO SECTION */}
       <section className="relative overflow-hidden pt-12 sm:pt-20 pb-12 sm:pb-24">
         {/* Background Gradients */}
@@ -182,6 +227,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ SECTION WITH STRUCTURED DATA */}
+      <FaqSection />
 
       {/* START ASSESSMENT BANNER */}
       <section className="max-w-4xl mx-auto px-4 text-center space-y-6">
