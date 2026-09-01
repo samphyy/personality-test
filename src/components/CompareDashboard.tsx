@@ -17,8 +17,15 @@ import {
   Award,
   ArrowRight,
   TrendingUp,
+  ShieldCheck,
+  Scale,
+  Handshake,
+  Heart,
+  Rocket,
+  Palette,
 } from 'lucide-react';
 import { SynergyReport } from '@/lib/synergy';
+import { generatePartnerAlignment, RelationshipContext } from '@/lib/partnerAlignment';
 import DualRadarChartComponent from './DualRadarChartComponent';
 
 interface CompareDashboardProps {
@@ -26,10 +33,12 @@ interface CompareDashboardProps {
 }
 
 export default function CompareDashboard({ report }: CompareDashboardProps) {
-  const [activeTab, setActiveTab] = useState<'overview' | 'communication' | 'workplace' | 'conflict'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'charter' | 'communication' | 'workplace' | 'conflict'>('charter');
+  const [partnershipContext, setPartnershipContext] = useState<RelationshipContext>('cofounder');
   const [copied, setCopied] = useState(false);
 
   const { user1, user2, synergyScore, overallDynamicTagline, overallSummary, traitDeltas, strengths, communicationTips, conflictResolution, workplaceSynergy } = report;
+  const alignment = generatePartnerAlignment(user1, user2, partnershipContext);
 
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
@@ -282,20 +291,53 @@ export default function CompareDashboard({ report }: CompareDashboardProps) {
           SECTION 3: WEB MULTI-TAB DEEP-DIVE SYNERGY GUIDE
          ========================================================================= */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-sm space-y-8 print:hidden">
+        {/* RELATIONSHIP CONTEXT SWITCHER */}
+        <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center space-x-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Partnership Alignment Mode:
+            </span>
+            <span className="text-[10px] bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-bold px-2 py-0.5 rounded-full">
+              {alignment.badge}
+            </span>
+          </div>
+
+          <div className="flex gap-1.5 overflow-x-auto">
+            {[
+              { id: 'cofounder', label: '🚀 Co-Founders & Business' },
+              { id: 'romantic', label: '❤️ Romantic & Life' },
+              { id: 'creative', label: '🎨 Creative & Projects' },
+            ].map((mode) => (
+              <button
+                key={mode.id}
+                onClick={() => setPartnershipContext(mode.id as RelationshipContext)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                  partnershipContext === mode.id
+                    ? 'bg-purple-600 text-white shadow-md shadow-purple-600/20'
+                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+                }`}
+              >
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
           <div className="flex items-center space-x-2">
             <Compass className="w-5 h-5 text-purple-500" />
             <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-              Psychological Synergy & Collaboration Playbook
+              {alignment.title}
             </h3>
           </div>
 
           <div className="flex items-center space-x-1 sm:space-x-2 overflow-x-auto pb-1">
             {[
+              { id: 'charter', label: '🤝 Alignment Charter', icon: Handshake },
               { id: 'overview', label: 'Strengths', icon: Award },
               { id: 'communication', label: 'Communication Guide', icon: MessageSquare },
-              { id: 'workplace', label: 'Workplace & Roles', icon: Briefcase },
-              { id: 'conflict', label: 'Harmony & Blindspots', icon: AlertTriangle },
+              { id: 'workplace', label: 'Division of Labor', icon: Briefcase },
+              { id: 'conflict', label: 'Conflict Protocol', icon: AlertTriangle },
             ].map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -316,6 +358,151 @@ export default function CompareDashboard({ report }: CompareDashboardProps) {
             })}
           </div>
         </div>
+
+        {/* Tab 0: Alignment Charter & Decision Matrix */}
+        {activeTab === 'charter' && (
+          <div className="space-y-8">
+            {/* Superpower & Blindspot Highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="p-5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-900/40 space-y-2">
+                <div className="flex items-center space-x-2 text-emerald-800 dark:text-emerald-300 font-bold text-sm">
+                  <Sparkles className="w-4 h-4 text-emerald-500" />
+                  <span>Partnership Superpower</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {alignment.superpower}
+                </p>
+              </div>
+
+              <div className="p-5 rounded-2xl bg-amber-50/60 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/40 space-y-2">
+                <div className="flex items-center space-x-2 text-amber-800 dark:text-amber-300 font-bold text-sm">
+                  <AlertTriangle className="w-4 h-4 text-amber-500" />
+                  <span>Critical Blindspot to Manage</span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  {alignment.blindspot}
+                </p>
+              </div>
+            </div>
+
+            {/* Decision-Making & Veto Matrix */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Scale className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                <h4 className="font-bold text-base text-slate-900 dark:text-white">
+                  Decision-Making & Veto Matrix
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {alignment.decisionMatrix.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800 space-y-2.5"
+                  >
+                    <div className="flex items-start justify-between gap-2 border-b border-slate-200/80 dark:border-slate-800 pb-2">
+                      <h5 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white">
+                        {item.domain}
+                      </h5>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-purple-100 dark:bg-purple-900/60 text-purple-800 dark:text-purple-300 shrink-0">
+                        Lead: {item.leadPartner}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      💡 <strong>Psychometric Rationale:</strong> {item.rationale}
+                    </p>
+                    <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-800 dark:text-slate-200">
+                      ⚖️ <strong>Veto & Alignment Rule:</strong> {item.vetoRule}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Division of Labor Blueprint */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Briefcase className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                <h4 className="font-bold text-base text-slate-900 dark:text-white">
+                  Functional Division of Labor
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-5 rounded-2xl bg-teal-50/40 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-900/40 space-y-2.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-teal-700 dark:text-teal-300">
+                    {user1.name}&apos;s Core Domain
+                  </span>
+                  <ul className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
+                    {alignment.divisionOfLabor.partner1Focus.map((f, i) => (
+                      <li key={i} className="flex items-start">
+                        <Check className="w-3.5 h-3.5 text-teal-500 mr-2 shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-purple-50/40 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/40 space-y-2.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-purple-700 dark:text-purple-300">
+                    {user2.name}&apos;s Core Domain
+                  </span>
+                  <ul className="space-y-1.5 text-xs text-slate-700 dark:text-slate-300">
+                    {alignment.divisionOfLabor.partner2Focus.map((f, i) => (
+                      <li key={i} className="flex items-start">
+                        <Check className="w-3.5 h-3.5 text-purple-500 mr-2 shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="p-5 rounded-2xl bg-slate-900 text-white space-y-2.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-brand-300">
+                    Joint Strategic Responsibilities
+                  </span>
+                  <ul className="space-y-1.5 text-xs text-slate-200">
+                    {alignment.divisionOfLabor.sharedFocus.map((f, i) => (
+                      <li key={i} className="flex items-start">
+                        <ArrowRight className="w-3.5 h-3.5 text-brand-400 mr-2 shrink-0 mt-0.5" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Conflict De-escalation Protocol */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <h4 className="font-bold text-base text-slate-900 dark:text-white">
+                  3-Step Dispute De-Escalation Protocol
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {alignment.conflictProtocol.map((cp, idx) => (
+                  <div
+                    key={idx}
+                    className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-slate-800 space-y-2"
+                  >
+                    <span className="text-[10px] uppercase font-bold text-amber-600 dark:text-amber-400 tracking-wider">
+                      Trigger: {cp.trigger}
+                    </span>
+                    <h5 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                      Rule {idx + 1}: {cp.ruleTitle}
+                    </h5>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed pt-1">
+                      {cp.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Tab 1: Overview Strengths */}
         {activeTab === 'overview' && (
@@ -441,7 +628,38 @@ export default function CompareDashboard({ report }: CompareDashboardProps) {
           PRINT-ONLY COMPREHENSIVE DOSSIER
          ========================================================================= */}
       <div className="hidden print:block space-y-6">
-        <div className="p-4 rounded-xl border border-slate-300 space-y-2">
+        {/* Partnership Operating Charter */}
+        <div className="p-4 rounded-xl border border-slate-300 space-y-3 bg-white">
+          <div className="border-b border-slate-200 pb-1.5 flex items-center justify-between">
+            <h4 className="font-bold text-xs uppercase text-slate-900">{alignment.title}</h4>
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-900">{alignment.badge}</span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="bg-emerald-50/60 p-2.5 rounded-lg border border-emerald-200">
+              <strong className="text-emerald-900 block mb-1">Partnership Superpower:</strong>
+              <p className="text-slate-700">{alignment.superpower}</p>
+            </div>
+            <div className="bg-amber-50/60 p-2.5 rounded-lg border border-amber-200">
+              <strong className="text-amber-900 block mb-1">Critical Blindspot:</strong>
+              <p className="text-slate-700">{alignment.blindspot}</p>
+            </div>
+          </div>
+
+          {/* Decision Matrix */}
+          <div className="pt-2">
+            <strong className="text-xs uppercase text-slate-900 block mb-1.5">Decision-Making & Veto Matrix:</strong>
+            <div className="space-y-1.5 text-[11px]">
+              {alignment.decisionMatrix.map((dm, idx) => (
+                <div key={idx} className="p-2 rounded bg-slate-50 border border-slate-200 flex justify-between gap-2">
+                  <span><strong>{dm.domain}:</strong> Lead: <em>{dm.leadPartner}</em> ({dm.vetoRule})</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 rounded-xl border border-slate-300 space-y-2 bg-white">
           <h4 className="font-bold text-xs uppercase text-slate-900">Communication & Collaboration Strategy</h4>
           <p className="text-xs text-slate-700 leading-relaxed">{communicationTips.sharedDynamic}</p>
           <div className="grid grid-cols-2 gap-3 pt-2 text-xs">

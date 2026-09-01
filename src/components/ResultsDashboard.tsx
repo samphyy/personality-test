@@ -735,24 +735,54 @@ ${shareUrl}`;
 
         {/* Tab 4: Relationships */}
         {activeTab === 'relationships' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {traitKeys.map((key) => {
-              const s = result.scores[key];
-              const info = TRAIT_DEFINITIONS[key];
-              return (
-                <div key={key} className="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: info.color }} />
-                    <h5 className="font-bold text-sm text-slate-900 dark:text-white">{info.label} • Interpersonal Style</h5>
-                  </div>
-                  <div className="space-y-2.5 text-xs text-slate-600 dark:text-slate-400">
-                    <div><span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">🗣️ Communication Approach:</span>{s.relationshipInsights.communication}</div>
-                    <div><span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">🤝 Team Collaboration:</span>{s.relationshipInsights.collaboration}</div>
-                    <div><span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">⚖️ Conflict Resolution:</span>{s.relationshipInsights.conflictStyle}</div>
-                  </div>
+          <div className="space-y-6">
+            {/* Co-Founder & Partner Alignment Banner */}
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-purple-500/10 via-brand-500/10 to-teal-500/10 border border-purple-200/80 dark:border-purple-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs uppercase tracking-wider font-bold text-purple-600 dark:text-purple-400">
+                    👥 Co-Founder & Partner Alignment Mode
+                  </span>
+                  <span className="text-[10px] bg-purple-100 dark:bg-purple-900/60 text-purple-800 dark:text-purple-300 font-bold px-2 py-0.5 rounded-full">
+                    Compare & Synergize
+                  </span>
                 </div>
-              );
-            })}
+                <h5 className="text-base font-bold text-slate-900 dark:text-white">
+                  Compare Your Blueprint with a Business Partner, Spouse, or Teammate
+                </h5>
+                <p className="text-xs text-slate-600 dark:text-slate-400">
+                  Generate an instant Decision-Making & Veto Matrix, Division of Labor, and 3-step Dispute De-escalation Protocol.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setCompareModalOpen(true)}
+                className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-purple-600/20 transition-all shrink-0 active:scale-95"
+              >
+                <Users className="w-4 h-4" />
+                <span>Invite & Compare Profiles</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {traitKeys.map((key) => {
+                const s = result.scores[key];
+                const info = TRAIT_DEFINITIONS[key];
+                return (
+                  <div key={key} className="border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: info.color }} />
+                      <h5 className="font-bold text-sm text-slate-900 dark:text-white">{info.label} • Interpersonal Style</h5>
+                    </div>
+                    <div className="space-y-2.5 text-xs text-slate-600 dark:text-slate-400">
+                      <div><span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">🗣️ Communication Approach:</span>{s.relationshipInsights.communication}</div>
+                      <div><span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">🤝 Team Collaboration:</span>{s.relationshipInsights.collaboration}</div>
+                      <div><span className="font-bold text-slate-800 dark:text-slate-200 block mb-0.5">⚖️ Conflict Resolution:</span>{s.relationshipInsights.conflictStyle}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
