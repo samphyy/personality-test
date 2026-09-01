@@ -219,6 +219,10 @@ export default function AiAdvisor({ result }: AiAdvisorProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: query,
+          history: messages.map((m) => ({
+            sender: m.sender,
+            text: m.text,
+          })),
           scores: {
             openness: o,
             conscientiousness: c,

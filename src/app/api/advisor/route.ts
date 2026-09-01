@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { message, scores, archetype } = body;
+    const { message, scores, archetype, history } = body;
 
     if (!message || typeof message !== 'string') {
       return NextResponse.json({ error: 'Message is required.' }, { status: 400 });
@@ -32,26 +32,40 @@ export async function POST(req: Request) {
       process.env.NEXT_PUBLIC_GEMINI_API_KEY
     )?.trim();
 
-    // 1. If Gemini API Key is available, attempt direct LLM generation
+    // 1. If Gemini API Key is available, attempt multi-turn conversational generation
     if (geminiKey) {
       const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro'];
 
-      const systemPrompt = `You are the Executive Psychometrics & Career Advisor for YSAMPHY LLC (https://personality-test.ysamphy.com).
-The user just completed the validated Big Five (OCEAN) personality assessment with the following exact scores:
-- Archetype: ${safeArchetype.name} ("${safeArchetype.tagline}")
+      const systemInstructionText = `You are an insightful, warm, and highly conversational Executive Psychometrics & Career Coach for YSAMPHY LLC (https://personality-test.ysamphy.com).
+You are speaking 1-on-1 with a client whose Big Five personality profile is:
+- Primary Archetype: ${safeArchetype.name} ("${safeArchetype.tagline}")
 - Openness to Experience: ${safeScores.openness}%
 - Conscientiousness: ${safeScores.conscientiousness}%
 - Extraversion: ${safeScores.extraversion}%
 - Agreeableness: ${safeScores.agreeableness}%
 - Emotional Reactivity (Neuroticism): ${safeScores.neuroticism}%
 
-User's Question: "${message}"
+Conversational Coaching Guidelines:
+1. Speak naturally, warmly, and empathetically—like an authentic executive coach and trusted mentor in a genuine 1-on-1 dialogue.
+2. Avoid robotic templates: If the user asks a brief follow-up, respond fluidly and conversationally. If they ask for a detailed framework or strategy, use clean formatting with bold callouts and bullet points.
+3. Weave in their specific trait numbers naturally (e.g. "Because you operate with ${safeScores.conscientiousness}% conscientiousness...", "Given that you recharge through solitary reflection at ${safeScores.extraversion}% extraversion...").
+4. Always remember previous conversation context and build continuous momentum. Keep advice practical, uplifting, and actionable.`;
 
-Instructions:
-1. Provide actionable, empathetic, and evidence-based advice directly customized to their unique combination of trait percentages.
-2. Structure your answer with clear markdown headings (###), bold callouts (**bold**), and bullet points (* bullet).
-3. Address specific workplace dynamics, communication nuances, or growth habits that fit their exact psychological profile.
-4. Keep the tone executive, empowering, warm, and highly practical.`;
+      // Build multi-turn message history for natural continuous dialogue
+      const previousTurns = Array.isArray(history)
+        ? history.slice(-8).map((h: any) => ({
+            role: h.sender === 'user' ? 'user' : 'model',
+            parts: [{ text: h.text }],
+          }))
+        : [];
+
+      const contents = [
+        ...previousTurns,
+        {
+          role: 'user',
+          parts: [{ text: message }],
+        },
+      ];
 
       for (const modelName of modelsToTry) {
         try {
@@ -60,14 +74,12 @@ Instructions:
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents: [
-                {
-                  role: 'user',
-                  parts: [{ text: systemPrompt }],
-                },
-              ],
+              contents,
+              systemInstruction: {
+                parts: [{ text: systemInstructionText }],
+              },
               generationConfig: {
-                temperature: 0.7,
+                temperature: 0.75,
                 maxOutputTokens: 1200,
               },
             }),
@@ -85,8 +97,36 @@ Instructions:
               });
             }
           } else {
-            const errData = await aiRes.text();
-            console.warn(`Gemini model ${modelName} returned status ${aiRes.status}:`, errData);
+            // Fallback: Try with system prompt inside contents if systemInstruction is rejected on older API endpoints
+            const fallbackContents = [
+              {
+                role: 'user',
+                parts: [{ text: `System Context: ${systemInstructionText}\n\nClient Question: ${message}` }],
+              },
+            ];
+            const fallbackRes = await fetch(geminiEndpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: fallbackContents,
+                generationConfig: {
+                  temperature: 0.75,
+                  maxOutputTokens: 1200,
+                },
+              }),
+            });
+            if (fallbackRes.ok) {
+              const fallbackData = await fallbackRes.json();
+              const fallbackText = fallbackData?.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (fallbackText) {
+                return NextResponse.json({
+                  success: true,
+                  response: fallbackText,
+                  source: 'gemini_ai',
+                  model: modelName,
+                });
+              }
+            }
           }
         } catch (modelErr) {
           console.warn(`Error calling Gemini ${modelName}:`, modelErr);
