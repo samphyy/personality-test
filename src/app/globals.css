@@ -63,52 +63,25 @@ body {
     page-break-after: avoid !important;
   }
 
-  /* Dedicated clean print pages */
+  /* Dedicated clean print pages with bottom pinned footer */
   .print-page {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 25.2cm !important;
     page-break-after: always !important;
     break-after: page !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
     padding-top: 0.1cm !important;
-    padding-bottom: 0.2cm !important;
+    padding-bottom: 0.1cm !important;
     width: 100% !important;
   }
 
   .print-page:last-child {
     page-break-after: auto !important;
     break-after: auto !important;
-  }
-
-  /* Universal Multi-Page Repeating Table Footer */
-  .print-table-root {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    border: none !important;
-    display: table !important;
-  }
-
-  .print-table-root > thead {
-    display: table-header-group !important;
-  }
-
-  .print-table-root > tfoot {
-    display: table-footer-group !important;
-  }
-
-  .print-table-root > tbody {
-    display: table-row-group !important;
-  }
-
-  .print-table-footer-cell {
-    border-top: 1.5px solid #cbd5e1 !important;
-    padding-top: 6px !important;
-    padding-bottom: 2px !important;
-    font-size: 8pt !important;
-    color: #64748b !important;
-    width: 100% !important;
-    background: transparent !important;
   }
 
   /* Force high-contrast dark card retention in PDF & Print */
@@ -141,4 +114,5 @@ body {
     page-break-inside: avoid !important;
   }
 }
+
 
