@@ -35,11 +35,22 @@ body {
     color-adjust: exact !important;
   }
 
-  body {
+  html, body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 10pt !important;
-    line-height: 1.35 !important;
+    font-size: 9.5pt !important;
+    line-height: 1.3 !important;
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+
+  main {
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
   }
 
   header, footer, nav, button, .no-print, .print\:hidden {
@@ -50,6 +61,25 @@ body {
   h1, h2, h3, h4, h5, h6, .print-heading {
     break-after: avoid !important;
     page-break-after: avoid !important;
+  }
+
+  /* Strict dedicated print pages with footer pinned to the bottom */
+  .print-page {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 25.5cm !important;
+    height: 25.5cm !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    box-sizing: border-box !important;
+    padding-top: 0.2cm !important;
+    padding-bottom: 0.2cm !important;
+  }
+
+  .print-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
 
   /* Force high-contrast dark card retention in PDF & Print */
@@ -76,26 +106,9 @@ body {
     color: #5eead4 !important;
   }
 
-  /* Prevent awkward page cuts */
+  /* Prevent awkward card cuts */
   .print-avoid-break {
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-  }
-
-  .print-page-break-before {
-    break-before: page !important;
-    page-break-before: always !important;
-  }
-
-  .print-page-break-after {
-    break-after: page !important;
-    page-break-after: always !important;
-  }
-
-  /* Ensure radar chart SVG renders cleanly */
-  .recharts-responsive-container {
-    width: 100% !important;
-    height: 220px !important;
-    max-height: 220px !important;
   }
 }

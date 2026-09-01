@@ -350,158 +350,166 @@ ${shareUrl}`;
       />
 
       {/* =========================================================================
-          PAGE 1 (PRINT): EXECUTIVE SUMMARY & DIMENSIONAL RADAR MAP
+          PAGE 1 (PRINT & SCREEN): EXECUTIVE SUMMARY & DIMENSIONAL RADAR MAP
          ========================================================================= */}
-      <div className="space-y-6 print:space-y-3 print-page-break-after">
-        {/* Archetype Hero Card */}
-        <div
-          className="print-avoid-break print-dark-card relative rounded-3xl p-6 sm:p-10 text-white bg-slate-900 shadow-xl shadow-brand-500/15 overflow-hidden print:shadow-none print:rounded-2xl print:p-6"
-          style={{
-            background: 'linear-gradient(135deg, #0f172a 0%, #0f766e 50%, #042f2e 100%)',
-            backgroundColor: '#0f172a',
-            color: '#ffffff',
-            WebkitPrintColorAdjust: 'exact',
-            printColorAdjust: 'exact',
-          }}
-        >
-          <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none print:hidden" />
-          
-          <div className="relative z-10 max-w-3xl space-y-3 print:space-y-2">
-            <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider text-teal-200 print:bg-white/20 print:text-teal-200">
-              <Award className="w-3.5 h-3.5 text-teal-300" />
-              <span>Primary Archetype</span>
-            </div>
+      <div className="space-y-6 print:space-y-3 print-page">
+        <div className="space-y-6 print:space-y-2.5">
+          {/* Archetype Hero Card */}
+          <div
+            className="print-avoid-break print-dark-card relative rounded-3xl p-6 sm:p-10 text-white bg-slate-900 shadow-xl shadow-brand-500/15 overflow-hidden print:shadow-none print:rounded-2xl print:p-5"
+            style={{
+              background: 'linear-gradient(135deg, #0f172a 0%, #0f766e 50%, #042f2e 100%)',
+              backgroundColor: '#0f172a',
+              color: '#ffffff',
+              WebkitPrintColorAdjust: 'exact',
+              printColorAdjust: 'exact',
+            }}
+          >
+            <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none print:hidden" />
+            
+            <div className="relative z-10 max-w-3xl space-y-3 print:space-y-1.5">
+              <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider text-teal-200 print:bg-white/20 print:text-teal-200">
+                <Award className="w-3.5 h-3.5 text-teal-300" />
+                <span>Primary Archetype</span>
+              </div>
 
-            <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white print:text-2xl">
-              {result.archetype.name}
-            </h2>
+              <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white print:text-2xl">
+                {result.archetype.name}
+              </h2>
 
-            <p className="text-base sm:text-lg font-medium text-teal-100 italic print:text-sm">
-              &ldquo;{result.archetype.tagline}&rdquo;
-            </p>
+              <p className="text-base sm:text-lg font-medium text-teal-100 italic print:text-sm">
+                &ldquo;{result.archetype.tagline}&rdquo;
+              </p>
 
-            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed pt-1 print:text-xs">
-              {result.archetype.description}
-            </p>
+              <p className="text-xs sm:text-sm text-slate-100 leading-relaxed pt-1 print:text-[11px]">
+                {result.archetype.description}
+              </p>
 
-            {/* Growth Advice Callout */}
-            <div className="mt-3 pt-3 border-t border-white/20 flex items-start space-x-2.5 bg-white/10 backdrop-blur-sm rounded-xl p-3 print:bg-white/15 print:p-2.5">
-              <Sparkles className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
-              <div>
-                <h4 className="text-[11px] font-bold uppercase tracking-wider text-amber-200">
-                  Core Growth Advice
-                </h4>
-                <p className="text-xs text-white/95 mt-0.5 leading-snug">
-                  {result.archetype.growthAdvice}
-                </p>
+              {/* Growth Advice Callout */}
+              <div className="mt-3 pt-3 border-t border-white/20 flex items-start space-x-2.5 bg-white/10 backdrop-blur-sm rounded-xl p-3 print:bg-white/15 print:p-2">
+                <Sparkles className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-amber-200">
+                    Core Growth Advice
+                  </h4>
+                  <p className="text-xs text-white/95 mt-0.5 leading-snug print:text-[10.5px]">
+                    {result.archetype.growthAdvice}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* KIT (CONVERTKIT) EMAIL CAPTURE SECTION (Hidden on print) */}
-        <div className="print:hidden">
-          <KitSubscribeForm result={result} />
-        </div>
-
-        {/* Radar Chart & Trait Snapshot Grid */}
-        <div className="print-avoid-break grid grid-cols-1 lg:grid-cols-12 gap-6 items-start print:grid-cols-12 print:gap-4">
-          {/* Radar Chart Visual */}
-          <div className="print-avoid-break lg:col-span-5 print:col-span-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm print:rounded-2xl print:border-slate-300 print:shadow-none print:p-3">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-bold text-base text-slate-900 dark:text-white print:text-sm print:font-black">
-                Dimensional Map
-              </h3>
-              <span className="text-[11px] text-slate-500 font-medium">5 Factor Polygon</span>
-            </div>
-            <RadarChartComponent result={result} />
-            <p className="text-[10px] text-center text-slate-400 dark:text-slate-500 mt-1 print:text-slate-500">
-              Higher values indicate greater expression of that trait.
-            </p>
+          {/* KIT (CONVERTKIT) EMAIL CAPTURE SECTION (Hidden on print) */}
+          <div className="print:hidden">
+            <KitSubscribeForm result={result} />
           </div>
 
-          {/* 5 Trait Summary Bars */}
-          <div className="print-avoid-break lg:col-span-7 print:col-span-7 space-y-2.5 print:space-y-2">
-            <div className="flex items-center justify-between mb-1.5">
-              <h3 className="font-bold text-base text-slate-900 dark:text-white print:text-sm print:font-black">
-                Trait Breakdown
-              </h3>
-              <button
-                onClick={() => setPercentileModalOpen(true)}
-                className="inline-flex items-center space-x-1 text-xs font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors print:hidden"
-              >
-                <BarChart3 className="w-3.5 h-3.5" />
-                <span>View Bell Curves</span>
-              </button>
+          {/* Radar Chart & Trait Snapshot Grid */}
+          <div className="print-avoid-break grid grid-cols-1 lg:grid-cols-12 gap-6 items-start print:grid-cols-12 print:gap-3">
+            {/* Radar Chart Visual */}
+            <div className="print-avoid-break lg:col-span-5 print:col-span-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-sm print:rounded-2xl print:border-slate-300 print:shadow-none print:p-2.5">
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white print:text-xs print:font-black">
+                  Dimensional Map
+                </h3>
+                <span className="text-[11px] text-slate-500 font-medium print:text-[9px]">5 Factor Polygon</span>
+              </div>
+              <RadarChartComponent result={result} />
+              <p className="text-[10px] text-center text-slate-400 dark:text-slate-500 mt-1 print:text-[8.5px] print:text-slate-500">
+                Higher values indicate greater expression of that trait.
+              </p>
             </div>
 
-            {traitKeys.map((key) => {
-              const scoreObj = result.scores[key];
-              const info = TRAIT_DEFINITIONS[key];
-              const isExpanded = expandedTraits[key];
-
-              return (
-                <div
-                  key={key}
-                  className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 transition-all shadow-sm print:rounded-xl print:p-2.5 print:border-slate-300"
+            {/* 5 Trait Summary Bars */}
+            <div className="print-avoid-break lg:col-span-7 print:col-span-7 space-y-2.5 print:space-y-1.5">
+              <div className="flex items-center justify-between mb-1.5 print:mb-0.5">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white print:text-xs print:font-black">
+                  Trait Breakdown
+                </h3>
+                <button
+                  onClick={() => setPercentileModalOpen(true)}
+                  className="inline-flex items-center space-x-1 text-xs font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors print:hidden"
                 >
-                  <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <div className="flex items-center space-x-2.5">
-                      <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs"
-                        style={{
-                          backgroundColor: `${info.color}20`,
-                          color: info.color,
-                        }}
+                  <BarChart3 className="w-3.5 h-3.5" />
+                  <span>View Bell Curves</span>
+                </button>
+              </div>
+
+              {traitKeys.map((key) => {
+                const scoreObj = result.scores[key];
+                const info = TRAIT_DEFINITIONS[key];
+                const isExpanded = expandedTraits[key];
+
+                return (
+                  <div
+                    key={key}
+                    className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 transition-all shadow-sm print:rounded-lg print:p-2 print:border-slate-300"
+                  >
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <div className="flex items-center space-x-2.5">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs print:w-5 print:h-5"
+                          style={{
+                            backgroundColor: `${info.color}20`,
+                            color: info.color,
+                          }}
+                        >
+                          {key.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-slate-900 dark:text-white text-sm leading-tight print:text-xs">
+                            {info.label}
+                          </h4>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium print:text-[9.5px]">
+                            {scoreObj.tier} ({scoreObj.percentage}%)
+                          </span>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => toggleTraitExpand(key)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors print:hidden"
                       >
-                        {key.charAt(0).toUpperCase()}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-slate-900 dark:text-white text-sm leading-tight">
-                          {info.label}
-                        </h4>
-                        <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                          {scoreObj.tier} ({scoreObj.percentage}%)
-                        </span>
-                      </div>
+                        {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                      </button>
                     </div>
 
-                    <button
-                      onClick={() => toggleTraitExpand(key)}
-                      className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors print:hidden"
-                    >
-                      {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                    </button>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden mb-1">
-                    <div
-                      className="h-full rounded-full transition-all duration-500"
-                      style={{
-                        width: `${scoreObj.percentage}%`,
-                        backgroundColor: info.color,
-                      }}
-                    />
-                  </div>
-
-                  <div className="flex justify-between text-[10px] text-slate-400 font-medium px-0.5">
-                    <span>{info.lowLabel}</span>
-                    <span>{info.highLabel}</span>
-                  </div>
-
-                  {/* Expandable Details on Web */}
-                  {isExpanded && (
-                    <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 space-y-1.5 print:hidden">
-                      <p className="leading-relaxed font-medium">
-                        {scoreObj.description}
-                      </p>
+                    {/* Progress bar */}
+                    <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden mb-1 print:bg-slate-200 print:h-1.5">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{
+                          width: `${scoreObj.percentage}%`,
+                          backgroundColor: info.color,
+                        }}
+                      />
                     </div>
-                  )}
-                </div>
-              );
-            })}
+
+                    <div className="flex justify-between text-[10px] text-slate-400 font-medium px-0.5 print:text-[8.5px] print:text-slate-500">
+                      <span>{info.lowLabel}</span>
+                      <span>{info.highLabel}</span>
+                    </div>
+
+                    {/* Expandable Details on Web */}
+                    {isExpanded && (
+                      <div className="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-300 space-y-1.5 print:hidden">
+                        <p className="leading-relaxed font-medium">
+                          {scoreObj.description}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
+        </div>
+
+        {/* Page 1 Bottom-Pinned Footer (Print only) */}
+        <div className="hidden print:flex justify-between items-center pt-2 border-t border-slate-300 text-[9px] text-slate-500">
+          <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
+          <span>Page 1 of 4 • Executive Summary</span>
         </div>
       </div>
 
@@ -739,87 +747,89 @@ ${shareUrl}`;
         {/* =========================================================================
             PRINT PAGE 2: SECTION 2 & SECTION 3 (PSYCHOMETRICS & CAREER ALIGNMENT)
            ========================================================================= */}
-        <div className="print-page-break-before print-page-break-after space-y-3 pt-2">
-          {/* Section 2 Header */}
-          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1.5">
-            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
-              SECTION 2 & 3: FIVE-FACTOR PSYCHOMETRIC ANALYSIS & CAREER ALIGNMENT
-            </span>
-            <span className="text-[10px] font-bold text-slate-500">Page 2 of 4</span>
-          </div>
+        <div className="print-page">
+          <div className="space-y-2.5">
+            {/* Section 2 Header */}
+            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
+              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+                SECTION 2 & 3: FIVE-FACTOR PSYCHOMETRIC ANALYSIS & CAREER ALIGNMENT
+              </span>
+              <span className="text-[9.5px] font-bold text-slate-500">Page 2 of 4</span>
+            </div>
 
-          {/* Section 2: 5-Trait Deep-Dive Cards */}
-          <div className="space-y-2">
-            {traitKeys.map((key) => {
-              const s = result.scores[key];
-              const info = TRAIT_DEFINITIONS[key];
+            {/* Section 2: 5-Trait Deep-Dive Cards */}
+            <div className="space-y-1.5">
+              {traitKeys.map((key) => {
+                const s = result.scores[key];
+                const info = TRAIT_DEFINITIONS[key];
 
-              return (
-                <div key={key} className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1 text-xs">
-                  <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
-                    <div className="flex items-center space-x-2">
-                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: info.color }} />
-                      <h4 className="font-black text-xs text-slate-900">{info.label}</h4>
+                return (
+                  <div key={key} className="print-avoid-break p-2 rounded-xl border border-slate-300 bg-white space-y-0.5 text-xs">
+                    <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
+                      <div className="flex items-center space-x-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: info.color }} />
+                        <h4 className="font-black text-xs text-slate-900">{info.label}</h4>
+                      </div>
+                      <span className="text-[9.5px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-300">
+                        {s.tier} • {s.percentage}% ({info.lowLabel} ⟷ {info.highLabel})
+                      </span>
                     </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-300">
-                      {s.tier} • {s.percentage}% ({info.lowLabel} ⟷ {info.highLabel})
-                    </span>
+
+                    <p className="text-[10px] text-slate-700 leading-snug">{s.description}</p>
+
+                    <div className="grid grid-cols-2 gap-2 pt-0.5 text-[9.5px]">
+                      <div className="bg-emerald-50/50 p-1.5 rounded border border-emerald-200">
+                        <strong className="text-emerald-900 block mb-0.5">Key Strengths:</strong>
+                        <ul className="space-y-0.5 text-slate-800">
+                          {s.strengths.map((str, idx) => (
+                            <li key={idx}>• {str}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="bg-amber-50/50 p-1.5 rounded border border-amber-200">
+                        <strong className="text-amber-900 block mb-0.5">Growth Opportunities:</strong>
+                        <ul className="space-y-0.5 text-slate-800">
+                          {s.growthAreas.map((grw, idx) => (
+                            <li key={idx}>• {grw}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
+                );
+              })}
+            </div>
 
-                  <p className="text-[10.5px] text-slate-700 leading-snug">{s.description}</p>
+            {/* Section 3: Career Strategy & Workplace Alignment */}
+            <div className="print-avoid-break p-2.5 rounded-xl border border-teal-300 bg-teal-50/30 space-y-1">
+              <div className="flex items-center justify-between border-b border-teal-200 pb-0.5">
+                <span className="text-[9.5px] font-black uppercase text-teal-900">Career Roles & Execution Strategy</span>
+                <span className="text-[8.5px] text-slate-500 font-medium">Archetype: {result.archetype.name}</span>
+              </div>
 
-                  <div className="grid grid-cols-2 gap-2 pt-0.5 text-[10px]">
-                    <div className="bg-emerald-50/50 p-1.5 rounded-lg border border-emerald-200">
-                      <strong className="text-emerald-900 block mb-0.5">Key Strengths:</strong>
-                      <ul className="space-y-0.5 text-slate-800">
-                        {s.strengths.map((str, idx) => (
-                          <li key={idx}>• {str}</li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div className="bg-amber-50/50 p-1.5 rounded-lg border border-amber-200">
-                      <strong className="text-amber-900 block mb-0.5">Growth Opportunities:</strong>
-                      <ul className="space-y-0.5 text-slate-800">
-                        {s.growthAreas.map((grw, idx) => (
-                          <li key={idx}>• {grw}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+              <div className="flex flex-wrap gap-1">
+                {result.archetype.idealRoles.map((role, idx) => (
+                  <span key={idx} className="px-2 py-0.5 rounded-md bg-white border border-teal-300 text-[9.5px] font-bold text-teal-950">
+                    {role}
+                  </span>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-0.5 text-[9.5px] text-slate-700">
+                <div className="p-1.5 bg-white rounded border border-slate-200">
+                  <strong className="text-slate-900 block font-bold">Ideal Workplace Environment:</strong>
+                  {result.scores[result.dominantTraits[0]].careerInsights.idealEnvironment}
                 </div>
-              );
-            })}
-          </div>
-
-          {/* Section 3: Career Strategy & Workplace Alignment */}
-          <div className="print-avoid-break p-3 rounded-xl border border-teal-300 bg-teal-50/30 space-y-2">
-            <div className="flex items-center justify-between border-b border-teal-200 pb-1">
-              <span className="text-[10px] font-black uppercase text-teal-900">Career Roles & Execution Strategy</span>
-              <span className="text-[9px] text-slate-500 font-medium">Archetype: {result.archetype.name}</span>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5">
-              {result.archetype.idealRoles.map((role, idx) => (
-                <span key={idx} className="px-2.5 py-0.5 rounded-md bg-white border border-teal-300 text-[10px] font-bold text-teal-950">
-                  {role}
-                </span>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 pt-0.5 text-[10px] text-slate-700">
-              <div className="p-2 bg-white rounded-lg border border-slate-200">
-                <strong className="text-slate-900 block font-bold mb-0.5">Ideal Workplace Environment:</strong>
-                {result.scores[result.dominantTraits[0]].careerInsights.idealEnvironment}
-              </div>
-              <div className="p-2 bg-white rounded-lg border border-slate-200">
-                <strong className="text-slate-900 block font-bold mb-0.5">Interpersonal Dynamics:</strong>
-                {result.scores[result.dominantTraits[0]].relationshipInsights.communication}
+                <div className="p-1.5 bg-white rounded border border-slate-200">
+                  <strong className="text-slate-900 block font-bold">Interpersonal Dynamics:</strong>
+                  {result.scores[result.dominantTraits[0]].relationshipInsights.communication}
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Page 2 Footer */}
-          <div className="flex justify-between items-center pt-2 border-t border-slate-200 text-[9px] text-slate-500">
+          {/* Page 2 Bottom-Pinned Footer */}
+          <div className="flex justify-between items-center pt-2 border-t border-slate-300 text-[9px] text-slate-500">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>Page 2 of 4 • Psychometrics & Career</span>
           </div>
@@ -828,66 +838,68 @@ ${shareUrl}`;
         {/* =========================================================================
             PRINT PAGE 3: SECTION 4 & SECTION 5 (PERCENTILES & COMPLETE 30-DAY HABITS)
            ========================================================================= */}
-        <div className="print-page-break-before print-page-break-after space-y-2.5 pt-2">
-          {/* Section 4 & 5 Header */}
-          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1.5">
-            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
-              SECTION 4 & 5: GLOBAL POPULATION BENCHMARKS & 30-DAY GROWTH ROADMAP
-            </span>
-            <span className="text-[10px] font-bold text-slate-500">Page 3 of 4</span>
-          </div>
-
-          {/* Section 4: Global Population Percentiles Grid */}
-          <div className="grid grid-cols-5 gap-1.5">
-            {percentileStats.map((ps) => (
-              <div key={ps.traitKey} className="print-avoid-break p-2 rounded-lg border border-slate-300 bg-white space-y-0.5 text-center">
-                <span className="font-black text-slate-900 text-[10px] block truncate">{ps.label}</span>
-                <span className="font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-800 text-[9px] block">
-                  {ps.percentile}th %ile
-                </span>
-                <span className="text-[8.5px] text-teal-800 font-bold block">{ps.rarityTier}</span>
-                <p className="text-slate-600 text-[8px] leading-tight pt-0.5">{ps.higherThanText}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Section 5: 30-Day Growth Plan Header */}
-          <div className="flex items-center justify-between bg-amber-50/50 p-2 rounded-lg border border-amber-200 text-xs">
-            <div>
-              <strong className="text-[10px] uppercase font-bold text-amber-950 block">Primary Growth Focus: {growthPlan.focusTitle}</strong>
-              <p className="text-[9px] text-slate-700 leading-snug">{growthPlan.summary}</p>
+        <div className="print-page">
+          <div className="space-y-2">
+            {/* Section 4 & 5 Header */}
+            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
+              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+                SECTION 4 & 5: GLOBAL POPULATION BENCHMARKS & 30-DAY GROWTH ROADMAP
+              </span>
+              <span className="text-[9.5px] font-bold text-slate-500">Page 3 of 4</span>
             </div>
-            <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900 shrink-0 ml-2">
-              Focus: {growthPlan.focusTrait}
-            </span>
-          </div>
 
-          {/* Section 5: ALL 4 WEEKS & ALL 30 DAYS IN 2-COLUMN CHECKLIST GRID */}
-          <div className="grid grid-cols-2 gap-2">
-            {growthPlan.weeks.map((w) => (
-              <div key={w.week} className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
-                  <strong className="text-[9.5px] text-slate-900 uppercase">Week {w.week}: {w.title}</strong>
-                  <span className="text-[8px] text-slate-500 truncate max-w-[140px]">Goal: {w.goal}</span>
+            {/* Section 4: Global Population Percentiles Grid */}
+            <div className="grid grid-cols-5 gap-1.5">
+              {percentileStats.map((ps) => (
+                <div key={ps.traitKey} className="print-avoid-break p-1.5 rounded-lg border border-slate-300 bg-white space-y-0.5 text-center">
+                  <span className="font-black text-slate-900 text-[9.5px] block truncate">{ps.label}</span>
+                  <span className="font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-800 text-[9px] block">
+                    {ps.percentile}th %ile
+                  </span>
+                  <span className="text-[8px] text-teal-800 font-bold block">{ps.rarityTier}</span>
+                  <p className="text-slate-600 text-[7.5px] leading-tight pt-0.5">{ps.higherThanText}</p>
                 </div>
-                <div className="space-y-1">
-                  {w.habits.map((h) => (
-                    <div key={h.day} className="p-1 rounded bg-slate-50 border border-slate-150 text-[8.5px] leading-snug">
-                      <div className="flex items-center justify-between font-bold text-slate-900">
-                        <span>[ ] Day {h.day}: {h.title}</span>
-                        <span className="text-[7.5px] text-slate-400 font-normal">{h.timeEstimate}</span>
-                      </div>
-                      <p className="text-slate-700"><span className="font-semibold text-slate-800">Action:</span> {h.action}</p>
-                      <p className="text-slate-500 italic text-[8px]">💡 <em>Why it works:</em> {h.whyItWorks}</p>
-                    </div>
-                  ))}
-                </div>
+              ))}
+            </div>
+
+            {/* Section 5: 30-Day Growth Plan Header */}
+            <div className="flex items-center justify-between bg-amber-50/50 p-1.5 rounded-lg border border-amber-200 text-xs">
+              <div>
+                <strong className="text-[9.5px] uppercase font-bold text-amber-950 block">Primary Growth Focus: {growthPlan.focusTitle}</strong>
+                <p className="text-[8.5px] text-slate-700 leading-snug">{growthPlan.summary}</p>
               </div>
-            ))}
+              <span className="text-[8.5px] font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900 shrink-0 ml-2">
+                Focus: {growthPlan.focusTrait}
+              </span>
+            </div>
+
+            {/* Section 5: ALL 4 WEEKS & ALL 30 DAYS IN 2-COLUMN CHECKLIST GRID */}
+            <div className="grid grid-cols-2 gap-1.5">
+              {growthPlan.weeks.map((w) => (
+                <div key={w.week} className="print-avoid-break p-2 rounded-xl border border-slate-300 bg-white space-y-0.5">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
+                    <strong className="text-[9px] text-slate-900 uppercase">Week {w.week}: {w.title}</strong>
+                    <span className="text-[7.5px] text-slate-500 truncate max-w-[140px]">Goal: {w.goal}</span>
+                  </div>
+                  <div className="space-y-0.5">
+                    {w.habits.map((h) => (
+                      <div key={h.day} className="p-1 rounded bg-slate-50 border border-slate-100 text-[8px] leading-tight">
+                        <div className="flex items-center justify-between font-bold text-slate-900">
+                          <span>[ ] Day {h.day}: {h.title}</span>
+                          <span className="text-[7px] text-slate-400 font-normal">{h.timeEstimate}</span>
+                        </div>
+                        <p className="text-slate-700"><span className="font-semibold text-slate-800">Action:</span> {h.action}</p>
+                        <p className="text-slate-500 italic text-[7.5px]">💡 <em>Why it works:</em> {h.whyItWorks}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Page 3 Footer */}
-          <div className="flex justify-between items-center pt-2 border-t border-slate-200 text-[9px] text-slate-500">
+          {/* Page 3 Bottom-Pinned Footer */}
+          <div className="flex justify-between items-center pt-2 border-t border-slate-300 text-[9px] text-slate-500">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>Page 3 of 4 • Habits & Norms</span>
           </div>
@@ -896,56 +908,58 @@ ${shareUrl}`;
         {/* =========================================================================
             PRINT PAGE 4: SECTION 6 (CAREER ASSETS & BEHAVIORAL INTERVIEW SCRIPTS)
            ========================================================================= */}
-        <div className="print-page-break-before space-y-2.5 pt-2">
-          {/* Section 6 Header */}
-          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1.5">
-            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
-              SECTION 6: EXECUTIVE CAREER ASSETS & BEHAVIORAL INTERVIEW SCRIPTS
-            </span>
-            <span className="text-[10px] font-bold text-slate-500">Page 4 of 4</span>
-          </div>
-
-          {/* Section 6 Overview Description */}
-          <p className="text-[9.5px] text-slate-600 bg-blue-50/40 p-2 rounded-lg border border-blue-200 leading-tight">
-            <strong>Overview:</strong> Psychometrically tailored career positioning assets, behavioral interview talking scripts, and LinkedIn summaries calibrated to your Big Five strengths as a <em>{result.archetype.name}</em>.
-          </p>
-
-          {/* 5 Psychometric Resume Impact Bullets */}
-          <div className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1">
-            <h4 className="font-bold text-[10px] uppercase tracking-wider text-slate-900">5 Psychometric Resume Impact Bullets</h4>
-            <div className="space-y-1 text-xs text-slate-700">
-              {careerAssets.resumeBullets.map((b, i) => (
-                <div key={i} className="p-1.5 rounded bg-slate-50 border border-slate-200 text-[9.5px]">
-                  <strong className="text-slate-900">{b.title} ({b.trait}):</strong> &ldquo;{b.bullet}&rdquo;
-                </div>
-              ))}
+        <div className="print-page">
+          <div className="space-y-2">
+            {/* Section 6 Header */}
+            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
+              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+                SECTION 6: EXECUTIVE CAREER ASSETS & BEHAVIORAL INTERVIEW SCRIPTS
+              </span>
+              <span className="text-[9.5px] font-bold text-slate-500">Page 4 of 4</span>
             </div>
-          </div>
 
-          {/* Behavioral Interview Scripts */}
-          <div className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1.5">
-            <h4 className="font-bold text-[10px] uppercase tracking-wider text-slate-900">Behavioral Interview Talking Scripts</h4>
-            <div className="space-y-1 text-xs text-slate-700">
-              {careerAssets.interviewScripts.map((scr, i) => (
-                <div key={i} className="p-1.5 rounded bg-slate-50 border border-slate-200 space-y-0.5 text-[9.5px]">
-                  <strong className="text-slate-900 block font-bold">Q: {scr.question}</strong>
-                  <p className="text-slate-800 italic bg-white p-1 rounded border border-slate-200">&ldquo;{scr.script}&rdquo;</p>
-                  <p className="text-[8.5px] text-slate-500">💡 Context: {scr.context}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Executive LinkedIn Bio */}
-          <div className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1">
-            <h4 className="font-bold text-[10px] uppercase tracking-wider text-slate-900">LinkedIn &ldquo;About&rdquo; Bio (Executive Version)</h4>
-            <p className="text-[9px] text-slate-700 whitespace-pre-line bg-slate-50 p-2 rounded-lg border border-slate-200 leading-relaxed">
-              {careerAssets.linkedInBios.executive}
+            {/* Section 6 Overview Description */}
+            <p className="text-[9px] text-slate-600 bg-blue-50/40 p-1.5 rounded-lg border border-blue-200 leading-tight">
+              <strong>Overview:</strong> Psychometrically tailored career positioning assets, behavioral interview talking scripts, and LinkedIn summaries calibrated to your Big Five strengths as a <em>{result.archetype.name}</em>.
             </p>
+
+            {/* 5 Psychometric Resume Impact Bullets */}
+            <div className="print-avoid-break p-2 rounded-xl border border-slate-300 bg-white space-y-0.5">
+              <h4 className="font-bold text-[9.5px] uppercase tracking-wider text-slate-900">5 Psychometric Resume Impact Bullets</h4>
+              <div className="space-y-0.5 text-xs text-slate-700">
+                {careerAssets.resumeBullets.map((b, i) => (
+                  <div key={i} className="p-1 rounded bg-slate-50 border border-slate-200 text-[9px]">
+                    <strong className="text-slate-900">{b.title} ({b.trait}):</strong> &ldquo;{b.bullet}&rdquo;
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Behavioral Interview Scripts */}
+            <div className="print-avoid-break p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+              <h4 className="font-bold text-[9.5px] uppercase tracking-wider text-slate-900">Behavioral Interview Talking Scripts</h4>
+              <div className="space-y-1 text-xs text-slate-700">
+                {careerAssets.interviewScripts.map((scr, i) => (
+                  <div key={i} className="p-1.5 rounded bg-slate-50 border border-slate-200 space-y-0.5 text-[9px]">
+                    <strong className="text-slate-900 block font-bold">Q: {scr.question}</strong>
+                    <p className="text-slate-800 italic bg-white p-1 rounded border border-slate-200">&ldquo;{scr.script}&rdquo;</p>
+                    <p className="text-[8px] text-slate-500">💡 Context: {scr.context}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Executive LinkedIn Bio */}
+            <div className="print-avoid-break p-2 rounded-xl border border-slate-300 bg-white space-y-0.5">
+              <h4 className="font-bold text-[9.5px] uppercase tracking-wider text-slate-900">LinkedIn &ldquo;About&rdquo; Bio (Executive Version)</h4>
+              <p className="text-[8.5px] text-slate-700 whitespace-pre-line bg-slate-50 p-1.5 rounded-lg border border-slate-200 leading-relaxed">
+                {careerAssets.linkedInBios.executive}
+              </p>
+            </div>
           </div>
 
-          {/* Verification & Certification Footer */}
-          <div className="print-avoid-break text-center pt-3 border-t border-slate-200 text-[9px] text-slate-500 space-y-0.5">
+          {/* Verification & Certification Footer Pinned at Bottom of Page 4 */}
+          <div className="print-avoid-break text-center pt-2 border-t border-slate-300 text-[8.5px] text-slate-500 space-y-0.5">
             <p className="font-bold text-slate-700">© 2026 YSAMPHY LLC • Psychological Blueprint Dossier • Validated IPIP Psychometrics</p>
             <p>Generated online at personality-test.ysamphy.com • All Rights Reserved</p>
           </div>
