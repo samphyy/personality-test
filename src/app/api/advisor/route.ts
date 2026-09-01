@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { generatePsychometricAdvice } from '@/lib/advisorKnowledge';
 
 export const dynamic = 'force-dynamic';
@@ -67,37 +67,37 @@ YOUR DIRECT COACHING RESPONSE:`;
 
     let geminiErrorDetails = null;
 
-    // 1. Google Gemini (via Official @google/generative-ai SDK)
+    // 1. Google Gemini (via Official @google/genai Unified SDK)
     if (geminiKey) {
-      const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash', 'gemini-1.5-pro'];
+      const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
 
-      const genAI = new GoogleGenerativeAI(geminiKey);
+      try {
+        const ai = new GoogleGenAI({ apiKey: geminiKey });
 
-      for (const modelName of modelsToTry) {
-        try {
-          const model = genAI.getGenerativeModel({
-            model: modelName,
-            generationConfig: {
-              temperature: 0.75,
-              maxOutputTokens: 1200,
-            },
-          });
-
-          const result = await model.generateContent(fullPrompt);
-          const responseText = result.response.text();
-
-          if (responseText) {
-            return NextResponse.json({
-              success: true,
-              response: responseText,
-              source: 'gemini_ai',
+        for (const modelName of modelsToTry) {
+          try {
+            const response = await ai.models.generateContent({
               model: modelName,
+              contents: fullPrompt,
             });
+
+            const responseText = response.text;
+            if (responseText) {
+              return NextResponse.json({
+                success: true,
+                response: responseText,
+                source: 'gemini_ai',
+                model: modelName,
+              });
+            }
+          } catch (modelErr: any) {
+            geminiErrorDetails = `Model ${modelName}: ${modelErr?.message || modelErr}`;
+            console.warn('Google GenAI Model Error:', geminiErrorDetails);
           }
-        } catch (sdkErr: any) {
-          geminiErrorDetails = `Model ${modelName}: ${sdkErr?.message || sdkErr}`;
-          console.warn('Google SDK Error:', geminiErrorDetails);
         }
+      } catch (sdkInitErr: any) {
+        geminiErrorDetails = `Google SDK Init Error: ${sdkInitErr?.message || sdkInitErr}`;
+        console.warn(geminiErrorDetails);
       }
     }
 
