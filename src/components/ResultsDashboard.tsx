@@ -505,12 +505,6 @@ ${shareUrl}`;
             </div>
           </div>
         </div>
-
-        {/* Page 1 Bottom-Pinned Footer (Print only) */}
-        <div className="hidden print:flex justify-between items-center pt-2 border-t border-slate-300 text-[9px] text-slate-500">
-          <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
-          <span>Page 1 of 4 • Executive Summary</span>
-        </div>
       </div>
 
       {/* =========================================================================
@@ -798,12 +792,6 @@ ${shareUrl}`;
               );
             })}
           </div>
-
-          {/* Page 2 Bottom-Pinned Footer */}
-          <div className="flex justify-between items-center pt-2 border-t border-slate-300 text-[9px] text-slate-500">
-            <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
-            <span>Page 2 of 5 • Psychometrics</span>
-          </div>
         </div>
 
         {/* =========================================================================
@@ -872,12 +860,6 @@ ${shareUrl}`;
               ))}
             </div>
           </div>
-
-          {/* Page 3 Bottom-Pinned Footer */}
-          <div className="flex justify-between items-center pt-2 border-t border-slate-300 text-[9px] text-slate-500">
-            <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
-            <span>Page 3 of 5 • Careers & Global Norms</span>
-          </div>
         </div>
 
         {/* =========================================================================
@@ -925,12 +907,6 @@ ${shareUrl}`;
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Page 4 Bottom-Pinned Footer */}
-          <div className="flex justify-between items-center pt-2 border-t border-slate-300 text-[9px] text-slate-500">
-            <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
-            <span>Page 4 of 5 • Growth Habits</span>
           </div>
         </div>
 
@@ -985,12 +961,18 @@ ${shareUrl}`;
             </p>
           </div>
 
-          {/* Verification & Certification Footer Pinned at Bottom of Page 5 */}
+          {/* Verification & Certification Footer */}
           <div className="print-avoid-break text-center pt-2.5 border-t border-slate-300 text-[9px] text-slate-500 space-y-0.5">
             <p className="font-bold text-slate-700">© 2026 YSAMPHY LLC • Psychological Blueprint Dossier • Validated IPIP Psychometrics</p>
             <p>Generated online at personality-test.ysamphy.com • All Rights Reserved</p>
           </div>
         </div>
+      </div>
+
+      {/* GLOBAL FIXED PRINT FOOTER (Rendered once, fixed at the bottom of every printed page) */}
+      <div className="hidden print:flex print-footer-fixed">
+        <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
+        <span>The Big Five (OCEAN) Blueprint • personality-test.ysamphy.com</span>
       </div>
     </div>
   );
