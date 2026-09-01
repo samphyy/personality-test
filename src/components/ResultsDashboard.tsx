@@ -22,6 +22,7 @@ import {
   Image as ImageIcon,
   X,
   Bot,
+  Target,
 } from 'lucide-react';
 import { AssessmentResult, TraitKey } from '@/types';
 import { TRAIT_DEFINITIONS } from '@/data/questions';
@@ -31,6 +32,7 @@ import KitSubscribeForm from './KitSubscribeForm';
 import CompareInviteModal from './CompareInviteModal';
 import AiAdvisor from './AiAdvisor';
 import CareerAssetModal from './CareerAssetModal';
+import GrowthPlanModal from './GrowthPlanModal';
 
 interface ResultsDashboardProps {
   result: AssessmentResult;
@@ -43,6 +45,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
   const [cardModalOpen, setCardModalOpen] = useState(false);
   const [compareModalOpen, setCompareModalOpen] = useState(false);
   const [careerModalOpen, setCareerModalOpen] = useState(false);
+  const [growthModalOpen, setGrowthModalOpen] = useState(false);
 
   // Trigger celebration confetti on mount
   useEffect(() => {
@@ -143,6 +146,15 @@ ${shareUrl}`;
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* 30-Day Growth Plan Button */}
+          <button
+            onClick={() => setGrowthModalOpen(true)}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-900 border border-amber-200/80 dark:border-amber-800/80 transition-all shadow-sm active:scale-95"
+          >
+            <Target className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+            <span>30-Day Plan</span>
+          </button>
+
           {/* Resume & Bio Generator Button */}
           <button
             onClick={() => setCareerModalOpen(true)}
@@ -299,6 +311,13 @@ ${shareUrl}`;
         result={result}
         isOpen={careerModalOpen}
         onClose={() => setCareerModalOpen(false)}
+      />
+
+      {/* 30-DAY GROWTH HABIT PLAN MODAL */}
+      <GrowthPlanModal
+        result={result}
+        isOpen={growthModalOpen}
+        onClose={() => setGrowthModalOpen(false)}
       />
 
       {/* =========================================================================
@@ -529,7 +548,36 @@ ${shareUrl}`;
 
         {/* Tab 2: Strengths & Growth */}
         {activeTab === 'strengths' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            {/* 30-Day Growth Plan Launcher Banner */}
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-amber-500/10 via-brand-500/10 to-teal-500/10 border border-amber-200/80 dark:border-amber-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs uppercase tracking-wider font-bold text-amber-600 dark:text-amber-400">
+                    🎯 Personalized Growth Roadmap
+                  </span>
+                  <span className="text-[10px] bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 font-bold px-2 py-0.5 rounded-full">
+                    30 Daily Micro-Habits
+                  </span>
+                </div>
+                <h5 className="text-base font-bold text-slate-900 dark:text-white">
+                  Transform Your Psychological Growth Areas in 2 Minutes a Day
+                </h5>
+                <p className="text-xs text-slate-600 dark:text-slate-400">
+                  Interactive 30-day checklist with streak tracking and cognitive behavioral micro-exercises.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setGrowthModalOpen(true)}
+                className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-amber-600/20 transition-all shrink-0 active:scale-95"
+              >
+                <Target className="w-4 h-4" />
+                <span>Open 30-Day Habit Plan</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400 font-bold text-base">
                 <Award className="w-5 h-5" />
@@ -582,7 +630,8 @@ ${shareUrl}`;
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
         {/* Tab 3: Careers */}
         {activeTab === 'careers' && (
