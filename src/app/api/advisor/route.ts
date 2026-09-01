@@ -64,54 +64,11 @@ CLIENT QUESTION:
 
 YOUR DIRECT COACHING RESPONSE:`;
 
-    // 1. If OpenAI API Key is available
-    if (openaiKey) {
-      try {
-        const oaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${openaiKey}`,
-          },
-          body: JSON.stringify({
-            model: 'gpt-4o-mini',
-            messages: [
-              { role: 'system', content: systemPrompt },
-              ...(Array.isArray(history)
-                ? history.slice(-6).map((h: any) => ({
-                    role: h.sender === 'user' ? 'user' : 'assistant',
-                    content: h.text,
-                  }))
-                : []),
-              { role: 'user', content: message },
-            ],
-            temperature: 0.75,
-            max_tokens: 1200,
-          }),
-        });
-
-        if (oaiRes.ok) {
-          const oaiData = await oaiRes.json();
-          const oaiText = oaiData?.choices?.[0]?.message?.content;
-          if (oaiText) {
-            return NextResponse.json({
-              success: true,
-              response: oaiText,
-              source: 'openai_ai',
-              model: 'gpt-4o-mini',
-            });
-          }
-        }
-      } catch (oaiErr) {
-        console.warn('OpenAI API Error:', oaiErr);
-      }
-    }
-
     let geminiErrorDetails = null;
 
-    // 2. If Gemini API Key is available
+    // 1. Prioritize Google Gemini (Gemini 1.5 Flash)
     if (geminiKey) {
-      const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash', 'gemini-1.5-pro'];
+      const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
 
       for (const modelName of modelsToTry) {
         try {
@@ -153,6 +110,49 @@ YOUR DIRECT COACHING RESPONSE:`;
           geminiErrorDetails = `Exception on ${modelName}: ${modelErr.message}`;
           console.warn(geminiErrorDetails);
         }
+      }
+    }
+
+    // 2. Secondary: OpenAI Fallback (gpt-4o-mini)
+    if (openaiKey) {
+      try {
+        const oaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${openaiKey}`,
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              ...(Array.isArray(history)
+                ? history.slice(-6).map((h: any) => ({
+                    role: h.sender === 'user' ? 'user' : 'assistant',
+                    content: h.text,
+                  }))
+                : []),
+              { role: 'user', content: message },
+            ],
+            temperature: 0.75,
+            max_tokens: 1200,
+          }),
+        });
+
+        if (oaiRes.ok) {
+          const oaiData = await oaiRes.json();
+          const oaiText = oaiData?.choices?.[0]?.message?.content;
+          if (oaiText) {
+            return NextResponse.json({
+              success: true,
+              response: oaiText,
+              source: 'openai_ai',
+              model: 'gpt-4o-mini',
+            });
+          }
+        }
+      } catch (oaiErr) {
+        console.warn('OpenAI API Error:', oaiErr);
       }
     }
 
