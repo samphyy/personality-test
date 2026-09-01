@@ -136,6 +136,10 @@ YOUR DIRECT COACHING RESPONSE:`;
               response: oaiText,
               source: 'openai_ai',
               model: 'gpt-4o-mini',
+              debug: {
+                hasGeminiKey: Boolean(geminiKey),
+                geminiError: geminiErrorDetails,
+              },
             });
           }
         }
