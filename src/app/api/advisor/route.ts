@@ -32,12 +32,21 @@ export async function POST(req: Request) {
       process.env.NEXT_PUBLIC_GEMINI_API_KEY
     )?.trim();
 
-    // 1. If Gemini API Key is available, attempt multi-turn conversational generation
-    if (geminiKey) {
-      const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest', 'gemini-1.5-pro'];
+    let geminiErrorDetails = null;
 
-      const systemInstructionText = `You are an insightful, warm, and highly conversational Executive Psychometrics & Career Coach for YSAMPHY LLC (https://personality-test.ysamphy.com).
-You are speaking 1-on-1 with a client whose Big Five personality profile is:
+    // 1. If Gemini API Key is available, attempt generative AI generation
+    if (geminiKey) {
+      const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.0-pro'];
+
+      const conversationHistoryText = Array.isArray(history) && history.length > 0
+        ? history
+            .slice(-6)
+            .map((h: any) => `${h.sender === 'user' ? 'Client' : 'Coach (You)'}: ${h.text}`)
+            .join('\n\n')
+        : '';
+
+      const fullPrompt = `You are the insightful, empathetic, and highly conversational Executive Psychometrics & Career Coach for YSAMPHY LLC (https://personality-test.ysamphy.com).
+You are speaking directly 1-on-1 with a client whose Big Five personality blueprint is:
 - Primary Archetype: ${safeArchetype.name} ("${safeArchetype.tagline}")
 - Openness to Experience: ${safeScores.openness}%
 - Conscientiousness: ${safeScores.conscientiousness}%
@@ -45,27 +54,17 @@ You are speaking 1-on-1 with a client whose Big Five personality profile is:
 - Agreeableness: ${safeScores.agreeableness}%
 - Emotional Reactivity (Neuroticism): ${safeScores.neuroticism}%
 
-Conversational Coaching Guidelines:
-1. Speak naturally, warmly, and empathetically—like an authentic executive coach and trusted mentor in a genuine 1-on-1 dialogue.
-2. Avoid robotic templates: If the user asks a brief follow-up, respond fluidly and conversationally. If they ask for a detailed framework or strategy, use clean formatting with bold callouts and bullet points.
-3. Weave in their specific trait numbers naturally (e.g. "Because you operate with ${safeScores.conscientiousness}% conscientiousness...", "Given that you recharge through solitary reflection at ${safeScores.extraversion}% extraversion...").
-4. Always remember previous conversation context and build continuous momentum. Keep advice practical, uplifting, and actionable.`;
+Conversational Coaching Rules:
+1. Speak naturally, warmly, and empathetically—like an authentic trusted mentor having an engaging dialogue.
+2. Directly answer the client's question with deep psychological intelligence. If they ask a follow-up, build on previous context.
+3. Weave in their specific trait numbers naturally (e.g. "Because of your ${safeScores.conscientiousness}% conscientiousness...", "Given that you recharge through quiet focus at ${safeScores.extraversion}% extraversion...").
+4. Use clean, readable markdown: bold key insights (**bold**), use bullet points (* bullet) when giving multi-step advice, and keep the tone empowering and practical.
 
-      // Build multi-turn message history for natural continuous dialogue
-      const previousTurns = Array.isArray(history)
-        ? history.slice(-8).map((h: any) => ({
-            role: h.sender === 'user' ? 'user' : 'model',
-            parts: [{ text: h.text }],
-          }))
-        : [];
+${conversationHistoryText ? `--- PREVIOUS CONVERSATION CONTEXT ---\n${conversationHistoryText}\n--------------------------------------\n` : ''}
+CLIENT QUESTION:
+"${message}"
 
-      const contents = [
-        ...previousTurns,
-        {
-          role: 'user',
-          parts: [{ text: message }],
-        },
-      ];
+YOUR DIRECT COACHING RESPONSE:`;
 
       for (const modelName of modelsToTry) {
         try {
@@ -74,10 +73,12 @@ Conversational Coaching Guidelines:
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents,
-              systemInstruction: {
-                parts: [{ text: systemInstructionText }],
-              },
+              contents: [
+                {
+                  role: 'user',
+                  parts: [{ text: fullPrompt }],
+                },
+              ],
               generationConfig: {
                 temperature: 0.75,
                 maxOutputTokens: 1200,
@@ -97,39 +98,13 @@ Conversational Coaching Guidelines:
               });
             }
           } else {
-            // Fallback: Try with system prompt inside contents if systemInstruction is rejected on older API endpoints
-            const fallbackContents = [
-              {
-                role: 'user',
-                parts: [{ text: `System Context: ${systemInstructionText}\n\nClient Question: ${message}` }],
-              },
-            ];
-            const fallbackRes = await fetch(geminiEndpoint, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: fallbackContents,
-                generationConfig: {
-                  temperature: 0.75,
-                  maxOutputTokens: 1200,
-                },
-              }),
-            });
-            if (fallbackRes.ok) {
-              const fallbackData = await fallbackRes.json();
-              const fallbackText = fallbackData?.candidates?.[0]?.content?.parts?.[0]?.text;
-              if (fallbackText) {
-                return NextResponse.json({
-                  success: true,
-                  response: fallbackText,
-                  source: 'gemini_ai',
-                  model: modelName,
-                });
-              }
-            }
+            const errText = await aiRes.text();
+            geminiErrorDetails = `Model ${modelName} returned ${aiRes.status}: ${errText.slice(0, 200)}`;
+            console.warn(geminiErrorDetails);
           }
-        } catch (modelErr) {
-          console.warn(`Error calling Gemini ${modelName}:`, modelErr);
+        } catch (modelErr: any) {
+          geminiErrorDetails = `Exception on ${modelName}: ${modelErr.message}`;
+          console.warn(geminiErrorDetails);
         }
       }
     }
@@ -141,6 +116,11 @@ Conversational Coaching Guidelines:
       success: true,
       response: synthesizedAdvice,
       source: 'knowledge_engine',
+      debug: {
+        hasKey: Boolean(geminiKey),
+        keyPrefix: geminiKey ? `${geminiKey.slice(0, 5)}...` : 'none',
+        error: geminiErrorDetails,
+      },
     });
   } catch (error: any) {
     console.error('Advisor API Error:', error);
