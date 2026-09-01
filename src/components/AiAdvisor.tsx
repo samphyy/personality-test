@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
 import {
   Sparkles,
   Send,
@@ -27,6 +26,115 @@ interface ChatMessage {
   sender: 'user' | 'assistant';
   text: string;
   timestamp: number;
+}
+
+function FormattedMarkdown({ content }: { content: string }) {
+  const lines = content.split('\n');
+  const elements: React.ReactNode[] = [];
+  let listBuffer: { type: 'ul' | 'ol'; items: string[] } | null = null;
+
+  const renderInline = (str: string): React.ReactNode => {
+    // Split by bold (**text**)
+    const parts = str.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={i} className="font-bold text-slate-900 dark:text-white">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      return part;
+    });
+  };
+
+  const flushList = () => {
+    if (!listBuffer) return;
+    if (listBuffer.type === 'ul') {
+      elements.push(
+        <ul key={`ul-${elements.length}`} className="space-y-1.5 my-2.5">
+          {listBuffer.items.map((item, idx) => (
+            <li key={idx} className="flex items-start text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mr-2.5 shrink-0 mt-1.5" />
+              <div className="flex-1 leading-relaxed">{renderInline(item)}</div>
+            </li>
+          ))}
+        </ul>
+      );
+    } else {
+      elements.push(
+        <ol key={`ol-${elements.length}`} className="space-y-1.5 my-2.5">
+          {listBuffer.items.map((item, idx) => (
+            <li key={idx} className="flex items-start text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <span className="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-[10px] font-bold flex items-center justify-center mr-2.5 shrink-0 mt-0.5">
+                {idx + 1}
+              </span>
+              <div className="flex-1 leading-relaxed">{renderInline(item)}</div>
+            </li>
+          ))}
+        </ol>
+      );
+    }
+    listBuffer = null;
+  };
+
+  lines.forEach((rawLine, index) => {
+    const line = rawLine.trim();
+
+    if (!line) {
+      flushList();
+      return;
+    }
+
+    if (line.startsWith('### ')) {
+      flushList();
+      elements.push(
+        <h3
+          key={`h3-${index}`}
+          className="text-sm sm:text-base font-black text-slate-900 dark:text-white mt-4 mb-2 flex items-center gap-1.5 first:mt-0"
+        >
+          {renderInline(line.slice(4))}
+        </h3>
+      );
+    } else if (line.startsWith('#### ')) {
+      flushList();
+      elements.push(
+        <h4
+          key={`h4-${index}`}
+          className="text-xs sm:text-sm font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400 mt-3 mb-1.5"
+        >
+          {renderInline(line.slice(5))}
+        </h4>
+      );
+    } else if (line.startsWith('* ') || line.startsWith('- ')) {
+      const itemText = line.slice(2);
+      if (!listBuffer || listBuffer.type !== 'ul') {
+        flushList();
+        listBuffer = { type: 'ul', items: [itemText] };
+      } else {
+        listBuffer.items.push(itemText);
+      }
+    } else if (/^\d+\.\s/.test(line)) {
+      const itemText = line.replace(/^\d+\.\s/, '');
+      if (!listBuffer || listBuffer.type !== 'ol') {
+        flushList();
+        listBuffer = { type: 'ol', items: [itemText] };
+      } else {
+        listBuffer.items.push(itemText);
+      }
+    } else {
+      flushList();
+      elements.push(
+        <p key={`p-${index}`} className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed mb-2">
+          {renderInline(line)}
+        </p>
+      );
+    }
+  });
+
+  flushList();
+
+  return <div className="space-y-1">{elements}</div>;
 }
 
 export default function AiAdvisor({ result }: AiAdvisorProps) {
@@ -267,9 +375,13 @@ export default function AiAdvisor({ result }: AiAdvisorProps) {
                     </div>
                   )}
 
-                  <div className="whitespace-pre-line leading-relaxed text-xs sm:text-sm">
-                    {msg.text}
-                  </div>
+                  {isUser ? (
+                    <div className="whitespace-pre-line leading-relaxed text-xs sm:text-sm">
+                      {msg.text}
+                    </div>
+                  ) : (
+                    <FormattedMarkdown content={msg.text} />
+                  )}
                 </div>
 
                 {isUser && (
