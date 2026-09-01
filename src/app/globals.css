@@ -26,7 +26,7 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 0.8cm 1cm 0.8cm 1cm;
+    margin: 0.7cm 0.9cm 0.7cm 0.9cm;
   }
 
   *, *::before, *::after {
@@ -38,12 +38,18 @@ body {
   body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 10pt !important;
-    line-height: 1.35 !important;
+    font-size: 9.5pt !important;
+    line-height: 1.3 !important;
   }
 
   header, footer, nav, button, .no-print, .print\:hidden {
     display: none !important;
+  }
+
+  /* Prevent orphan headings */
+  h1, h2, h3, h4, h5, h6, .print-heading {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
   }
 
   /* Force high-contrast dark card retention in PDF & Print */
@@ -89,7 +95,7 @@ body {
   /* Ensure radar chart SVG renders cleanly and compactly */
   .recharts-responsive-container {
     width: 100% !important;
-    height: 210px !important;
-    max-height: 210px !important;
+    height: 190px !important;
+    max-height: 190px !important;
   }
 }
