@@ -715,155 +715,150 @@ ${shareUrl}`;
         {/* =========================================================================
             PRINT PAGE 1: EXECUTIVE SUMMARY & DIMENSIONAL RADAR MAP
            ========================================================================= */}
-        <div className="print-page">
-          <div className="space-y-2.5">
-            {/* PRINT-ONLY EXECUTIVE HEADER */}
-            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-2 mb-2">
-              <div className="flex items-center space-x-3">
-                <div className="w-9 h-9 rounded-xl overflow-hidden shadow-sm flex items-center justify-center bg-brand-500 shrink-0">
-                  <Image
-                    src="/logo.png"
-                    alt="YSAMPHY Logo"
-                    width={36}
-                    height={36}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+        <div className="print-page space-y-2">
+          {/* PRINT-ONLY EXECUTIVE HEADER */}
+          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1.5 mb-1.5">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-8 h-8 rounded-lg overflow-hidden shadow-sm flex items-center justify-center bg-brand-500 shrink-0">
+                <Image
+                  src="/logo.png"
+                  alt="YSAMPHY Logo"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <span className="text-[9px] font-black uppercase tracking-widest text-teal-700">YSAMPHY LLC • COMPREHENSIVE PSYCHOMETRIC REPORT</span>
+                <h1 className="text-base font-black text-slate-900 leading-none mt-0.5">The Big Five (OCEAN) Personality Blueprint</h1>
+              </div>
+            </div>
+            <div className="text-right text-[9px] text-slate-600 font-medium">
+              <p>{new Date(result.timestamp).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
+              <p className="text-teal-700 font-bold">personality-test.ysamphy.com</p>
+            </div>
+          </div>
+
+          {/* Archetype Hero Card */}
+          <div
+            className="print-avoid-break print-dark-card relative rounded-xl p-3.5 text-white bg-slate-900 overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #0f172a 0%, #0f766e 50%, #042f2e 100%)',
+              backgroundColor: '#0f172a',
+              color: '#ffffff',
+              WebkitPrintColorAdjust: 'exact',
+              printColorAdjust: 'exact',
+            }}
+          >
+            <div className="relative z-10 space-y-1">
+              <div className="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-white/20 text-[9px] font-bold uppercase tracking-wider text-teal-200">
+                <Award className="w-3 h-3 text-teal-300" />
+                <span>Primary Archetype</span>
+              </div>
+
+              <h2 className="text-xl font-black tracking-tight leading-tight text-white">
+                {result.archetype.name}
+              </h2>
+
+              <p className="text-xs font-medium text-teal-100 italic">
+                &ldquo;{result.archetype.tagline}&rdquo;
+              </p>
+
+              <p className="text-[9.5px] text-slate-100 leading-snug pt-0.5">
+                {result.archetype.description}
+              </p>
+
+              <div className="mt-1.5 pt-1.5 border-t border-white/20 flex items-start space-x-1.5 bg-white/15 rounded-lg p-1.5">
+                <Sparkles className="w-3 h-3 text-amber-300 shrink-0 mt-0.5" />
                 <div>
-                  <span className="text-[9.5px] font-black uppercase tracking-widest text-teal-700">YSAMPHY LLC • COMPREHENSIVE PSYCHOMETRIC REPORT</span>
-                  <h1 className="text-lg font-black text-slate-900 leading-none mt-0.5">The Big Five (OCEAN) Personality Blueprint</h1>
+                  <h4 className="text-[9px] font-bold uppercase tracking-wider text-amber-200">
+                    Core Growth Advice
+                  </h4>
+                  <p className="text-[9px] text-white/95 mt-0.5 leading-tight">
+                    {result.archetype.growthAdvice}
+                  </p>
                 </div>
-              </div>
-              <div className="text-right text-[10px] text-slate-600 font-medium">
-                <p>{new Date(result.timestamp).toLocaleDateString(undefined, { dateStyle: 'long' })}</p>
-                <p className="text-teal-700 font-bold">personality-test.ysamphy.com</p>
-              </div>
-            </div>
-
-            {/* Archetype Hero Card */}
-            <div
-              className="print-avoid-break print-dark-card relative rounded-2xl p-4 text-white bg-slate-900 overflow-hidden"
-              style={{
-                background: 'linear-gradient(135deg, #0f172a 0%, #0f766e 50%, #042f2e 100%)',
-                backgroundColor: '#0f172a',
-                color: '#ffffff',
-                WebkitPrintColorAdjust: 'exact',
-                printColorAdjust: 'exact',
-              }}
-            >
-              <div className="relative z-10 space-y-1.5">
-                <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-[10px] font-bold uppercase tracking-wider text-teal-200">
-                  <Award className="w-3.5 h-3.5 text-teal-300" />
-                  <span>Primary Archetype</span>
-                </div>
-
-                <h2 className="text-2xl font-black tracking-tight leading-tight text-white">
-                  {result.archetype.name}
-                </h2>
-
-                <p className="text-sm font-medium text-teal-100 italic">
-                  &ldquo;{result.archetype.tagline}&rdquo;
-                </p>
-
-                <p className="text-[10.5px] text-slate-100 leading-relaxed pt-0.5">
-                  {result.archetype.description}
-                </p>
-
-                <div className="mt-2 pt-2 border-t border-white/20 flex items-start space-x-2 bg-white/15 rounded-lg p-2">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-300 shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-amber-200">
-                      Core Growth Advice
-                    </h4>
-                    <p className="text-[10px] text-white/95 mt-0.5 leading-snug">
-                      {result.archetype.growthAdvice}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Radar Chart & Trait Snapshot Grid */}
-            <div className="print-avoid-break grid grid-cols-12 gap-3 items-start">
-              {/* Radar Chart Visual */}
-              <div className="col-span-5 bg-white border border-slate-300 rounded-2xl p-2.5 shadow-none">
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="font-black text-xs text-slate-900">
-                    Dimensional Map
-                  </h3>
-                  <span className="text-[9px] text-slate-500 font-medium">5 Factor Polygon</span>
-                </div>
-                {/* Pure Vector SVG Radar Chart for Guaranteed Print Rendering */}
-                <PrintRadarChart result={result} />
-                <p className="text-[8px] text-center text-slate-500 mt-0.5">
-                  Higher values indicate greater expression of that trait.
-                </p>
-              </div>
-
-              {/* 5 Trait Summary Bars */}
-              <div className="col-span-7 space-y-1.5">
-                <div className="flex items-center justify-between mb-0.5">
-                  <h3 className="font-black text-xs text-slate-900">
-                    Trait Breakdown
-                  </h3>
-                  <span className="text-[9px] text-slate-500 font-semibold">Normalized Scores</span>
-                </div>
-
-                {traitKeys.map((key) => {
-                  const scoreObj = result.scores[key];
-                  const info = TRAIT_DEFINITIONS[key];
-
-                  return (
-                    <div
-                      key={key}
-                      className="bg-white border border-slate-300 rounded-lg p-2"
-                    >
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <div className="flex items-center space-x-2">
-                          <div
-                            className="w-5 h-5 rounded flex items-center justify-center font-bold text-[10px]"
-                            style={{
-                              backgroundColor: `${info.color}20`,
-                              color: info.color,
-                            }}
-                          >
-                            {key.charAt(0).toUpperCase()}
-                          </div>
-                          <div>
-                            <h4 className="font-bold text-slate-900 text-xs leading-tight">
-                              {info.label}
-                            </h4>
-                          </div>
-                        </div>
-                        <span className="text-[9.5px] text-slate-600 font-bold">
-                          {scoreObj.tier} ({scoreObj.percentage}%)
-                        </span>
-                      </div>
-
-                      {/* Progress bar */}
-                      <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden mb-1">
-                        <div
-                          className="h-full rounded-full"
-                          style={{
-                            width: `${scoreObj.percentage}%`,
-                            backgroundColor: info.color,
-                          }}
-                        />
-                      </div>
-
-                      <div className="flex justify-between text-[8.5px] text-slate-500 font-medium px-0.5">
-                        <span>{info.lowLabel}</span>
-                        <span>{info.highLabel}</span>
-                      </div>
-                    </div>
-                  );
-                })}
               </div>
             </div>
           </div>
 
+          {/* Radar Chart & Trait Snapshot Grid */}
+          <div className="print-avoid-break grid grid-cols-12 gap-2.5 items-start">
+            {/* Radar Chart Visual */}
+            <div className="col-span-5 bg-white border border-slate-300 rounded-xl p-2 shadow-none">
+              <div className="flex items-center justify-between mb-0.5">
+                <h3 className="font-black text-[10px] text-slate-900">
+                  Dimensional Map
+                </h3>
+                <span className="text-[8px] text-slate-500 font-medium">5 Factor Polygon</span>
+              </div>
+              <PrintRadarChart result={result} />
+              <p className="text-[7.5px] text-center text-slate-500 mt-0.5">
+                Higher values indicate greater trait expression.
+              </p>
+            </div>
+
+            {/* 5 Trait Summary Bars */}
+            <div className="col-span-7 space-y-1">
+              <div className="flex items-center justify-between mb-0.5">
+                <h3 className="font-black text-[10px] text-slate-900">
+                  Trait Breakdown
+                </h3>
+                <span className="text-[8px] text-slate-500 font-semibold">Normalized Scores</span>
+              </div>
+
+              {traitKeys.map((key) => {
+                const scoreObj = result.scores[key];
+                const info = TRAIT_DEFINITIONS[key];
+
+                return (
+                  <div
+                    key={key}
+                    className="bg-white border border-slate-300 rounded-lg p-1.5"
+                  >
+                    <div className="flex items-center justify-between gap-1 mb-0.5">
+                      <div className="flex items-center space-x-1.5">
+                        <div
+                          className="w-4 h-4 rounded flex items-center justify-center font-bold text-[9px]"
+                          style={{
+                            backgroundColor: `${info.color}20`,
+                            color: info.color,
+                          }}
+                        >
+                          {key.charAt(0).toUpperCase()}
+                        </div>
+                        <h4 className="font-bold text-slate-900 text-[10px] leading-tight">
+                          {info.label}
+                        </h4>
+                      </div>
+                      <span className="text-[8.5px] text-slate-600 font-bold">
+                        {scoreObj.tier} ({scoreObj.percentage}%)
+                      </span>
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden mb-0.5">
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          width: `${scoreObj.percentage}%`,
+                          backgroundColor: info.color,
+                        }}
+                      />
+                    </div>
+
+                    <div className="flex justify-between text-[7.5px] text-slate-500 font-medium px-0.5">
+                      <span>{info.lowLabel}</span>
+                      <span>{info.highLabel}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Page 1 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1.5 mt-auto text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-1 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 1 of 5</span>
           </div>
@@ -872,62 +867,52 @@ ${shareUrl}`;
         {/* =========================================================================
             PRINT PAGE 2: SECTION 2 (FIVE-FACTOR PSYCHOMETRIC ANALYSIS)
            ========================================================================= */}
-        <div className="print-page">
-          <div className="space-y-2">
-            {/* Section 2 Header */}
-            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
-                SECTION 2: FIVE-FACTOR PSYCHOMETRIC ANALYSIS
-              </span>
-              <span className="text-[9.5px] font-bold text-slate-500">Page 2 of 5</span>
-            </div>
+        <div className="print-page space-y-1.5">
+          {/* Section 2 Header */}
+          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+              SECTION 2: FIVE-FACTOR PSYCHOMETRIC ANALYSIS
+            </span>
+            <span className="text-[9.5px] font-bold text-slate-500">Page 2 of 5</span>
+          </div>
 
-            {/* Section 2: 5-Trait Deep-Dive Cards */}
-            <div className="space-y-2">
-              {traitKeys.map((key) => {
-                const s = result.scores[key];
-                const info = TRAIT_DEFINITIONS[key];
+          {/* Section 2: 5-Trait Deep-Dive Cards */}
+          <div className="space-y-1.5">
+            {traitKeys.map((key) => {
+              const s = result.scores[key];
+              const info = TRAIT_DEFINITIONS[key];
 
-                return (
-                  <div key={key} className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1 text-xs">
-                    <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
-                      <div className="flex items-center space-x-2">
-                        <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: info.color }} />
-                        <h4 className="font-black text-xs text-slate-900">{info.label}</h4>
-                      </div>
-                      <span className="text-[9.5px] font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-300">
-                        {s.tier} • {s.percentage}% ({info.lowLabel} ⟷ {info.highLabel})
-                      </span>
+              return (
+                <div key={key} className="p-1.5 rounded-lg border border-slate-300 bg-white space-y-0.5 text-xs">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
+                    <div className="flex items-center space-x-1.5">
+                      <span className="w-2 h-2 rounded-full" style={{ backgroundColor: info.color }} />
+                      <h4 className="font-black text-[10px] text-slate-900">{info.label}</h4>
                     </div>
+                    <span className="text-[8.5px] font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-800 border border-slate-300">
+                      {s.tier} • {s.percentage}% ({info.lowLabel} ⟷ {info.highLabel})
+                    </span>
+                  </div>
 
-                    <p className="text-[10px] text-slate-700 leading-snug">{s.description}</p>
+                  <p className="text-[8.5px] text-slate-700 leading-tight">{s.description}</p>
 
-                    <div className="grid grid-cols-2 gap-2 pt-0.5 text-[9.5px]">
-                      <div className="bg-emerald-50/50 p-1.5 rounded-lg border border-emerald-200">
-                        <strong className="text-emerald-900 block mb-0.5">Key Strengths:</strong>
-                        <ul className="space-y-0.5 text-slate-800">
-                          {s.strengths.map((str, idx) => (
-                            <li key={idx}>• {str}</li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="bg-amber-50/50 p-1.5 rounded-lg border border-amber-200">
-                        <strong className="text-amber-900 block mb-0.5">Growth Opportunities:</strong>
-                        <ul className="space-y-0.5 text-slate-800">
-                          {s.growthAreas.map((grw, idx) => (
-                            <li key={idx}>• {grw}</li>
-                          ))}
-                        </ul>
-                      </div>
+                  <div className="grid grid-cols-2 gap-1.5 pt-0.5 text-[8px]">
+                    <div className="bg-emerald-50/60 px-1.5 py-0.5 rounded border border-emerald-200">
+                      <strong className="text-emerald-900 block font-bold">Strengths:</strong>
+                      <span className="text-slate-800">{s.strengths.join(' • ')}</span>
+                    </div>
+                    <div className="bg-amber-50/60 px-1.5 py-0.5 rounded border border-amber-200">
+                      <strong className="text-amber-900 block font-bold">Growth Areas:</strong>
+                      <span className="text-slate-800">{s.growthAreas.join(' • ')}</span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
 
           {/* Page 2 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1.5 mt-auto text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-1 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 2 of 5</span>
           </div>
@@ -936,74 +921,72 @@ ${shareUrl}`;
         {/* =========================================================================
             PRINT PAGE 3: SECTION 3 & SECTION 4 (CAREER STRATEGY & GLOBAL NORMS)
            ========================================================================= */}
-        <div className="print-page">
-          <div className="space-y-3">
-            {/* Section 3 & 4 Header */}
-            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
-                SECTION 3 & 4: CAREER STRATEGY & GLOBAL POPULATION BENCHMARKS
-              </span>
-              <span className="text-[9.5px] font-bold text-slate-500">Page 3 of 5</span>
+        <div className="print-page space-y-2">
+          {/* Section 3 & 4 Header */}
+          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+              SECTION 3 & 4: CAREER STRATEGY & GLOBAL POPULATION BENCHMARKS
+            </span>
+            <span className="text-[9.5px] font-bold text-slate-500">Page 3 of 5</span>
+          </div>
+
+          {/* Section 3: Career Strategy & Workplace Alignment */}
+          <div className="p-2.5 rounded-xl border border-teal-300 bg-teal-50/30 space-y-1.5">
+            <div className="flex items-center justify-between border-b border-teal-200 pb-0.5">
+              <span className="text-[9.5px] font-black uppercase text-teal-900">Recommended Career Roles & Domains</span>
+              <span className="text-[8.5px] text-slate-500 font-medium">Archetype: {result.archetype.name}</span>
             </div>
 
-            {/* Section 3: Career Strategy & Workplace Alignment */}
-            <div className="print-avoid-break p-3.5 rounded-2xl border border-teal-300 bg-teal-50/30 space-y-2">
-              <div className="flex items-center justify-between border-b border-teal-200 pb-1">
-                <span className="text-[10px] font-black uppercase text-teal-900">Recommended Career Roles & Domains</span>
-                <span className="text-[9px] text-slate-500 font-medium">Archetype: {result.archetype.name}</span>
-              </div>
+            <div className="flex flex-wrap gap-1">
+              {result.archetype.idealRoles.map((role, idx) => (
+                <span key={idx} className="px-2 py-0.5 rounded-md bg-white border border-teal-300 text-[9px] font-bold text-teal-950 shadow-xs">
+                  {role}
+                </span>
+              ))}
+            </div>
 
-              <div className="flex flex-wrap gap-1.5">
-                {result.archetype.idealRoles.map((role, idx) => (
-                  <span key={idx} className="px-3 py-1 rounded-lg bg-white border border-teal-300 text-[10px] font-bold text-teal-950 shadow-sm">
-                    {role}
+            <div className="grid grid-cols-2 gap-2 pt-0.5 text-[8.5px] text-slate-700">
+              <div className="p-2 bg-white rounded-lg border border-slate-200 space-y-0.5">
+                <strong className="text-slate-900 block font-bold">🏢 Ideal Workplace Environment:</strong>
+                <p className="leading-snug">{result.scores[result.dominantTraits[0]].careerInsights.idealEnvironment}</p>
+              </div>
+              <div className="p-2 bg-white rounded-lg border border-slate-200 space-y-0.5">
+                <strong className="text-slate-900 block font-bold">⚡ Work & Execution Style:</strong>
+                <p className="leading-snug">{result.scores[result.dominantTraits[0]].careerInsights.workStyle}</p>
+              </div>
+            </div>
+
+            <div className="p-2 bg-white rounded-lg border border-slate-200 space-y-0.5 text-[8.5px] text-slate-700">
+              <strong className="text-slate-900 block font-bold">🗣️ Interpersonal & Communication Dynamics:</strong>
+              <p className="leading-snug">{result.scores[result.dominantTraits[0]].relationshipInsights.communication}</p>
+            </div>
+          </div>
+
+          {/* Section 4: Global Population Percentiles Grid */}
+          <div className="space-y-1.5 pt-0.5">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
+              <h4 className="text-[9.5px] font-black uppercase tracking-wider text-slate-900">
+                Global Scientific Percentile Distribution Norms (N = 100,000+)
+              </h4>
+              <span className="text-[8px] text-slate-500">IPIP-NEO Benchmark Distribution (μ=50, σ=15)</span>
+            </div>
+
+            <div className="grid grid-cols-5 gap-1.5">
+              {percentileStats.map((ps) => (
+                <div key={ps.traitKey} className="p-1.5 rounded-lg border border-slate-300 bg-white space-y-0.5 text-center shadow-xs">
+                  <span className="font-black text-slate-900 text-[9px] block truncate">{ps.label}</span>
+                  <span className="font-black px-1.5 py-0.2 rounded bg-purple-50 text-purple-900 border border-purple-200 text-[9px] block">
+                    {ps.percentile}th %ile
                   </span>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 pt-1 text-[10px] text-slate-700">
-                <div className="p-2.5 bg-white rounded-xl border border-slate-200 space-y-1">
-                  <strong className="text-slate-900 block font-bold">🏢 Ideal Workplace Environment:</strong>
-                  <p className="leading-relaxed">{result.scores[result.dominantTraits[0]].careerInsights.idealEnvironment}</p>
+                  <span className="text-[8px] text-teal-800 font-bold block">{ps.rarityTier}</span>
+                  <p className="text-slate-600 text-[7.5px] leading-tight pt-0.5">{ps.higherThanText}</p>
                 </div>
-                <div className="p-2.5 bg-white rounded-xl border border-slate-200 space-y-1">
-                  <strong className="text-slate-900 block font-bold">⚡ Work & Execution Style:</strong>
-                  <p className="leading-relaxed">{result.scores[result.dominantTraits[0]].careerInsights.workStyle}</p>
-                </div>
-              </div>
-
-              <div className="p-2.5 bg-white rounded-xl border border-slate-200 space-y-1 text-[10px] text-slate-700">
-                <strong className="text-slate-900 block font-bold">🗣️ Interpersonal & Communication Dynamics:</strong>
-                <p className="leading-relaxed">{result.scores[result.dominantTraits[0]].relationshipInsights.communication}</p>
-              </div>
-            </div>
-
-            {/* Section 4: Global Population Percentiles Grid */}
-            <div className="print-avoid-break space-y-2 pt-1">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-1">
-                <h4 className="text-[10px] font-black uppercase tracking-wider text-slate-900">
-                  Global Scientific Percentile Distribution Norms (N = 100,000+)
-                </h4>
-                <span className="text-[8.5px] text-slate-500">IPIP-NEO Benchmark Distribution (μ=50, σ=15)</span>
-              </div>
-
-              <div className="grid grid-cols-5 gap-2">
-                {percentileStats.map((ps) => (
-                  <div key={ps.traitKey} className="p-2.5 rounded-xl border border-slate-300 bg-white space-y-1 text-center shadow-sm">
-                    <span className="font-black text-slate-900 text-[10px] block truncate">{ps.label}</span>
-                    <span className="font-black px-2 py-0.5 rounded-md bg-purple-50 text-purple-900 border border-purple-200 text-[10px] block">
-                      {ps.percentile}th %ile
-                    </span>
-                    <span className="text-[9px] text-teal-800 font-bold block">{ps.rarityTier}</span>
-                    <p className="text-slate-600 text-[8.5px] leading-tight pt-0.5">{ps.higherThanText}</p>
-                  </div>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
 
           {/* Page 3 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1.5 mt-auto text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-1 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 3 of 5</span>
           </div>
