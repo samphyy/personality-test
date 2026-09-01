@@ -23,6 +23,8 @@ import {
   X,
   Bot,
   Target,
+  BarChart3,
+  Globe2,
 } from 'lucide-react';
 import { AssessmentResult, TraitKey } from '@/types';
 import { TRAIT_DEFINITIONS } from '@/data/questions';
@@ -33,6 +35,7 @@ import CompareInviteModal from './CompareInviteModal';
 import AiAdvisor from './AiAdvisor';
 import CareerAssetModal from './CareerAssetModal';
 import GrowthPlanModal from './GrowthPlanModal';
+import PercentileBenchmarkModal from './PercentileBenchmarkModal';
 
 interface ResultsDashboardProps {
   result: AssessmentResult;
@@ -46,6 +49,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
   const [compareModalOpen, setCompareModalOpen] = useState(false);
   const [careerModalOpen, setCareerModalOpen] = useState(false);
   const [growthModalOpen, setGrowthModalOpen] = useState(false);
+  const [percentileModalOpen, setPercentileModalOpen] = useState(false);
 
   // Trigger celebration confetti on mount
   useEffect(() => {
@@ -146,6 +150,15 @@ ${shareUrl}`;
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Global Percentile Benchmarks Button */}
+          <button
+            onClick={() => setPercentileModalOpen(true)}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900 border border-purple-200/80 dark:border-purple-800/80 transition-all shadow-sm active:scale-95"
+          >
+            <BarChart3 className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+            <span>Global Norms</span>
+          </button>
+
           {/* 30-Day Growth Plan Button */}
           <button
             onClick={() => setGrowthModalOpen(true)}
@@ -320,6 +333,13 @@ ${shareUrl}`;
         onClose={() => setGrowthModalOpen(false)}
       />
 
+      {/* GLOBAL POPULATION PERCENTILES & BELL CURVES MODAL */}
+      <PercentileBenchmarkModal
+        result={result}
+        isOpen={percentileModalOpen}
+        onClose={() => setPercentileModalOpen(false)}
+      />
+
       {/* =========================================================================
           PAGE 1 (PRINT): EXECUTIVE SUMMARY & DIMENSIONAL RADAR MAP
          ========================================================================= */}
@@ -393,9 +413,18 @@ ${shareUrl}`;
 
           {/* 5 Trait Summary Bars */}
           <div className="print-avoid-break lg:col-span-7 print:col-span-7 space-y-2.5">
-            <h3 className="font-bold text-base text-slate-900 dark:text-white mb-1.5 print:text-slate-900">
-              Trait Breakdown
-            </h3>
+            <div className="flex items-center justify-between mb-1.5">
+              <h3 className="font-bold text-base text-slate-900 dark:text-white print:text-slate-900">
+                Trait Breakdown
+              </h3>
+              <button
+                onClick={() => setPercentileModalOpen(true)}
+                className="inline-flex items-center space-x-1 text-xs font-semibold text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors print:hidden"
+              >
+                <BarChart3 className="w-3.5 h-3.5" />
+                <span>View Bell Curves</span>
+              </button>
+            </div>
 
             {traitKeys.map((key) => {
               const scoreObj = result.scores[key];
