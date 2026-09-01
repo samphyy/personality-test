@@ -26,7 +26,7 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 0.6cm 0.8cm 0.6cm 0.8cm;
+    margin: 0.8cm 1cm 0.8cm 1cm;
   }
 
   *, *::before, *::after {
@@ -35,45 +35,21 @@ body {
     color-adjust: exact !important;
   }
 
-  html, body {
+  body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 9pt !important;
-    line-height: 1.25 !important;
-    height: auto !important;
-    min-height: auto !important;
-    display: block !important;
-    overflow: visible !important;
-  }
-
-  main {
-    display: block !important;
-    height: auto !important;
-    min-height: auto !important;
-    overflow: visible !important;
+    font-size: 10pt !important;
+    line-height: 1.35 !important;
   }
 
   header, footer, nav, button, .no-print, .print\:hidden {
     display: none !important;
   }
 
-  /* Strict dedicated print pages */
-  .print-page {
-    page-break-after: always !important;
-    break-after: page !important;
-    box-sizing: border-box !important;
-    padding-bottom: 0.5rem !important;
-  }
-
-  .print-page:last-child {
-    page-break-after: auto !important;
-    break-after: auto !important;
-  }
-
-  /* Prevent awkward card cuts */
-  .print-avoid-break {
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
+  /* Prevent orphan headings */
+  h1, h2, h3, h4, h5, h6, .print-heading {
+    break-after: avoid !important;
+    page-break-after: avoid !important;
   }
 
   /* Force high-contrast dark card retention in PDF & Print */
@@ -100,10 +76,26 @@ body {
     color: #5eead4 !important;
   }
 
-  /* Ensure radar chart SVG renders cleanly and compactly */
+  /* Prevent awkward page cuts */
+  .print-avoid-break {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-page-break-before {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+
+  .print-page-break-after {
+    break-after: page !important;
+    page-break-after: always !important;
+  }
+
+  /* Ensure radar chart SVG renders cleanly */
   .recharts-responsive-container {
     width: 100% !important;
-    height: 175px !important;
-    max-height: 175px !important;
+    height: 220px !important;
+    max-height: 220px !important;
   }
 }
