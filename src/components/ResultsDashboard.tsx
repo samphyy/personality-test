@@ -21,6 +21,7 @@ import {
   Download,
   Image as ImageIcon,
   X,
+  Bot,
 } from 'lucide-react';
 import { AssessmentResult, TraitKey } from '@/types';
 import { TRAIT_DEFINITIONS } from '@/data/questions';
@@ -28,6 +29,7 @@ import { encodeResultToQueryParams } from '@/lib/scoring';
 import RadarChartComponent from './RadarChartComponent';
 import KitSubscribeForm from './KitSubscribeForm';
 import CompareInviteModal from './CompareInviteModal';
+import AiAdvisor from './AiAdvisor';
 
 interface ResultsDashboardProps {
   result: AssessmentResult;
@@ -139,6 +141,18 @@ ${shareUrl}`;
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Ask AI Coach Button */}
+          <button
+            onClick={() => {
+              const el = document.getElementById('ai-advisor');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white transition-all shadow-md shadow-teal-500/20 active:scale-95"
+          >
+            <Bot className="w-4 h-4" />
+            <span>Ask AI Coach</span>
+          </button>
+
           {/* Compare Button */}
           <button
             onClick={() => setCompareModalOpen(true)}
@@ -151,7 +165,7 @@ ${shareUrl}`;
           {/* Download Social Card Button */}
           <button
             onClick={() => setCardModalOpen(true)}
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900 border border-teal-200/80 dark:border-teal-800/80 transition-all shadow-sm"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all shadow-sm"
           >
             <ImageIcon className="w-4 h-4 text-teal-600 dark:text-teal-400" />
             <span>Social Card (PNG)</span>
@@ -602,6 +616,9 @@ ${shareUrl}`;
           </div>
         )}
       </div>
+
+      {/* AI PSYCHOMETRIC & CAREER ADVISOR ("ASK MY BLUEPRINT") */}
+      <AiAdvisor result={result} />
 
       {/* =========================================================================
           PRINT-ONLY COMPREHENSIVE MULTI-PAGE DETAILED DOSSIER
