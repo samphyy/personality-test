@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { generatePsychometricAdvice } from '@/lib/advisorKnowledge';
 
 export const dynamic = 'force-dynamic';
@@ -66,62 +67,41 @@ YOUR DIRECT COACHING RESPONSE:`;
 
     let geminiErrorDetails = null;
 
-    // 1. Prioritize Google Gemini (Gemini 1.5 Flash / 2.0 Flash)
+    // 1. Google Gemini (via Official @google/generative-ai SDK)
     if (geminiKey) {
-      const modelsToTry = [
-        { ver: 'v1beta', name: 'gemini-1.5-flash' },
-        { ver: 'v1beta', name: 'gemini-2.0-flash' },
-        { ver: 'v1', name: 'gemini-1.5-flash' },
-        { ver: 'v1beta', name: 'gemini-1.5-pro' },
-      ];
+      const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash', 'gemini-1.5-pro'];
 
-      for (const { ver, name: modelName } of modelsToTry) {
+      const genAI = new GoogleGenerativeAI(geminiKey);
+
+      for (const modelName of modelsToTry) {
         try {
-          const geminiEndpoint = `https://generativelanguage.googleapis.com/${ver}/models/${modelName}:generateContent?key=${encodeURIComponent(geminiKey)}`;
-          const aiRes = await fetch(geminiEndpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-goog-api-key': geminiKey,
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            generationConfig: {
+              temperature: 0.75,
+              maxOutputTokens: 1200,
             },
-            body: JSON.stringify({
-              contents: [
-                {
-                  role: 'user',
-                  parts: [{ text: fullPrompt }],
-                },
-              ],
-              generationConfig: {
-                temperature: 0.75,
-                maxOutputTokens: 1200,
-              },
-            }),
           });
 
-          if (aiRes.ok) {
-            const aiData = await aiRes.json();
-            const generatedText = aiData?.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (generatedText) {
-              return NextResponse.json({
-                success: true,
-                response: generatedText,
-                source: 'gemini_ai',
-                model: modelName,
-              });
-            }
-          } else {
-            const errText = await aiRes.text();
-            geminiErrorDetails = `Model ${modelName} (${ver}) returned ${aiRes.status}: ${errText.slice(0, 200)}`;
-            console.warn(geminiErrorDetails);
+          const result = await model.generateContent(fullPrompt);
+          const responseText = result.response.text();
+
+          if (responseText) {
+            return NextResponse.json({
+              success: true,
+              response: responseText,
+              source: 'gemini_ai',
+              model: modelName,
+            });
           }
-        } catch (modelErr: any) {
-          geminiErrorDetails = `Exception on ${modelName}: ${modelErr.message}`;
-          console.warn(geminiErrorDetails);
+        } catch (sdkErr: any) {
+          geminiErrorDetails = `Model ${modelName}: ${sdkErr?.message || sdkErr}`;
+          console.warn('Google SDK Error:', geminiErrorDetails);
         }
       }
     }
 
-    // 2. Secondary: OpenAI Fallback (gpt-4o-mini)
+    // 2. OpenAI Fallback (gpt-4o-mini)
     if (openaiKey) {
       try {
         const oaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
