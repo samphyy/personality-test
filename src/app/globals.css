@@ -26,7 +26,7 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 0.8cm 1cm 0.8cm 1cm;
+    margin: 1cm 1.2cm 1cm 1.2cm;
   }
 
   *, *::before, *::after {
@@ -63,18 +63,16 @@ body {
     page-break-after: avoid !important;
   }
 
-  /* Strict dedicated print pages with footer pinned to the bottom */
+  /* Dedicated clean print pages */
   .print-page {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    min-height: 25.5cm !important;
-    height: 25.5cm !important;
+    display: block !important;
     page-break-after: always !important;
     break-after: page !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
     box-sizing: border-box !important;
-    padding-top: 0.2cm !important;
-    padding-bottom: 0.2cm !important;
+    padding-top: 0.1cm !important;
+    padding-bottom: 0.4cm !important;
   }
 
   .print-page:last-child {
@@ -112,3 +110,4 @@ body {
     page-break-inside: avoid !important;
   }
 }
+
