@@ -26,7 +26,7 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 1cm 1.2cm 1cm 1.2cm;
+    margin: 0.8cm 1cm 0.8cm 1cm;
   }
 
   *, *::before, *::after {
@@ -38,8 +38,8 @@ body {
   body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 10.5pt !important;
-    line-height: 1.4 !important;
+    font-size: 10pt !important;
+    line-height: 1.35 !important;
   }
 
   header, footer, nav, button, .no-print, .print\:hidden {
@@ -86,16 +86,10 @@ body {
     page-break-after: always !important;
   }
 
-  /* Compact spacing for print */
-  .print-compact {
-    padding: 1rem !important;
-    margin-bottom: 1rem !important;
-  }
-
-  /* Ensure radar chart SVG renders cleanly */
+  /* Ensure radar chart SVG renders cleanly and compactly */
   .recharts-responsive-container {
     width: 100% !important;
-    height: 320px !important;
-    max-height: 320px !important;
+    height: 210px !important;
+    max-height: 210px !important;
   }
 }
