@@ -26,7 +26,7 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 1cm 1.2cm 1.6cm 1.2cm;
+    margin: 1.2cm 1.2cm 1.2cm 1.2cm;
   }
 
   *, *::before, *::after {
@@ -73,6 +73,7 @@ body {
     box-sizing: border-box !important;
     padding-top: 0.1cm !important;
     padding-bottom: 0.2cm !important;
+    width: 100% !important;
   }
 
   .print-page:last-child {
@@ -80,21 +81,34 @@ body {
     break-after: auto !important;
   }
 
-  /* Fixed footer pinned to the actual bottom margin of every printed page */
-  .print-footer-fixed {
-    position: fixed !important;
-    bottom: -1cm !important;
-    left: 0 !important;
-    right: 0 !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    border-top: 1px solid #cbd5e1 !important;
-    padding-top: 3px !important;
-    font-size: 7.5pt !important;
+  /* Universal Multi-Page Repeating Table Footer */
+  .print-table-root {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: none !important;
+    display: table !important;
+  }
+
+  .print-table-root > thead {
+    display: table-header-group !important;
+  }
+
+  .print-table-root > tfoot {
+    display: table-footer-group !important;
+  }
+
+  .print-table-root > tbody {
+    display: table-row-group !important;
+  }
+
+  .print-table-footer-cell {
+    border-top: 1.5px solid #cbd5e1 !important;
+    padding-top: 6px !important;
+    padding-bottom: 2px !important;
+    font-size: 8pt !important;
     color: #64748b !important;
+    width: 100% !important;
     background: transparent !important;
-    z-index: 9999 !important;
   }
 
   /* Force high-contrast dark card retention in PDF & Print */
