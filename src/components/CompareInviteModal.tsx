@@ -114,7 +114,7 @@ export default function CompareInviteModal({ result, isOpen, onClose }: CompareI
               Option 1: Send Personalized Invite Link
             </span>
             <span className="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full font-bold">
-              Viral Invite
+              1-Click Share
             </span>
           </div>
 
