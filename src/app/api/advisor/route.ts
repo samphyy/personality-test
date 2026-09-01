@@ -66,16 +66,24 @@ YOUR DIRECT COACHING RESPONSE:`;
 
     let geminiErrorDetails = null;
 
-    // 1. Prioritize Google Gemini (Gemini 1.5 Flash)
+    // 1. Prioritize Google Gemini (Gemini 1.5 Flash / 2.0 Flash)
     if (geminiKey) {
-      const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
+      const modelsToTry = [
+        { ver: 'v1beta', name: 'gemini-1.5-flash' },
+        { ver: 'v1beta', name: 'gemini-2.0-flash' },
+        { ver: 'v1', name: 'gemini-1.5-flash' },
+        { ver: 'v1beta', name: 'gemini-1.5-pro' },
+      ];
 
-      for (const modelName of modelsToTry) {
+      for (const { ver, name: modelName } of modelsToTry) {
         try {
-          const geminiEndpoint = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${geminiKey}`;
+          const geminiEndpoint = `https://generativelanguage.googleapis.com/${ver}/models/${modelName}:generateContent?key=${encodeURIComponent(geminiKey)}`;
           const aiRes = await fetch(geminiEndpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Content-Type': 'application/json',
+              'x-goog-api-key': geminiKey,
+            },
             body: JSON.stringify({
               contents: [
                 {
@@ -103,7 +111,7 @@ YOUR DIRECT COACHING RESPONSE:`;
             }
           } else {
             const errText = await aiRes.text();
-            geminiErrorDetails = `Model ${modelName} returned ${aiRes.status}: ${errText.slice(0, 200)}`;
+            geminiErrorDetails = `Model ${modelName} (${ver}) returned ${aiRes.status}: ${errText.slice(0, 200)}`;
             console.warn(geminiErrorDetails);
           }
         } catch (modelErr: any) {
@@ -165,7 +173,7 @@ YOUR DIRECT COACHING RESPONSE:`;
       source: 'knowledge_engine',
       debug: {
         hasGeminiKey: Boolean(geminiKey),
-        geminiKeyPrefix: geminiKey ? `${geminiKey.slice(0, 5)}...` : 'none',
+        geminiKeyPrefix: geminiKey ? `${geminiKey.slice(0, 6)}...` : 'none',
         hasOpenAIKey: Boolean(openaiKey),
         error: geminiErrorDetails,
       },
