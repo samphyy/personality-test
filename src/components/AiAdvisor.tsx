@@ -29,22 +29,33 @@ interface ChatMessage {
 }
 
 function FormattedMarkdown({ content }: { content: string }) {
-  const lines = content.split('\n');
+  if (!content) return null;
+
+  // Normalize line endings
+  const normalized = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const rawLines = normalized.split('\n');
   const elements: React.ReactNode[] = [];
   let listBuffer: { type: 'ul' | 'ol'; items: string[] } | null = null;
 
   const renderInline = (str: string): React.ReactNode => {
-    // Split by bold (**text**)
-    const parts = str.split(/(\*\*.*?\*\*)/g);
-    return parts.map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
+    // Regex splits by bold (**text**) or italic (*text*)
+    const tokens = str.split(/(\*\*.*?\*\*|\*[^*]+?\*)/g);
+    return tokens.map((token, i) => {
+      if (token.startsWith('**') && token.endsWith('**') && token.length > 4) {
         return (
           <strong key={i} className="font-bold text-slate-900 dark:text-white">
-            {part.slice(2, -2)}
+            {token.slice(2, -2)}
           </strong>
         );
       }
-      return part;
+      if (token.startsWith('*') && token.endsWith('*') && token.length > 2 && !token.startsWith('**')) {
+        return (
+          <em key={i} className="italic text-slate-800 dark:text-slate-200">
+            {token.slice(1, -1)}
+          </em>
+        );
+      }
+      return token;
     });
   };
 
@@ -52,10 +63,10 @@ function FormattedMarkdown({ content }: { content: string }) {
     if (!listBuffer) return;
     if (listBuffer.type === 'ul') {
       elements.push(
-        <ul key={`ul-${elements.length}`} className="space-y-1.5 my-2.5">
+        <ul key={`ul-${elements.length}`} className="space-y-2 my-2.5">
           {listBuffer.items.map((item, idx) => (
             <li key={idx} className="flex items-start text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mr-2.5 shrink-0 mt-1.5" />
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-500 mr-2.5 shrink-0 mt-2" />
               <div className="flex-1 leading-relaxed">{renderInline(item)}</div>
             </li>
           ))}
@@ -63,10 +74,10 @@ function FormattedMarkdown({ content }: { content: string }) {
       );
     } else {
       elements.push(
-        <ol key={`ol-${elements.length}`} className="space-y-1.5 my-2.5">
+        <ol key={`ol-${elements.length}`} className="space-y-2 my-2.5">
           {listBuffer.items.map((item, idx) => (
             <li key={idx} className="flex items-start text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-              <span className="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 text-[10px] font-bold flex items-center justify-center mr-2.5 shrink-0 mt-0.5">
+              <span className="w-4 h-4 rounded-full bg-teal-100 dark:bg-teal-900/60 text-teal-800 dark:text-teal-200 text-[10px] font-bold flex items-center justify-center mr-2.5 shrink-0 mt-0.5 border border-teal-200 dark:border-teal-800">
                 {idx + 1}
               </span>
               <div className="flex-1 leading-relaxed">{renderInline(item)}</div>
@@ -78,7 +89,7 @@ function FormattedMarkdown({ content }: { content: string }) {
     listBuffer = null;
   };
 
-  lines.forEach((rawLine, index) => {
+  rawLines.forEach((rawLine, index) => {
     const line = rawLine.trim();
 
     if (!line) {
@@ -101,7 +112,7 @@ function FormattedMarkdown({ content }: { content: string }) {
       elements.push(
         <h4
           key={`h4-${index}`}
-          className="text-xs sm:text-sm font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400 mt-3 mb-1.5"
+          className="text-xs sm:text-sm font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400 mt-3.5 mb-1.5"
         >
           {renderInline(line.slice(5))}
         </h4>
