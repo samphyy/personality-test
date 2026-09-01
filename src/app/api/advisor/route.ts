@@ -32,20 +32,16 @@ export async function POST(req: Request) {
       process.env.NEXT_PUBLIC_GEMINI_API_KEY
     )?.trim();
 
-    let geminiErrorDetails = null;
+    const openaiKey = process.env.OPENAI_API_KEY?.trim();
 
-    // 1. If Gemini API Key is available, attempt generative AI generation
-    if (geminiKey) {
-      const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash', 'gemini-1.5-pro'];
+    const conversationHistoryText = Array.isArray(history) && history.length > 0
+      ? history
+          .slice(-6)
+          .map((h: any) => `${h.sender === 'user' ? 'Client' : 'Coach (You)'}: ${h.text}`)
+          .join('\n\n')
+      : '';
 
-      const conversationHistoryText = Array.isArray(history) && history.length > 0
-        ? history
-            .slice(-6)
-            .map((h: any) => `${h.sender === 'user' ? 'Client' : 'Coach (You)'}: ${h.text}`)
-            .join('\n\n')
-        : '';
-
-      const fullPrompt = `You are the insightful, empathetic, and highly conversational Executive Psychometrics & Career Coach for YSAMPHY LLC (https://personality-test.ysamphy.com).
+    const systemPrompt = `You are the insightful, empathetic, and highly conversational Executive Psychometrics & Career Coach for YSAMPHY LLC (https://personality-test.ysamphy.com).
 You are speaking directly 1-on-1 with a client whose Big Five personality blueprint is:
 - Primary Archetype: ${safeArchetype.name} ("${safeArchetype.tagline}")
 - Openness to Experience: ${safeScores.openness}%
@@ -58,13 +54,64 @@ Conversational Coaching Rules:
 1. Speak naturally, warmly, and empathetically—like an authentic trusted mentor having an engaging dialogue.
 2. Directly answer the client's question with deep psychological intelligence. If they ask a follow-up, build on previous context.
 3. Weave in their specific trait numbers naturally (e.g. "Because of your ${safeScores.conscientiousness}% conscientiousness...", "Given that you recharge through quiet focus at ${safeScores.extraversion}% extraversion...").
-4. Use clean, readable markdown: bold key insights (**bold**), use bullet points (* bullet) when giving multi-step advice, and keep the tone empowering and practical.
+4. Use clean, readable markdown: bold key insights (**bold**), use bullet points (* bullet) when giving multi-step advice, and keep the tone empowering and practical.`;
+
+    const fullPrompt = `${systemPrompt}
 
 ${conversationHistoryText ? `--- PREVIOUS CONVERSATION CONTEXT ---\n${conversationHistoryText}\n--------------------------------------\n` : ''}
 CLIENT QUESTION:
 "${message}"
 
 YOUR DIRECT COACHING RESPONSE:`;
+
+    // 1. If OpenAI API Key is available
+    if (openaiKey) {
+      try {
+        const oaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${openaiKey}`,
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+              { role: 'system', content: systemPrompt },
+              ...(Array.isArray(history)
+                ? history.slice(-6).map((h: any) => ({
+                    role: h.sender === 'user' ? 'user' : 'assistant',
+                    content: h.text,
+                  }))
+                : []),
+              { role: 'user', content: message },
+            ],
+            temperature: 0.75,
+            max_tokens: 1200,
+          }),
+        });
+
+        if (oaiRes.ok) {
+          const oaiData = await oaiRes.json();
+          const oaiText = oaiData?.choices?.[0]?.message?.content;
+          if (oaiText) {
+            return NextResponse.json({
+              success: true,
+              response: oaiText,
+              source: 'openai_ai',
+              model: 'gpt-4o-mini',
+            });
+          }
+        }
+      } catch (oaiErr) {
+        console.warn('OpenAI API Error:', oaiErr);
+      }
+    }
+
+    let geminiErrorDetails = null;
+
+    // 2. If Gemini API Key is available
+    if (geminiKey) {
+      const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash', 'gemini-1.5-pro'];
 
       for (const modelName of modelsToTry) {
         try {
@@ -109,7 +156,7 @@ YOUR DIRECT COACHING RESPONSE:`;
       }
     }
 
-    // 2. Intelligent Psychometric Knowledge Engine (Guaranteed zero-failure response)
+    // 3. Intelligent Psychometric Knowledge Engine (Guaranteed zero-failure response)
     const synthesizedAdvice = generatePsychometricAdvice(message, safeScores, safeArchetype);
 
     return NextResponse.json({
@@ -117,8 +164,9 @@ YOUR DIRECT COACHING RESPONSE:`;
       response: synthesizedAdvice,
       source: 'knowledge_engine',
       debug: {
-        hasKey: Boolean(geminiKey),
-        keyPrefix: geminiKey ? `${geminiKey.slice(0, 5)}...` : 'none',
+        hasGeminiKey: Boolean(geminiKey),
+        geminiKeyPrefix: geminiKey ? `${geminiKey.slice(0, 5)}...` : 'none',
+        hasOpenAIKey: Boolean(openaiKey),
         error: geminiErrorDetails,
       },
     });
