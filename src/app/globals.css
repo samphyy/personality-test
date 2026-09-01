@@ -26,7 +26,7 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 1.2cm 1.2cm 1.2cm 1.2cm;
+    margin: 1cm 1.2cm 1cm 1.2cm;
   }
 
   *, *::before, *::after {
@@ -38,8 +38,8 @@ body {
   html, body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 9.5pt !important;
-    line-height: 1.3 !important;
+    font-size: 9pt !important;
+    line-height: 1.25 !important;
     display: block !important;
     height: auto !important;
     min-height: auto !important;
@@ -63,20 +63,21 @@ body {
     page-break-after: avoid !important;
   }
 
-  /* Dedicated clean print pages with bottom pinned footer */
+  /* Dedicated clean print pages - exactly 1 physical page per section */
   .print-page {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    min-height: 25.2cm !important;
+    display: block !important;
     page-break-after: always !important;
     break-after: page !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
-    padding-top: 0.1cm !important;
-    padding-bottom: 0.1cm !important;
+    padding: 0 !important;
+    margin: 0 !important;
     width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: 26.8cm !important;
+    overflow: hidden !important;
   }
 
   .print-page:last-child {
@@ -114,5 +115,6 @@ body {
     page-break-inside: avoid !important;
   }
 }
+
 
 

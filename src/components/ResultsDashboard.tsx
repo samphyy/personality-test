@@ -1010,56 +1010,51 @@ ${shareUrl}`;
         </div>
 
         {/* =========================================================================
-            PRINT PAGE 4: SECTION 5 (COMPLETE 30-DAY GROWTH ROADMAP - COMPACT 4 WEEKS)
+            PRINT PAGE 4: SECTION 5 (COMPLETE 30-DAY GROWTH ROADMAP)
            ========================================================================= */}
-        <div className="print-page">
-          <div className="space-y-2">
-            {/* Section 5 Header */}
-            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
-                SECTION 5: 30-DAY PERSONALIZED BEHAVIORAL GROWTH ROADMAP
-              </span>
-              <span className="text-[9.5px] font-bold text-slate-500">Page 4 of 5</span>
-            </div>
+        <div className="print-page space-y-1.5">
+          {/* Section 5 Header */}
+          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+              SECTION 5: 30-DAY PERSONALIZED BEHAVIORAL GROWTH ROADMAP
+            </span>
+            <span className="text-[9.5px] font-bold text-slate-500">Page 4 of 5</span>
+          </div>
 
-            {/* Section 5: Growth Plan Header */}
-            <div className="flex items-center justify-between bg-amber-50/50 p-2 rounded-xl border border-amber-200 text-xs">
-              <div>
-                <strong className="text-[10px] uppercase font-bold text-amber-950 block">Primary Growth Focus: {growthPlan.focusTitle}</strong>
-                <p className="text-[9px] text-slate-700 leading-snug">{growthPlan.summary}</p>
-              </div>
-              <span className="text-[9px] font-bold px-2.5 py-1 rounded-lg bg-amber-200 text-amber-900 shrink-0 ml-2">
-                Focus: {growthPlan.focusTrait}
-              </span>
+          {/* Section 5: Growth Plan Header */}
+          <div className="flex items-center justify-between bg-amber-50/60 p-1.5 rounded-xl border border-amber-200 text-xs">
+            <div>
+              <strong className="text-[9.5px] uppercase font-bold text-amber-950 block">Primary Growth Focus: {growthPlan.focusTitle}</strong>
+              <p className="text-[8.5px] text-slate-700 leading-tight">{growthPlan.summary}</p>
             </div>
+            <span className="text-[8.5px] font-bold px-2 py-0.5 rounded-lg bg-amber-200 text-amber-900 shrink-0 ml-2">
+              Focus: {growthPlan.focusTrait}
+            </span>
+          </div>
 
-            {/* Section 5: ALL 4 WEEKS & ALL 30 DAYS IN COMPACT 2-COLUMN CHECKLIST GRID */}
-            <div className="grid grid-cols-2 gap-2 text-[8.5px]">
-              {growthPlan.weeks.map((w) => (
-                <div key={w.week} className="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
-                  <div className="flex items-center justify-between border-b border-slate-200 pb-0.5">
-                    <strong className="text-[9px] text-slate-900 uppercase">Week {w.week}: {w.title}</strong>
-                    <span className="text-[7.5px] text-slate-500 truncate max-w-[130px]">{w.goal}</span>
-                  </div>
-                  <div className="space-y-1">
-                    {w.habits.map((h) => (
-                      <div key={h.day} className="p-1 rounded bg-slate-50 border border-slate-150 leading-tight">
-                        <div className="flex items-center justify-between font-bold text-slate-900">
-                          <span>[ ] Day {h.day}: {h.title}</span>
-                          <span className="text-[7.5px] text-slate-400 font-normal">{h.timeEstimate}</span>
-                        </div>
-                        <p className="text-slate-700 text-[8px] mt-0.5"><span className="font-semibold text-slate-800">Action:</span> {h.action}</p>
-                        <p className="text-slate-500 italic text-[7.5px] mt-0.5">💡 {h.whyItWorks}</p>
-                      </div>
-                    ))}
-                  </div>
+          {/* Section 5: ALL 4 WEEKS & ALL 30 DAYS IN COMPACT 2-COLUMN CHECKLIST */}
+          <div className="grid grid-cols-2 gap-2 text-[8px]">
+            {growthPlan.weeks.map((w) => (
+              <div key={w.week} className="p-1.5 rounded-xl border border-slate-300 bg-white space-y-0.5">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-0.5 mb-0.5">
+                  <strong className="text-[8.5px] text-slate-900 uppercase">Week {w.week}: {w.title}</strong>
+                  <span className="text-[7.5px] text-slate-500 truncate max-w-[130px]">{w.goal}</span>
                 </div>
-              ))}
-            </div>
+                <div className="space-y-0.5">
+                  {w.habits.map((h) => (
+                    <div key={h.day} className="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-150 leading-tight">
+                      <span className="font-bold text-slate-900">[ ] Day {h.day}: {h.title}</span>
+                      <span className="text-slate-500 text-[7px] ml-1">({h.timeEstimate})</span>
+                      <p className="text-slate-700 text-[7.5px] leading-none mt-0.5">{h.action}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Page 4 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1.5 mt-auto text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-1 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 4 of 5</span>
           </div>
@@ -1068,64 +1063,56 @@ ${shareUrl}`;
         {/* =========================================================================
             PRINT PAGE 5: SECTION 6 (CAREER ASSETS, INTERVIEW SCRIPTS & CERTIFICATION)
            ========================================================================= */}
-        <div className="print-page">
-          <div className="space-y-2.5">
-            {/* Section 6 Header */}
-            <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
-              <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
-                SECTION 6: EXECUTIVE CAREER ASSETS & BEHAVIORAL INTERVIEW SCRIPTS
-              </span>
-              <span className="text-[9.5px] font-bold text-slate-500">Page 5 of 5</span>
-            </div>
+        <div className="print-page space-y-2">
+          {/* Section 6 Header */}
+          <div className="flex items-center justify-between border-b-2 border-slate-900 pb-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">
+              SECTION 6: EXECUTIVE CAREER ASSETS & BEHAVIORAL INTERVIEW SCRIPTS
+            </span>
+            <span className="text-[9.5px] font-bold text-slate-500">Page 5 of 5</span>
+          </div>
 
-            {/* Section 6 Overview Description */}
-            <p className="text-[9.5px] text-slate-600 bg-blue-50/40 p-2 rounded-xl border border-blue-200 leading-tight">
-              <strong>Overview:</strong> Psychometrically tailored career positioning assets, behavioral interview talking scripts, and LinkedIn summaries calibrated to your Big Five strengths as a <em>{result.archetype.name}</em>.
-            </p>
+          {/* Section 6 Overview Description */}
+          <p className="text-[9px] text-slate-600 bg-blue-50/40 p-1.5 rounded-xl border border-blue-200 leading-tight">
+            <strong>Overview:</strong> Psychometrically tailored career positioning assets, behavioral interview talking scripts, and LinkedIn summaries calibrated to your Big Five strengths as a <em>{result.archetype.name}</em>.
+          </p>
 
-            {/* 5 Psychometric Resume Impact Bullets */}
-            <div className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1">
-              <h4 className="font-bold text-[10px] uppercase tracking-wider text-slate-900">5 Psychometric Resume Impact Bullets</h4>
-              <div className="space-y-1 text-xs text-slate-700">
-                {careerAssets.resumeBullets.map((b, i) => (
-                  <div key={i} className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 text-[9.5px]">
-                    <strong className="text-slate-900">{b.title} ({b.trait}):</strong> &ldquo;{b.bullet}&rdquo;
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Behavioral Interview Scripts */}
-            <div className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1.5">
-              <h4 className="font-bold text-[10px] uppercase tracking-wider text-slate-900">Behavioral Interview Talking Scripts</h4>
-              <div className="space-y-1 text-xs text-slate-700">
-                {careerAssets.interviewScripts.map((scr, i) => (
-                  <div key={i} className="p-2 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5 text-[9.5px]">
-                    <strong className="text-slate-900 block font-bold">Q: {scr.question}</strong>
-                    <p className="text-slate-800 italic bg-white p-1 rounded border border-slate-200">&ldquo;{scr.script}&rdquo;</p>
-                    <p className="text-[8.5px] text-slate-500">💡 Context: {scr.context}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Executive LinkedIn Bio */}
-            <div className="print-avoid-break p-2.5 rounded-xl border border-slate-300 bg-white space-y-1">
-              <h4 className="font-bold text-[10px] uppercase tracking-wider text-slate-900">LinkedIn &ldquo;About&rdquo; Bio (Executive Version)</h4>
-              <p className="text-[9px] text-slate-700 whitespace-pre-line bg-slate-50 p-2 rounded-lg border border-slate-200 leading-relaxed">
-                {careerAssets.linkedInBios.executive}
-              </p>
-            </div>
-
-            {/* Verification & Certification Footer */}
-            <div className="print-avoid-break text-center pt-2 border-t border-slate-300 text-[9px] text-slate-500 space-y-0.5">
-              <p className="font-bold text-slate-700">© 2026 YSAMPHY LLC • Psychological Blueprint Dossier • Validated IPIP Psychometrics</p>
-              <p>Generated online at personality-test.ysamphy.com • All Rights Reserved</p>
+          {/* 5 Psychometric Resume Impact Bullets */}
+          <div className="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+            <h4 className="font-bold text-[9.5px] uppercase tracking-wider text-slate-900">5 Psychometric Resume Impact Bullets</h4>
+            <div className="space-y-0.5 text-[8.5px] text-slate-700">
+              {careerAssets.resumeBullets.map((b, i) => (
+                <div key={i} className="px-1.5 py-0.5 rounded bg-slate-50 border border-slate-200">
+                  <strong className="text-slate-900">{b.title} ({b.trait}):</strong> &ldquo;{b.bullet}&rdquo;
+                </div>
+              ))}
             </div>
           </div>
 
+          {/* Behavioral Interview Scripts */}
+          <div className="p-2 rounded-xl border border-slate-300 bg-white space-y-1">
+            <h4 className="font-bold text-[9.5px] uppercase tracking-wider text-slate-900">Behavioral Interview Talking Scripts</h4>
+            <div className="space-y-1 text-[8.5px] text-slate-700">
+              {careerAssets.interviewScripts.slice(0, 2).map((scr, i) => (
+                <div key={i} className="p-1.5 rounded bg-slate-50 border border-slate-200 space-y-0.5">
+                  <strong className="text-slate-900 block font-bold">Q: {scr.question}</strong>
+                  <p className="text-slate-800 italic bg-white p-1 rounded border border-slate-200">&ldquo;{scr.script}&rdquo;</p>
+                  <p className="text-[7.5px] text-slate-500">💡 Context: {scr.context}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Executive LinkedIn Bio */}
+          <div className="p-2 rounded-xl border border-slate-300 bg-white space-y-0.5">
+            <h4 className="font-bold text-[9.5px] uppercase tracking-wider text-slate-900">LinkedIn &ldquo;About&rdquo; Bio (Executive Version)</h4>
+            <p className="text-[8.5px] text-slate-700 whitespace-pre-line bg-slate-50 p-1.5 rounded border border-slate-200 leading-tight">
+              {careerAssets.linkedInBios.executive}
+            </p>
+          </div>
+
           {/* Page 5 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1.5 mt-auto text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-1 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 5 of 5</span>
           </div>
