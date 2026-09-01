@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
     // 1. If Gemini API Key is available, attempt generative AI generation
     if (geminiKey) {
-      const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro', 'gemini-1.0-pro'];
+      const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash', 'gemini-1.5-pro'];
 
       const conversationHistoryText = Array.isArray(history) && history.length > 0
         ? history
