@@ -30,6 +30,7 @@ import RadarChartComponent from './RadarChartComponent';
 import KitSubscribeForm from './KitSubscribeForm';
 import CompareInviteModal from './CompareInviteModal';
 import AiAdvisor from './AiAdvisor';
+import CareerAssetModal from './CareerAssetModal';
 
 interface ResultsDashboardProps {
   result: AssessmentResult;
@@ -41,6 +42,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
   const [copied, setCopied] = useState(false);
   const [cardModalOpen, setCardModalOpen] = useState(false);
   const [compareModalOpen, setCompareModalOpen] = useState(false);
+  const [careerModalOpen, setCareerModalOpen] = useState(false);
 
   // Trigger celebration confetti on mount
   useEffect(() => {
@@ -141,6 +143,15 @@ ${shareUrl}`;
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Resume & Bio Generator Button */}
+          <button
+            onClick={() => setCareerModalOpen(true)}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-200/80 dark:border-blue-800/80 transition-all shadow-sm active:scale-95"
+          >
+            <Briefcase className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <span>Resume & Bio</span>
+          </button>
+
           {/* Ask AI Coach Button */}
           <button
             onClick={() => {
@@ -281,6 +292,13 @@ ${shareUrl}`;
         result={result}
         isOpen={compareModalOpen}
         onClose={() => setCompareModalOpen(false)}
+      />
+
+      {/* RESUME & LINKEDIN BIO MODAL */}
+      <CareerAssetModal
+        result={result}
+        isOpen={careerModalOpen}
+        onClose={() => setCareerModalOpen(false)}
       />
 
       {/* =========================================================================
@@ -586,6 +604,34 @@ ${shareUrl}`;
                   </span>
                 ))}
               </div>
+            </div>
+
+            {/* 1-Click Resume & LinkedIn Bio Launcher */}
+            <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-500/10 via-brand-500/10 to-teal-500/10 border border-blue-200/80 dark:border-blue-800/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xs uppercase tracking-wider font-bold text-blue-600 dark:text-blue-400">
+                    ⚡ Instant Career Assets
+                  </span>
+                  <span className="text-[10px] bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 font-bold px-2 py-0.5 rounded-full">
+                    Tailored to {result.archetype.name}
+                  </span>
+                </div>
+                <h5 className="text-base font-bold text-slate-900 dark:text-white">
+                  Get 5 Resume Impact Bullets & 3 LinkedIn Bio Variations
+                </h5>
+                <p className="text-xs text-slate-600 dark:text-slate-400">
+                  Ready-to-copy bullet points and interview talking scripts calibrated to your exact Big Five strengths.
+                </p>
+              </div>
+
+              <button
+                onClick={() => setCareerModalOpen(true)}
+                className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-blue-600/20 transition-all shrink-0 active:scale-95"
+              >
+                <Briefcase className="w-4 h-4" />
+                <span>Open Resume & Bio Generator</span>
+              </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
