@@ -26,23 +26,48 @@ body {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 1.2cm 1.2cm 1.2cm 1.2cm;
+    margin: 1cm 1.2cm 1cm 1.2cm;
   }
 
   *, *::before, *::after {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    color-adjust: exact !important;
   }
 
   body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 11pt !important;
+    font-size: 10.5pt !important;
     line-height: 1.4 !important;
   }
 
   header, footer, nav, button, .no-print, .print\:hidden {
     display: none !important;
+  }
+
+  /* Force high-contrast dark card retention in PDF & Print */
+  .print-dark-card {
+    background: #0f172a !important;
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print-dark-card * {
+    color: #ffffff !important;
+  }
+
+  .print-dark-card .text-amber-200,
+  .print-dark-card .text-amber-300 {
+    color: #fcd34d !important;
+  }
+
+  .print-dark-card .text-teal-200,
+  .print-dark-card .text-teal-300,
+  .print-dark-card .text-teal-400 {
+    color: #5eead4 !important;
   }
 
   /* Prevent awkward page cuts */

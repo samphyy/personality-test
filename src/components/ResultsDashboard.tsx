@@ -288,24 +288,33 @@ ${shareUrl}`;
          ========================================================================= */}
       <div className="space-y-6">
         {/* Archetype Hero Card */}
-        <div className={`print-avoid-break relative rounded-3xl p-6 sm:p-10 text-white bg-gradient-to-r ${result.archetype.colorTheme} shadow-xl shadow-brand-500/15 overflow-hidden print:shadow-none print:rounded-2xl print:p-6`}>
+        <div
+          className="print-avoid-break print-dark-card relative rounded-3xl p-6 sm:p-10 text-white bg-slate-900 shadow-xl shadow-brand-500/15 overflow-hidden print:shadow-none print:rounded-2xl print:p-6"
+          style={{
+            background: 'linear-gradient(135deg, #0f172a 0%, #0f766e 50%, #042f2e 100%)',
+            backgroundColor: '#0f172a',
+            color: '#ffffff',
+            WebkitPrintColorAdjust: 'exact',
+            printColorAdjust: 'exact',
+          }}
+        >
           <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 rounded-full bg-white/10 blur-2xl pointer-events-none print:hidden" />
           
           <div className="relative z-10 max-w-3xl space-y-3 print:space-y-2">
-            <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider print:bg-white/30">
-              <Award className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center space-x-2 px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-md text-[11px] font-bold uppercase tracking-wider text-teal-200 print:bg-white/20 print:text-teal-200">
+              <Award className="w-3.5 h-3.5 text-teal-300" />
               <span>Primary Archetype</span>
             </div>
 
-            <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white">
               {result.archetype.name}
             </h2>
 
-            <p className="text-base sm:text-lg font-medium text-white/95 italic">
+            <p className="text-base sm:text-lg font-medium text-teal-100 italic">
               &ldquo;{result.archetype.tagline}&rdquo;
             </p>
 
-            <p className="text-xs sm:text-sm text-white/90 leading-relaxed pt-1">
+            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed pt-1">
               {result.archetype.description}
             </p>
 
@@ -560,9 +569,16 @@ ${shareUrl}`;
         {/* Tab 3: Careers */}
         {activeTab === 'careers' && (
           <div className="space-y-8">
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950 text-white space-y-3 border border-teal-800/30">
-              <span className="text-xs uppercase tracking-wider text-brand-300 font-bold">Recommended Career Matches</span>
-              <h4 className="text-xl font-bold">High-Fit Domains for {result.archetype.name}</h4>
+            <div
+              className="p-6 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-teal-950 text-white space-y-3 border border-teal-800/30"
+              style={{
+                background: 'linear-gradient(135deg, #0f172a 0%, #042f2e 100%)',
+                backgroundColor: '#0f172a',
+                color: '#ffffff',
+              }}
+            >
+              <span className="text-xs uppercase tracking-wider text-teal-300 font-bold">Recommended Career Matches</span>
+              <h4 className="text-xl font-bold text-white">High-Fit Domains for {result.archetype.name}</h4>
               <div className="flex flex-wrap gap-2 pt-2">
                 {result.archetype.idealRoles.map((role, idx) => (
                   <span key={idx} className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-md text-xs sm:text-sm font-semibold text-white border border-white/10 transition-colors">
