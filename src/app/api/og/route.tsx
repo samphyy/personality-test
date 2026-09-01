@@ -5,6 +5,11 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
 
+    const mode = searchParams.get('mode');
+    const u1 = searchParams.get('u1');
+    const u2 = searchParams.get('u2');
+    const isCompare = mode === 'compare' || Boolean(u1 && u2);
+
     const archId = searchParams.get('arch');
     const o = searchParams.get('o') || '50';
     const c = searchParams.get('c') || '50';
@@ -19,7 +24,17 @@ export async function GET(request: Request) {
       tagline: 'Scientifically validated self-discovery across 5 continuous dimensions.',
     };
 
-    const isHome = searchParams.get('mode') === 'home' || !archId;
+    const isHome = mode === 'home' || (!archId && !isCompare);
+
+    let displayTitle = isHome ? 'Decode Your True Personality Blueprint' : archetype.name;
+    let displayTagline = isHome
+      ? 'Discover where you stand across Openness, Conscientiousness, Extraversion, Agreeableness, and Emotional Stability.'
+      : `"${archetype.tagline}"`;
+
+    if (isCompare) {
+      displayTitle = `${u1 || 'Partner 1'} & ${u2 || 'Partner 2'}`;
+      displayTagline = 'Psychometric Synergy, Communication Harmony, and Collaboration Blueprint.';
+    }
 
     return new ImageResponse(
       (
@@ -31,7 +46,7 @@ export async function GET(request: Request) {
             flexDirection: 'column',
             justifyContent: 'space-between',
             backgroundColor: '#090d16',
-            backgroundImage: 'radial-gradient(circle at 85% 15%, rgba(20, 184, 166, 0.25) 0%, rgba(9, 13, 22, 0) 55%), radial-gradient(circle at 10% 90%, rgba(2, 132, 199, 0.2) 0%, rgba(9, 13, 22, 0) 50%)',
+            backgroundImage: 'radial-gradient(circle at 85% 15%, rgba(20, 184, 166, 0.25) 0%, rgba(9, 13, 22, 0) 55%), radial-gradient(circle at 10% 90%, rgba(139, 92, 246, 0.2) 0%, rgba(9, 13, 22, 0) 50%)',
             padding: '56px 64px',
             fontFamily: 'sans-serif',
             color: '#ffffff',
@@ -86,8 +101,8 @@ export async function GET(request: Request) {
                 border: '1px solid rgba(255, 255, 255, 0.12)',
               }}
             >
-              <span style={{ fontSize: '13px', color: '#5eead4', fontWeight: 700 }}>
-                Validated Five-Factor Model
+              <span style={{ fontSize: '13px', color: isCompare ? '#c084fc' : '#5eead4', fontWeight: 700 }}>
+                {isCompare ? 'Dual Profile Synergy' : 'Validated Five-Factor Model'}
               </span>
             </div>
           </div>
@@ -104,9 +119,9 @@ export async function GET(request: Request) {
               >
                 <span
                   style={{
-                    backgroundColor: 'rgba(20, 184, 166, 0.2)',
-                    color: '#5eead4',
-                    border: '1px solid rgba(20, 184, 166, 0.4)',
+                    backgroundColor: isCompare ? 'rgba(139, 92, 246, 0.2)' : 'rgba(20, 184, 166, 0.2)',
+                    color: isCompare ? '#c084fc' : '#5eead4',
+                    border: isCompare ? '1px solid rgba(139, 92, 246, 0.4)' : '1px solid rgba(20, 184, 166, 0.4)',
                     padding: '4px 14px',
                     borderRadius: '999px',
                     fontSize: '12px',
@@ -115,7 +130,7 @@ export async function GET(request: Request) {
                     letterSpacing: '1px',
                   }}
                 >
-                  Dominant Archetype
+                  {isCompare ? 'Synergy & Compatibility Report' : 'Dominant Archetype'}
                 </span>
               </div>
             )}
@@ -127,12 +142,14 @@ export async function GET(request: Request) {
                 letterSpacing: '-1.5px',
                 margin: '0 0 12px 0',
                 lineHeight: 1.1,
-                backgroundImage: 'linear-gradient(to right, #ffffff, #f1f5f9, #5eead4)',
+                backgroundImage: isCompare
+                  ? 'linear-gradient(to right, #ffffff, #c084fc, #5eead4)'
+                  : 'linear-gradient(to right, #ffffff, #f1f5f9, #5eead4)',
                 backgroundClip: 'text',
                 color: 'transparent',
               }}
             >
-              {isHome ? 'Decode Your True Personality Blueprint' : archetype.name}
+              {displayTitle}
             </h1>
 
             <p
@@ -142,12 +159,10 @@ export async function GET(request: Request) {
                 margin: 0,
                 maxWidth: '920px',
                 lineHeight: 1.4,
-                fontStyle: isHome ? 'normal' : 'italic',
+                fontStyle: isHome || isCompare ? 'normal' : 'italic',
               }}
             >
-              {isHome
-                ? 'Discover where you stand across Openness, Conscientiousness, Extraversion, Agreeableness, and Emotional Stability.'
-                : `"${archetype.tagline}"`}
+              {displayTagline}
             </p>
           </div>
 
@@ -163,7 +178,13 @@ export async function GET(request: Request) {
               padding: '16px 24px',
             }}
           >
-            {!isHome ? (
+            {isCompare ? (
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontSize: '15px', color: '#c084fc', fontWeight: 800 }}>
+                  👥 Dual Radar Overlay • Trait Delta Analysis • Communication & Workplace Guide
+                </span>
+              </div>
+            ) : !isHome ? (
               <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase' }}>Openness</span>

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Compass, BookOpen, ArrowUpRight, Menu, X } from 'lucide-react';
+import { Compass, BookOpen, Users, ArrowUpRight, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -80,6 +80,18 @@ export default function Navbar() {
             </Link>
 
             <Link
+              href="/compare"
+              className={`flex items-center space-x-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
+                pathname === '/compare'
+                  ? 'bg-slate-100 dark:bg-slate-800 text-purple-600 dark:text-purple-400 font-bold'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-900'
+              }`}
+            >
+              <Users className="w-4 h-4" />
+              <span>Compare</span>
+            </Link>
+
+            <Link
               href="/test"
               className="flex items-center space-x-1.5 px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold bg-brand-500 hover:bg-brand-600 text-white shadow-sm shadow-brand-500/25 hover:shadow-brand-500/35 transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
@@ -135,6 +147,19 @@ export default function Navbar() {
           >
             <BookOpen className="w-4 h-4" />
             <span>Trait Library</span>
+          </Link>
+
+          <Link
+            href="/compare"
+            onClick={() => setMobileMenuOpen(false)}
+            className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+              pathname === '/compare'
+                ? 'bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300'
+                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Users className="w-4 h-4" />
+            <span>Compare Profiles</span>
           </Link>
 
           <Link

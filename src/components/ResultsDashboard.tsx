@@ -27,6 +27,7 @@ import { TRAIT_DEFINITIONS } from '@/data/questions';
 import { encodeResultToQueryParams } from '@/lib/scoring';
 import RadarChartComponent from './RadarChartComponent';
 import KitSubscribeForm from './KitSubscribeForm';
+import CompareInviteModal from './CompareInviteModal';
 
 interface ResultsDashboardProps {
   result: AssessmentResult;
@@ -37,6 +38,7 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
   const [expandedTraits, setExpandedTraits] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
   const [cardModalOpen, setCardModalOpen] = useState(false);
+  const [compareModalOpen, setCompareModalOpen] = useState(false);
 
   // Trigger celebration confetti on mount
   useEffect(() => {
@@ -137,6 +139,15 @@ ${shareUrl}`;
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Compare Button */}
+          <button
+            onClick={() => setCompareModalOpen(true)}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900 border border-purple-200/80 dark:border-purple-800/80 transition-all shadow-sm"
+          >
+            <Users className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+            <span>Compare</span>
+          </button>
+
           {/* Download Social Card Button */}
           <button
             onClick={() => setCardModalOpen(true)}
@@ -250,6 +261,13 @@ ${shareUrl}`;
           </div>
         </div>
       )}
+
+      {/* COMPARE PROFILES & SYNERGY MODAL */}
+      <CompareInviteModal
+        result={result}
+        isOpen={compareModalOpen}
+        onClose={() => setCompareModalOpen(false)}
+      />
 
       {/* =========================================================================
           PAGE 1 (PRINT): EXECUTIVE SUMMARY & DIMENSIONAL RADAR MAP
