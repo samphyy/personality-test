@@ -26,6 +26,8 @@ interface ChatMessage {
   sender: 'user' | 'assistant';
   text: string;
   timestamp: number;
+  source?: string;
+  model?: string;
 }
 
 function FormattedMarkdown({ content }: { content: string }) {
@@ -244,6 +246,8 @@ export default function AiAdvisor({ result }: AiAdvisorProps) {
         sender: 'assistant',
         text: data.response || 'I was unable to analyze this inquiry at this moment. Please try again.',
         timestamp: Date.now(),
+        source: data.source,
+        model: data.model,
       };
 
       setMessages((prev) => [...prev, assistantMsg]);
@@ -367,9 +371,16 @@ export default function AiAdvisor({ result }: AiAdvisorProps) {
                 >
                   {!isUser && (
                     <div className="flex items-center justify-between border-b border-slate-200/80 dark:border-slate-700 pb-2 mb-3">
-                      <span className="text-[11px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">
-                        YSAMPHY AI Psychometrics
-                      </span>
+                      <div className="flex items-center space-x-1.5">
+                        <span className="text-[11px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">
+                          YSAMPHY AI Psychometrics
+                        </span>
+                        {msg.model && (
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium px-1.5 py-0.5 rounded-md bg-slate-200/60 dark:bg-slate-700/60">
+                            {msg.model === 'gpt-4o-mini' ? 'GPT-4o Mini' : msg.model}
+                          </span>
+                        )}
+                      </div>
                       <button
                         onClick={() => handleCopy(msg.id, msg.text)}
                         className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs flex items-center space-x-1"
