@@ -29,6 +29,9 @@ import {
 import { AssessmentResult, TraitKey } from '@/types';
 import { TRAIT_DEFINITIONS } from '@/data/questions';
 import { encodeResultToQueryParams } from '@/lib/scoring';
+import { generateCareerAssets } from '@/lib/careerGenerator';
+import { generateGrowthHabitPlan } from '@/lib/habitPlanGenerator';
+import { computeTraitPercentile } from '@/lib/percentileStats';
 import RadarChartComponent from './RadarChartComponent';
 import KitSubscribeForm from './KitSubscribeForm';
 import CompareInviteModal from './CompareInviteModal';
@@ -50,6 +53,12 @@ export default function ResultsDashboard({ result }: ResultsDashboardProps) {
   const [careerModalOpen, setCareerModalOpen] = useState(false);
   const [growthModalOpen, setGrowthModalOpen] = useState(false);
   const [percentileModalOpen, setPercentileModalOpen] = useState(false);
+
+  const careerAssets = generateCareerAssets(result);
+  const growthPlan = generateGrowthHabitPlan(result);
+  const percentileStats = (['openness', 'conscientiousness', 'extraversion', 'agreeableness', 'neuroticism'] as TraitKey[]).map(
+    (key) => computeTraitPercentile(result.scores[key].percentage, key)
+  );
 
   // Trigger celebration confetti on mount
   useEffect(() => {
@@ -896,10 +905,81 @@ ${shareUrl}`;
               </div>
             </div>
           </div>
+        </div>
+
+        {/* PRINT PAGE 4: GLOBAL POPULATION PERCENTILES & BELL CURVE NORMS */}
+        <div className="print-page-break-before space-y-4">
+          <div className="border-b-2 border-slate-900 pb-2">
+            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">SECTION 4</span>
+            <h3 className="text-lg font-black text-slate-900">Global Population Percentile Benchmarks ($\mu=50, \sigma=15$)</h3>
+          </div>
+
+          <div className="space-y-3">
+            {percentileStats.map((ps) => (
+              <div key={ps.traitKey} className="print-avoid-break p-3.5 rounded-xl border border-slate-300 bg-white space-y-1.5 text-xs">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-1">
+                  <span className="font-black text-slate-900 text-sm">{ps.label}</span>
+                  <span className="font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-800 border border-slate-300">
+                    {ps.percentile}th Percentile (Score: {ps.score}%, z = {ps.zScore >= 0 ? `+${ps.zScore}` : ps.zScore})
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-[11px] text-teal-800 font-bold">
+                  <span>{ps.higherThanText}</span>
+                  <span className="text-slate-600">{ps.rarityTier}</span>
+                </div>
+                <p className="text-slate-700 text-[11px] leading-snug">{ps.comparisonInsight}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* PRINT PAGE 5: 30-DAY PERSONALIZED GROWTH PLAN & CAREER ASSETS */}
+        <div className="print-page-break-before space-y-4">
+          <div className="border-b-2 border-slate-900 pb-2">
+            <span className="text-[10px] font-black uppercase tracking-widest text-teal-700">SECTION 5</span>
+            <h3 className="text-lg font-black text-slate-900">30-Day Growth Roadmap & Executive Career Assets</h3>
+          </div>
+
+          {/* 30-Day Growth Plan Overview */}
+          <div className="print-avoid-break p-4 rounded-xl border border-amber-300 bg-amber-50/30 space-y-2">
+            <div className="flex items-center justify-between">
+              <h4 className="font-bold text-xs uppercase text-amber-950">Primary Growth Focus: {growthPlan.focusTitle}</h4>
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-200 text-amber-900">{growthPlan.focusTrait}</span>
+            </div>
+            <p className="text-xs text-slate-700">{growthPlan.summary}</p>
+            <div className="grid grid-cols-2 gap-2 pt-1 text-[11px]">
+              {growthPlan.weeks.map((w) => (
+                <div key={w.week} className="p-2 rounded bg-white border border-amber-200">
+                  <strong className="block text-slate-900">Week {w.week}: {w.title}</strong>
+                  <span className="text-slate-600">{w.goal}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 5 Psychometric Resume Bullets */}
+          <div className="print-avoid-break p-4 rounded-xl border border-slate-300 bg-white space-y-2">
+            <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900">5 Psychometric Resume Impact Bullets</h4>
+            <div className="space-y-1.5 text-xs text-slate-700">
+              {careerAssets.resumeBullets.map((b, i) => (
+                <div key={i} className="p-2 rounded bg-slate-50 border border-slate-200">
+                  <strong className="text-slate-900">{b.title}:</strong> &ldquo;{b.bullet}&rdquo;
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Executive LinkedIn Bio */}
+          <div className="print-avoid-break p-4 rounded-xl border border-slate-300 bg-white space-y-2">
+            <h4 className="font-bold text-xs uppercase tracking-wider text-slate-900">Executive LinkedIn &ldquo;About&rdquo; Bio</h4>
+            <p className="text-xs text-slate-700 whitespace-pre-line bg-slate-50 p-3 rounded-lg border border-slate-200">
+              {careerAssets.linkedInBios.executive}
+            </p>
+          </div>
 
           {/* Verification & Copyright Footer */}
-          <div className="print-avoid-break text-center pt-6 border-t border-slate-200 text-[10px] text-slate-500 space-y-1">
-            <p className="font-bold text-slate-700">© 2026 YSAMPHY LLC • Psychological Blueprint</p>
+          <div className="print-avoid-break text-center pt-4 border-t border-slate-200 text-[10px] text-slate-500 space-y-1">
+            <p className="font-bold text-slate-700">© 2026 YSAMPHY LLC • Psychological Blueprint Dossier</p>
             <p>Generated online at personality-test.ysamphy.com • Validated IPIP Five-Factor Psychometrics</p>
           </div>
         </div>
