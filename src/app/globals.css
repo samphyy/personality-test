@@ -66,8 +66,10 @@ body {
   /* Dedicated clean print pages - exactly 1 physical page per section */
   .print-page {
     display: block !important;
-    page-break-after: always !important;
+    break-before: page !important;
+    page-break-before: always !important;
     break-after: page !important;
+    page-break-after: always !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
@@ -78,9 +80,14 @@ body {
     min-height: auto !important;
   }
 
+  .print-page:first-child {
+    break-before: avoid !important;
+    page-break-before: avoid !important;
+  }
+
   .print-page:last-child {
-    page-break-after: auto !important;
     break-after: auto !important;
+    page-break-after: auto !important;
   }
 
   /* Force high-contrast dark card retention in PDF & Print */
