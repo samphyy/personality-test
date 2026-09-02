@@ -859,8 +859,8 @@ ${shareUrl}`;
             </div>
           </div>
 
-          {/* Page 1 Footer Pinned to Physical Bottom */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1 text-[8pt] text-slate-500 font-medium">
+          {/* Page 1 Footer */}
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-8 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 1 of 5</span>
           </div>
@@ -915,8 +915,8 @@ ${shareUrl}`;
             </div>
           </div>
 
-          {/* Page 2 Footer Pinned to Physical Bottom */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1 text-[8pt] text-slate-500 font-medium">
+          {/* Page 2 Footer */}
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-6 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 2 of 5</span>
           </div>
@@ -991,8 +991,8 @@ ${shareUrl}`;
             </div>
           </div>
 
-          {/* Page 3 Footer Pinned to Physical Bottom */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1 text-[8pt] text-slate-500 font-medium">
+          {/* Page 3 Footer */}
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-6 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 3 of 5</span>
           </div>
@@ -1044,8 +1044,8 @@ ${shareUrl}`;
             </div>
           </div>
 
-          {/* Page 4 Footer Pinned to Physical Bottom */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1 text-[8pt] text-slate-500 font-medium">
+          {/* Page 4 Footer */}
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-3 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 4 of 5</span>
           </div>
@@ -1104,8 +1104,8 @@ ${shareUrl}`;
             </div>
           </div>
 
-          {/* Page 5 Footer Pinned to Physical Bottom */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1 text-[8pt] text-slate-500 font-medium">
+          {/* Page 5 Footer */}
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1 mt-6 text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 5 of 5</span>
           </div>

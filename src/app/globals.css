@@ -63,13 +63,9 @@ body {
     page-break-after: avoid !important;
   }
 
-  /* Dedicated clean print pages - exactly 1 physical page per section with bottom-pinned footer */
+  /* Dedicated clean print pages - exactly 1 physical page per section */
   .print-page {
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: space-between !important;
-    height: 25.4cm !important;
-    max-height: 25.4cm !important;
+    display: block !important;
     page-break-after: always !important;
     break-after: page !important;
     break-inside: avoid !important;
@@ -78,7 +74,8 @@ body {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
-    overflow: hidden !important;
+    height: auto !important;
+    min-height: auto !important;
   }
 
   .print-page:last-child {
