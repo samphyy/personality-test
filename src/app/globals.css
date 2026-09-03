@@ -65,9 +65,10 @@ body {
 
   /* Dedicated clean print pages - exactly 1 physical page per section */
   .print-page {
-    display: block !important;
-    break-before: page !important;
-    page-break-before: always !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 24cm !important;
     break-after: page !important;
     page-break-after: always !important;
     break-inside: avoid !important;
@@ -76,11 +77,6 @@ body {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
-  }
-
-  .print-page:first-child {
-    break-before: avoid !important;
-    page-break-before: avoid !important;
   }
 
   .print-page:last-child {
