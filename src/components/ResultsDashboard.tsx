@@ -872,7 +872,7 @@ ${shareUrl}`;
           </div>
 
           {/* Page 1 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-4 text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-auto text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 1 of 5</span>
           </div>
@@ -936,7 +936,7 @@ ${shareUrl}`;
           </div>
 
           {/* Page 2 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-4 text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-auto text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 2 of 5</span>
           </div>
@@ -1034,7 +1034,7 @@ ${shareUrl}`;
           </div>
 
           {/* Page 3 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-4 text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-auto text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 3 of 5</span>
           </div>
@@ -1087,7 +1087,7 @@ ${shareUrl}`;
           </div>
 
           {/* Page 4 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-1.5 mt-3 text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-1.5 mt-auto text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 4 of 5</span>
           </div>
@@ -1162,7 +1162,7 @@ ${shareUrl}`;
           </div>
 
           {/* Page 5 Footer */}
-          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-3 text-[8pt] text-slate-500 font-medium">
+          <div className="flex items-center justify-between border-t border-slate-300 pt-2 mt-auto text-[8pt] text-slate-500 font-medium">
             <span>© 2026 YSAMPHY LLC • Validated IPIP Five-Factor Psychometrics</span>
             <span>The Big Five (OCEAN) Blueprint • Page 5 of 5</span>
           </div>
