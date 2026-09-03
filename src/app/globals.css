@@ -67,7 +67,7 @@ body {
   .print-page {
     display: flex !important;
     flex-direction: column !important;
-    min-height: 24.2cm !important;
+    min-height: 23.5cm !important;
     break-before: page !important;
     page-break-before: always !important;
     break-after: page !important;
