@@ -49,6 +49,10 @@ export async function generateMetadata({ searchParams }: BadgeProps): Promise<Me
       description,
       images: [ogImageUrl],
     },
+    robots: {
+      index: false,
+      follow: false,
+    },
   };
 }
 
