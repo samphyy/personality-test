@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { ARCHETYPES } from '@/data/archetypes';
 import { TRAIT_DEFINITIONS } from '@/data/questions';
+import BadgeShareButtons from '@/components/BadgeShareButtons';
 
 interface BadgeProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -79,9 +80,6 @@ export default async function BadgePage({ searchParams }: BadgeProps) {
           </div>
           
           <div className="relative z-10 flex flex-col items-center text-center">
-            <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-6 shadow-xl border border-white/30">
-              <span className="text-3xl font-serif font-bold text-white shadow-sm">y</span>
-            </div>
             <span className="uppercase tracking-[0.2em] text-[10px] font-bold text-white/80 mb-3 block">
               Certified Psychometric Blueprint
             </span>
@@ -129,7 +127,7 @@ export default async function BadgePage({ searchParams }: BadgeProps) {
         </div>
 
         {/* CTA Section */}
-        <div className="p-8 sm:p-10 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 text-center">
+        <div className="p-8 sm:p-10 bg-slate-50 dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 text-center flex flex-col items-center">
           <h3 className="text-xl font-bold text-slate-800 dark:text-slate-200 mb-3">Discover Your Own Blueprint</h3>
           <p className="text-slate-500 dark:text-slate-400 text-sm mb-6 max-w-md mx-auto">
             Take the scientifically validated 30-question assessment to decode your dominant archetype and unlock your personalized growth roadmap.
@@ -140,6 +138,12 @@ export default async function BadgePage({ searchParams }: BadgeProps) {
           >
             Take the Free Test Now
           </Link>
+          
+          {/* Social Share Buttons */}
+          <BadgeShareButtons 
+            url={`https://personality-test.ysamphy.com/badge?arch=${archId}&o=${o}&c=${c}&e=${e}&a=${a}&n=${n}`}
+            archetypeName={archetype ? archetype.name : 'Personality Blueprint'}
+          />
         </div>
 
       </div>
