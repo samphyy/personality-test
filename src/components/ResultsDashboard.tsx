@@ -176,6 +176,16 @@ ${shareUrl}`;
             <span>Ask AI Coach</span>
           </button>
 
+          {/* Share Badge Button */}
+          <Link
+            href={`/badge?arch=${archId}&o=${o}&c=${c}&e=${e}&a=${a}&n=${n}`}
+            target="_blank"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all shadow-md shadow-slate-900/20 active:scale-95"
+          >
+            <Share2 className="w-4 h-4" />
+            <span>Share Badge</span>
+          </Link>
+
           {/* Compare Button */}
           <button
             onClick={() => setCompareModalOpen(true)}
